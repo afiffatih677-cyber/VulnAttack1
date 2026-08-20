@@ -1,0 +1,306 @@
+$ne
+$gt
+$lt
+$in
+$or
+$and
+$nin
+$nor
+$exists
+$regex
+$where
+$all
+$elemMatch
+$size
+$mod
+$type
+$not
+$eq
+{$ne: null}
+{$gt: ''}
+{$lt: ''}
+{$in: []}
+{$or: []}
+{$and: []}
+{$nin: []}
+{$nor: []}
+{$exists: true}
+{$regex: '.*'}
+{$where: '1==1'}
+{$all: []}
+{$elemMatch: {}}
+{$size: 0}
+{$mod: [0,0]}
+{$type: 1}
+{$not: {}}
+{$eq: null}
+username[$ne]=admin
+username[$gt]=a
+username[$lt]=z
+username[$in]=[admin,user]
+username[$or]=[admin,user]
+username[$and]=[admin,user]
+username[$nin]=[admin,user]
+username[$nor]=[admin,user]
+username[$exists]=true
+username[$regex]=.*
+username[$where]=1==1
+username[$all]=[admin,user]
+username[$elemMatch]=admin
+username[$size]=5
+username[$mod]=[0,0]
+username[$type]=1
+username[$not]=admin
+username[$eq]=admin
+password[$ne]=password
+password[$gt]=a
+password[$lt]=z
+password[$in]=[password,123456]
+password[$or]=[password,123456]
+password[$and]=[password,123456]
+password[$nin]=[password,123456]
+password[$nor]=[password,123456]
+password[$exists]=true
+password[$regex]=.*
+password[$where]=1==1
+password[$all]=[password,123456]
+password[$elemMatch]=password
+password[$size]=8
+password[$mod]=[0,0]
+password[$type]=1
+password[$not]=password
+password[$eq]=password
+email[$ne]=admin@domain.com
+email[$gt]=a
+email[$lt]=z
+email[$in]=[admin@domain.com,user@domain.com]
+email[$or]=[admin@domain.com,user@domain.com]
+email[$and]=[admin@domain.com,user@domain.com]
+email[$nin]=[admin@domain.com,user@domain.com]
+email[$nor]=[admin@domain.com,user@domain.com]
+email[$exists]=true
+email[$regex]=.*
+email[$where]=1==1
+email[$all]=[admin@domain.com,user@domain.com]
+email[$elemMatch]=admin@domain.com
+email[$size]=10
+email[$mod]=[0,0]
+email[$type]=1
+email[$not]=admin@domain.com
+email[$eq]=admin@domain.com
+id[$ne]=1
+id[$gt]=0
+id[$lt]=100
+id[$in]=[1,2,3]
+id[$or]=[1,2,3]
+id[$and]=[1,2,3]
+id[$nin]=[1,2,3]
+id[$nor]=[1,2,3]
+id[$exists]=true
+id[$regex]=.*
+id[$where]=1==1
+id[$all]=[1,2,3]
+id[$elemMatch]=1
+id[$size]=1
+id[$mod]=[0,0]
+id[$type]=1
+id[$not]=1
+id[$eq]=1
+role[$ne]=admin
+role[$gt]=a
+role[$lt]=z
+role[$in]=[admin,user]
+role[$or]=[admin,user]
+role[$and]=[admin,user]
+role[$nin]=[admin,user]
+role[$nor]=[admin,user]
+role[$exists]=true
+role[$regex]=.*
+role[$where]=1==1
+role[$all]=[admin,user]
+role[$elemMatch]=admin
+role[$size]=5
+role[$mod]=[0,0]
+role[$type]=1
+role[$not]=admin
+role[$eq]=admin
+token[$ne]=abc123
+token[$gt]=a
+token[$lt]=z
+token[$in]=[abc123,def456]
+token[$or]=[abc123,def456]
+token[$and]=[abc123,def456]
+token[$nin]=[abc123,def456]
+token[$nor]=[abc123,def456]
+token[$exists]=true
+token[$regex]=.*
+token[$where]=1==1
+token[$all]=[abc123,def456]
+token[$elemMatch]=abc123
+token[$size]=6
+token[$mod]=[0,0]
+token[$type]=1
+token[$not]=abc123
+token[$eq]=abc123
+session[$ne]=session123
+session[$gt]=a
+session[$lt]=z
+session[$in]=[session123,session456]
+session[$or]=[session123,session456]
+session[$and]=[session123,session456]
+session[$nin]=[session123,session456]
+session[$nor]=[session123,session456]
+session[$exists]=true
+session[$regex]=.*
+session[$where]=1==1
+session[$all]=[session123,session456]
+session[$elemMatch]=session123
+session[$size]=10
+session[$mod]=[0,0]
+session[$type]=1
+session[$not]=session123
+session[$eq]=session123
+{"username": {"$ne": "admin"}}
+{"username": {"$gt": "a"}}
+{"username": {"$lt": "z"}}
+{"username": {"$in": ["admin", "user"]}}
+{"username": {"$or": ["admin", "user"]}}
+{"username": {"$and": ["admin", "user"]}}
+{"username": {"$nin": ["admin", "user"]}}
+{"username": {"$nor": ["admin", "user"]}}
+{"username": {"$exists": true}}
+{"username": {"$regex": ".*"}}
+{"username": {"$where": "1==1"}}
+{"username": {"$all": ["admin", "user"]}}
+{"username": {"$elemMatch": "admin"}}
+{"username": {"$size": 5}}
+{"username": {"$mod": [0,0]}}
+{"username": {"$type": 1}}
+{"username": {"$not": "admin"}}
+{"username": {"$eq": "admin"}}
+{"password": {"$ne": "password"}}
+{"password": {"$gt": "a"}}
+{"password": {"$lt": "z"}}
+{"password": {"$in": ["password", "123456"]}}
+{"password": {"$or": ["password", "123456"]}}
+{"password": {"$and": ["password", "123456"]}}
+{"password": {"$nin": ["password", "123456"]}}
+{"password": {"$nor": ["password", "123456"]}}
+{"password": {"$exists": true}}
+{"password": {"$regex": ".*"}}
+{"password": {"$where": "1==1"}}
+{"password": {"$all": ["password", "123456"]}}
+{"password": {"$elemMatch": "password"}}
+{"password": {"$size": 8}}
+{"password": {"$mod": [0,0]}}
+{"password": {"$type": 1}}
+{"password": {"$not": "password"}}
+{"password": {"$eq": "password"}}
+{"email": {"$ne": "admin@domain.com"}}
+{"email": {"$gt": "a"}}
+{"email": {"$lt": "z"}}
+{"email": {"$in": ["admin@domain.com", "user@domain.com"]}}
+{"email": {"$or": ["admin@domain.com", "user@domain.com"]}}
+{"email": {"$and": ["admin@domain.com", "user@domain.com"]}}
+{"email": {"$nin": ["admin@domain.com", "user@domain.com"]}}
+{"email": {"$nor": ["admin@domain.com", "user@domain.com"]}}
+{"email": {"$exists": true}}
+{"email": {"$regex": ".*"}}
+{"email": {"$where": "1==1"}}
+{"email": {"$all": ["admin@domain.com", "user@domain.com"]}}
+{"email": {"$elemMatch": "admin@domain.com"}}
+{"email": {"$size": 10}}
+{"email": {"$mod": [0,0]}}
+{"email": {"$type": 1}}
+{"email": {"$not": "admin@domain.com"}}
+{"email": {"$eq": "admin@domain.com"}}
+{"id": {"$ne": 1}}
+{"id": {"$gt": 0}}
+{"id": {"$lt": 100}}
+{"id": {"$in": [1,2,3]}}
+{"id": {"$or": [1,2,3]}}
+{"id": {"$and": [1,2,3]}}
+{"id": {"$nin": [1,2,3]}}
+{"id": {"$nor": [1,2,3]}}
+{"id": {"$exists": true}}
+{"id": {"$regex": ".*"}}
+{"id": {"$where": "1==1"}}
+{"id": {"$all": [1,2,3]}}
+{"id": {"$elemMatch": 1}}
+{"id": {"$size": 1}}
+{"id": {"$mod": [0,0]}}
+{"id": {"$type": 1}}
+{"id": {"$not": 1}}
+{"id": {"$eq": 1}}
+{"role": {"$ne": "admin"}}
+{"role": {"$gt": "a"}}
+{"role": {"$lt": "z"}}
+{"role": {"$in": ["admin", "user"]}}
+{"role": {"$or": ["admin", "user"]}}
+{"role": {"$and": ["admin", "user"]}}
+{"role": {"$nin": ["admin", "user"]}}
+{"role": {"$nor": ["admin", "user"]}}
+{"role": {"$exists": true}}
+{"role": {"$regex": ".*"}}
+{"role": {"$where": "1==1"}}
+{"role": {"$all": ["admin", "user"]}}
+{"role": {"$elemMatch": "admin"}}
+{"role": {"$size": 5}}
+{"role": {"$mod": [0,0]}}
+{"role": {"$type": 1}}
+{"role": {"$not": "admin"}}
+{"role": {"$eq": "admin"}}
+{"token": {"$ne": "abc123"}}
+{"token": {"$gt": "a"}}
+{"token": {"$lt": "z"}}
+{"token": {"$in": ["abc123", "def456"]}}
+{"token": {"$or": ["abc123", "def456"]}}
+{"token": {"$and": ["abc123", "def456"]}}
+{"token": {"$nin": ["abc123", "def456"]}}
+{"token": {"$nor": ["abc123", "def456"]}}
+{"token": {"$exists": true}}
+{"token": {"$regex": ".*"}}
+{"token": {"$where": "1==1"}}
+{"token": {"$all": ["abc123", "def456"]}}
+{"token": {"$elemMatch": "abc123"}}
+{"token": {"$size": 6}}
+{"token": {"$mod": [0,0]}}
+{"token": {"$type": 1}}
+{"token": {"$not": "abc123"}}
+{"token": {"$eq": "abc123"}}
+{"session": {"$ne": "session123"}}
+{"session": {"$gt": "a"}}
+{"session": {"$lt": "z"}}
+{"session": {"$in": ["session123", "session456"]}}
+{"session": {"$or": ["session123", "session456"]}}
+{"session": {"$and": ["session123", "session456"]}}
+{"session": {"$nin": ["session123", "session456"]}}
+{"session": {"$nor": ["session123", "session456"]}}
+{"session": {"$exists": true}}
+{"session": {"$regex": ".*"}}
+{"session": {"$where": "1==1"}}
+{"session": {"$all": ["session123", "session456"]}}
+{"session": {"$elemMatch": "session123"}}
+{"session": {"$size": 10}}
+{"session": {"$mod": [0,0]}}
+{"session": {"$type": 1}}
+{"session": {"$not": "session123"}}
+{"session": {"$eq": "session123"}}
+username[$ne]=admin&password[$ne]=password
+username[$gt]=a&password[$gt]=a
+username[$lt]=z&password[$lt]=z
+username[$in]=[admin,user]&password[$in]=[password,123456]
+username[$or]=[admin,user]&password[$or]=[password,123456]
+username[$and]=[admin,user]&password[$and]=[password,123456]
+username[$nin]=[admin,user]&password[$nin]=[password,123456]
+username[$nor]=[admin,user]&password[$nor]=[password,123456]
+username[$exists]=true&password[$exists]=true
+username[$regex]=.*&password[$regex]=.*
+username[$where]=1==1&password[$where]=1==1
+username[$all]=[admin,user]&password[$all]=[password,123456]
+username[$elemMatch]=admin&password[$elemMatch]=password
+username[$size]=5&password[$size]=8
+username[$mod]=[0,0]&password[$mod]=[0,0]
+username[$type]=1&password[$type]=1
+username[$not]=admin&password[$not]=password
+username[$eq]=admin&password[$eq]=password

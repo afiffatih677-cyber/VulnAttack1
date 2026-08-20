@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Injected by Apip</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body, html { overflow: hidden; background-color: #000; font-family: monospace; width: 100vw; height: 100vh; cursor: crosshair; }
+  #enter-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; color: #39ff14; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: clamp(20px, 5vw, 30px); font-weight: bold; text-shadow: 0 0 10px #39ff14; cursor: pointer; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+  .bg-vid { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: contain; filter: blur(2px); z-index: 1; }
+  #roamers-container { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; pointer-events: none; }
+  .roam-vid { position: absolute; border: 2px solid #39ff14; object-fit: cover !important; aspect-ratio: 16 / 9 !important; }
+  .center-stage { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; }
+  .photo-wrapper { position: relative; width: 320px; height: 320px; display: flex; justify-content: center; align-items: center; }
+  .center-photo { width: 170px; height: 170px; border-radius: 50%; border: 2px solid #39ff14; filter: blur(1px); object-fit: cover; z-index: 15; }
+  .circle-svg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+  .svg-inner { width: 250px; height: 250px; animation: spin 16s linear infinite; z-index: 14; }
+  .svg-outer { width: 310px; height: 310px; animation: spin-rev 12s linear infinite; z-index: 13; }
+  .text-neon { fill: #39ff14; font-size: 18px; font-weight: bold; letter-spacing: 2px; }
+  .text-red { fill: red; font-size: 18px; font-weight: bold; letter-spacing: 2px; }
+  @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+  @keyframes spin-rev { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(-360deg); } }
+  .hacked-text { color: #39ff14; font-size: clamp(14px, 4vw, 22px); font-weight: bold; margin-top: 20px; text-align: center; white-space: nowrap; animation: glitch-burst 4s cubic-bezier(.25, .46, .45, .94) both; }
+  @keyframes glitch-burst { 0% { transform: translate(0); text-shadow: none; } 5%, 15%, 25% { transform: translate(-3px, 2px); text-shadow: -2px 0 red, 2px 0 blue; } 10%, 20%, 30% { transform: translate(3px, -2px); text-shadow: 2px 0 red, -2px 0 blue; } 35% { transform: translate(-2px, 2px) skew(10deg); text-shadow: -2px 0 red, 2px 0 blue; } 40% { transform: translate(0) skew(0deg); text-shadow: none; } 100% { transform: translate(0); text-shadow: none; } }
+</style>
+</head>
+<body>
+<div id="enter-overlay">[ KLIK LAYAR KALO MAU MASUK ]</div>
+<video class="bg-vid" id="main-bg-vid" src="https://k.top4top.io/m_3851klqza1.mp4" loop playsinline></video>
+<div id="roamers-container"></div>
+<div class="center-stage">
+  <div class="photo-wrapper">
+    <svg class="circle-svg svg-inner" viewBox="0 0 250 250">
+      <path id="inner-path" d="M 125, 125 m -110, 0 a 110,110 0 1,1 220,0 a 110,110 0 1,1 -220,0" fill="none" />
+      <text><textPath href="#inner-path" startOffset="50%" text-anchor="middle" class="text-neon">👾 King Apip Boys 👾</textPath></text>
+    </svg>
+    <svg class="circle-svg svg-outer" viewBox="0 0 310 310">
+      <path id="outer-path" d="M 155, 155 m -140, 0 a 140,140 0 1,1 280,0 a 140,140 0 1,1 -280,0" fill="none" />
+      <text><textPath href="#outer-path" startOffset="50%" text-anchor="middle" class="text-red">😆 you are in idiot 😆</textPath></text>
+    </svg>
+    <img src="https://b.top4top.io/p_385124baz1.jpg" alt="Apip" class="center-photo">
+  </div>
+  <div class="hacked-text">👾 WEB GOT INJECTED BY APIP 👾</div>
+</div>
+<script>
+  const overlay = document.getElementById('enter-overlay');
+  const bgVid = document.getElementById('main-bg-vid');
+  overlay.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    bgVid.muted = false;
+    bgVid.volume = 1.0;
+    bgVid.play().catch(e => console.log("Gagal muter:", e));
+  });
+  const container = document.getElementById('roamers-container');
+  const roamers = [];
+  const maxSpeed = 4;
+  const numVideos = 6;
+  const vidSrc = "https://l.top4top.io/m_3851n0m8y1.mp4";
+  for (let i = 0; i < numVideos; i++) {
+    const vid = document.createElement('video');
+    vid.src = vidSrc;
+    vid.autoplay = true;
+    vid.loop = true;
+    vid.muted = true;
+    vid.playsInline = true;
+    vid.className = 'roam-vid';
+    const vidWidth = Math.floor(Math.random() * 101) + 70; 
+    const vidHeight = Math.floor(vidWidth * (9 / 16)); 
+    vid.style.width = vidWidth + 'px';
+    vid.style.height = vidHeight + 'px';
+    container.appendChild(vid);
+    roamers.push({
+      el: vid,
+      w: vidWidth,
+      h: vidHeight,
+      x: Math.random() * (window.innerWidth - vidWidth),
+      y: Math.random() * (window.innerHeight - vidHeight),
+      vx: (Math.random() > 0.5 ? 1 : -1) * (Math.random() * maxSpeed + 1),
+      vy: (Math.random() > 0.5 ? 1 : -1) * (Math.random() * maxSpeed + 1)
+    });
+  }
+  function animateRoamers() {
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    roamers.forEach(r => {
+      r.x += r.vx;
+      r.y += r.vy;
+      if (r.x <= 0) { r.x = 0; r.vx *= -1; }
+      if (r.x + r.w >= screenW) { r.x = screenW - r.w; r.vx *= -1; }
+      if (r.y <= 0) { r.y = 0; r.vy *= -1; }
+      if (r.y + r.h >= screenH) { r.y = screenH - r.h; r.vy *= -1; }
+      r.el.style.transform = `translate(${r.x}px, ${r.y}px)`;
+    });
+    requestAnimationFrame(animateRoamers);
+  }
+  animateRoamers();
+</script>
+</body>
+</html>

