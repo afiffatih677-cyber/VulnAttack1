@@ -185,3 +185,133 @@
 2026-08-21 21:24:06,010 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
 2026-08-21 21:24:36,814 - INFO - ERROR - Request failed after 3 retries.
 2026-08-21 21:24:37,022 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:29:29,464 - INFO - SECTION - MAIN MENU
+2026-08-21 21:30:03,047 - INFO - INFO - Cloudflare detected. Bypass enabled automatically.
+2026-08-21 21:30:14,015 - INFO - SUCCESS - Loaded 20006 payloads
+2026-08-21 21:30:14,042 - INFO - SUCCESS - Loaded 35 templates
+2026-08-21 21:30:14,084 - INFO - INFO - Target: https://cvkharismaabadi.com/productdetail.php?id=7
+2026-08-21 21:30:14,084 - INFO - SECTION - ATTACK DESCRIPTION
+2026-08-21 21:30:14,084 - INFO - SECTION - CRAWLING & ANALYSIS
+2026-08-21 21:30:14,085 - INFO - PROGRESS - Crawling: https://cvkharismaabadi.com/productdetail.php?id=7 (depth 0)
+2026-08-21 21:30:14,677 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:30:45,669 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:30:45,671 - INFO - SECTION - VULNERABILITY TESTING
+2026-08-21 21:30:45,671 - INFO - PROGRESS - Testing SQL Injection...
+2026-08-21 21:30:45,875 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:31:16,646 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:31:16,920 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:31:47,803 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:31:48,089 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:32:19,137 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:32:19,367 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:32:50,166 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:32:50,419 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:33:21,127 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:33:21,310 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:33:52,158 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:33:52,366 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:34:23,050 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:34:23,248 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:34:54,138 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:34:54,524 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:35:25,902 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:35:26,192 - INFO - WARNING - Too many WAF blocks (11). Skipping this test category.
+2026-08-21 21:35:27,154 - INFO - WARNING - Too many WAF blocks (12). Skipping this test category.
+2026-08-21 21:35:28,194 - INFO - WARNING - Too many WAF blocks (13). Skipping this test category.
+2026-08-21 21:35:29,155 - INFO - WARNING - Too many WAF blocks (14). Skipping this test category.
+2026-08-21 21:35:30,123 - INFO - WARNING - Too many WAF blocks (15). Skipping this test category.
+2026-08-21 21:35:31,126 - INFO - WARNING - Too many WAF blocks (16). Skipping this test category.
+2026-08-21 21:35:32,133 - INFO - WARNING - Too many WAF blocks (17). Skipping this test category.
+2026-08-21 21:35:33,108 - INFO - WARNING - Too many WAF blocks (18). Skipping this test category.
+2026-08-21 21:35:34,072 - INFO - WARNING - Too many WAF blocks (19). Skipping this test category.
+2026-08-21 21:35:35,383 - INFO - WARNING - Too many WAF blocks (20). Skipping this test category.
+2026-08-21 21:35:36,107 - INFO - WARNING - Too many WAF blocks (21). Skipping this test category.
+2026-08-21 21:35:37,137 - INFO - WARNING - Too many WAF blocks (22). Skipping this test category.
+2026-08-21 21:35:38,146 - INFO - WARNING - Too many WAF blocks (23). Skipping this test category.
+2026-08-21 21:35:39,082 - INFO - WARNING - Too many WAF blocks (24). Skipping this test category.
+2026-08-21 21:35:40,089 - INFO - WARNING - Too many WAF blocks (25). Skipping this test category.
+2026-08-21 21:35:41,112 - INFO - WARNING - Too many WAF blocks (26). Skipping this test category.
+2026-08-21 21:35:42,183 - INFO - WARNING - Too many WAF blocks (27). Skipping this test category.
+2026-08-21 21:35:43,147 - INFO - WARNING - Too many WAF blocks (28). Skipping this test category.
+2026-08-21 21:35:44,107 - INFO - WARNING - Too many WAF blocks (29). Skipping this test category.
+2026-08-21 21:35:45,167 - INFO - WARNING - Too many WAF blocks (30). Skipping this test category.
+2026-08-21 21:35:46,127 - INFO - WARNING - Too many WAF blocks (31). Skipping this test category.
+2026-08-21 21:35:47,106 - INFO - WARNING - Too many WAF blocks (32). Skipping this test category.
+2026-08-21 21:35:48,134 - INFO - WARNING - Too many WAF blocks (33). Skipping this test category.
+2026-08-21 21:35:49,312 - INFO - WARNING - Too many WAF blocks (34). Skipping this test category.
+2026-08-21 21:35:50,123 - INFO - WARNING - Too many WAF blocks (35). Skipping this test category.
+2026-08-21 21:35:51,151 - INFO - WARNING - Too many WAF blocks (36). Skipping this test category.
+2026-08-21 21:35:52,154 - INFO - WARNING - Too many WAF blocks (37). Skipping this test category.
+2026-08-21 21:35:53,173 - INFO - WARNING - Too many WAF blocks (38). Skipping this test category.
+2026-08-21 21:35:54,158 - INFO - WARNING - Too many WAF blocks (39). Skipping this test category.
+2026-08-21 21:35:55,209 - INFO - WARNING - Too many WAF blocks (40). Skipping this test category.
+2026-08-21 21:35:56,161 - INFO - WARNING - Too many WAF blocks (41). Skipping this test category.
+2026-08-21 21:35:57,282 - INFO - WARNING - Too many WAF blocks (42). Skipping this test category.
+2026-08-21 21:35:58,280 - INFO - WARNING - Too many WAF blocks (43). Skipping this test category.
+2026-08-21 21:35:59,233 - INFO - WARNING - Too many WAF blocks (44). Skipping this test category.
+2026-08-21 21:36:00,275 - INFO - WARNING - Too many WAF blocks (45). Skipping this test category.
+2026-08-21 21:36:01,512 - INFO - WARNING - Too many WAF blocks (46). Skipping this test category.
+2026-08-21 21:36:02,740 - INFO - WARNING - Too many WAF blocks (47). Skipping this test category.
+2026-08-21 21:36:03,211 - INFO - WARNING - Too many WAF blocks (48). Skipping this test category.
+2026-08-21 21:36:04,235 - INFO - WARNING - Too many WAF blocks (49). Skipping this test category.
+2026-08-21 21:36:05,186 - INFO - WARNING - Too many WAF blocks (50). Skipping this test category.
+2026-08-21 21:36:06,276 - INFO - WARNING - Too many WAF blocks (51). Skipping this test category.
+2026-08-21 21:36:07,154 - INFO - WARNING - Too many WAF blocks (52). Skipping this test category.
+2026-08-21 21:36:08,190 - INFO - WARNING - Too many WAF blocks (53). Skipping this test category.
+2026-08-21 21:36:09,213 - INFO - WARNING - Too many WAF blocks (54). Skipping this test category.
+2026-08-21 21:36:10,242 - INFO - WARNING - Too many WAF blocks (55). Skipping this test category.
+2026-08-21 21:36:11,155 - INFO - WARNING - Too many WAF blocks (56). Skipping this test category.
+2026-08-21 21:36:12,243 - INFO - WARNING - Too many WAF blocks (57). Skipping this test category.
+2026-08-21 21:36:13,191 - INFO - WARNING - Too many WAF blocks (58). Skipping this test category.
+2026-08-21 21:36:14,221 - INFO - WARNING - Too many WAF blocks (59). Skipping this test category.
+2026-08-21 21:36:15,158 - INFO - WARNING - Too many WAF blocks (60). Skipping this test category.
+2026-08-21 21:36:16,291 - INFO - WARNING - Too many WAF blocks (61). Skipping this test category.
+2026-08-21 21:36:17,499 - INFO - WARNING - Too many WAF blocks (62). Skipping this test category.
+2026-08-21 21:36:18,312 - INFO - WARNING - Too many WAF blocks (63). Skipping this test category.
+2026-08-21 21:36:19,203 - INFO - WARNING - Too many WAF blocks (64). Skipping this test category.
+2026-08-21 21:36:20,200 - INFO - WARNING - Too many WAF blocks (65). Skipping this test category.
+2026-08-21 21:36:21,198 - INFO - WARNING - Too many WAF blocks (66). Skipping this test category.
+2026-08-21 21:36:22,205 - INFO - WARNING - Too many WAF blocks (67). Skipping this test category.
+2026-08-21 21:36:23,254 - INFO - WARNING - Too many WAF blocks (68). Skipping this test category.
+2026-08-21 21:36:24,320 - INFO - WARNING - Too many WAF blocks (69). Skipping this test category.
+2026-08-21 21:36:25,198 - INFO - WARNING - Too many WAF blocks (70). Skipping this test category.
+2026-08-21 21:36:26,208 - INFO - WARNING - Too many WAF blocks (71). Skipping this test category.
+2026-08-21 21:36:27,186 - INFO - WARNING - Too many WAF blocks (72). Skipping this test category.
+2026-08-21 21:36:28,162 - INFO - WARNING - Too many WAF blocks (73). Skipping this test category.
+2026-08-21 21:36:29,183 - INFO - WARNING - Too many WAF blocks (74). Skipping this test category.
+2026-08-21 21:36:30,186 - INFO - WARNING - Too many WAF blocks (75). Skipping this test category.
+2026-08-21 21:36:31,275 - INFO - WARNING - Too many WAF blocks (76). Skipping this test category.
+2026-08-21 21:36:32,237 - INFO - WARNING - Too many WAF blocks (77). Skipping this test category.
+2026-08-21 21:36:33,182 - INFO - WARNING - Too many WAF blocks (78). Skipping this test category.
+2026-08-21 21:36:34,154 - INFO - WARNING - Too many WAF blocks (79). Skipping this test category.
+2026-08-21 21:36:35,153 - INFO - WARNING - Too many WAF blocks (80). Skipping this test category.
+2026-08-21 21:36:36,168 - INFO - WARNING - Too many WAF blocks (81). Skipping this test category.
+2026-08-21 21:36:37,162 - INFO - WARNING - Too many WAF blocks (82). Skipping this test category.
+2026-08-21 21:36:38,187 - INFO - WARNING - Too many WAF blocks (83). Skipping this test category.
+2026-08-21 21:36:39,209 - INFO - WARNING - Too many WAF blocks (84). Skipping this test category.
+2026-08-21 21:36:40,295 - INFO - WARNING - Too many WAF blocks (85). Skipping this test category.
+2026-08-21 21:36:41,161 - INFO - WARNING - Too many WAF blocks (86). Skipping this test category.
+2026-08-21 21:36:42,148 - INFO - WARNING - Too many WAF blocks (87). Skipping this test category.
+2026-08-21 21:36:43,235 - INFO - WARNING - Too many WAF blocks (88). Skipping this test category.
+2026-08-21 21:36:44,156 - INFO - WARNING - Too many WAF blocks (89). Skipping this test category.
+2026-08-21 21:36:45,153 - INFO - WARNING - Too many WAF blocks (90). Skipping this test category.
+2026-08-21 21:36:46,239 - INFO - WARNING - Too many WAF blocks (91). Skipping this test category.
+2026-08-21 21:36:47,167 - INFO - WARNING - Too many WAF blocks (92). Skipping this test category.
+2026-08-21 21:36:48,143 - INFO - WARNING - Too many WAF blocks (93). Skipping this test category.
+2026-08-21 21:36:49,171 - INFO - WARNING - Too many WAF blocks (94). Skipping this test category.
+2026-08-21 21:36:50,206 - INFO - WARNING - Too many WAF blocks (95). Skipping this test category.
+2026-08-21 21:36:51,214 - INFO - WARNING - Too many WAF blocks (96). Skipping this test category.
+2026-08-21 21:36:52,168 - INFO - WARNING - Too many WAF blocks (97). Skipping this test category.
+2026-08-21 21:37:08,884 - INFO - SECTION - MAIN MENU
+2026-08-21 21:37:29,179 - INFO - INFO - Cloudflare detected. Bypass enabled automatically.
+2026-08-21 21:37:54,048 - INFO - SUCCESS - Loaded 20006 payloads
+2026-08-21 21:37:54,062 - INFO - SUCCESS - Loaded 35 templates
+2026-08-21 21:37:54,101 - INFO - SECTION - DEEP AUDIT - ANALISIS MENDALAM
+2026-08-21 21:37:54,101 - INFO - PROGRESS - Memindai semua sudut tersembunyi...
+2026-08-21 21:37:54,101 - INFO - PROGRESS - Crawling: https://cvkharismaabadi.com/productdetail.php?id=7 (depth 5)
+2026-08-21 21:37:54,548 - INFO - WARNING - WAF/Block detected! Retrying with bypass...
+2026-08-21 21:38:25,548 - INFO - ERROR - Request failed after 3 retries.
+2026-08-21 21:38:25,548 - INFO - WARNING - No HTML content found. Aborting deep audit.
+2026-08-21 21:38:25,549 - INFO - INFO - Target: https://cvkharismaabadi.com/productdetail.php?id=7
+2026-08-21 21:38:25,549 - INFO - ERROR - Unknown attack category: webshell
+2026-08-21 21:38:25,549 - INFO - SECTION - MAIN MENU
